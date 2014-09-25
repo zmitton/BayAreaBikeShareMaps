@@ -29,19 +29,27 @@ $(document).ready(function() {
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
+    mapOptions);
 
   var markerMaker = function(lat, lng, title) {
     return new google.maps.Marker({
-          position: getlatlng(lat, lng),
-          map: map,
-          title: title
-      });
+      position: getlatlng(lat, lng),
+      map: map,
+      title: title
+    });
+  }
+
+  var fitBoundsOfMarkers = function(start, end) {
+    var bounds = new google.maps.LatLngBounds();
+    bounds.extend(start);
+    bounds.extend(end);
+    map.fitBounds(bounds);
   }
 
   $(".form").on("submit", function(event) {
     event.preventDefault();
-    request = $.ajax("/search", {"method": "get", "data": $(this).serialize() })
+    var markers = [];
+    request = $.ajax("/search", {"method": "get", "data": $(this).serialize()})
     request.done(function(response) {
 
       s_latitude = response.start_location.lat
@@ -52,8 +60,10 @@ $(document).ready(function() {
 
       var marker1 = markerMaker(s_latitude, s_longitude, "Start");
       var marker2 = markerMaker(e_latitude, e_longitude, "End");
+      debugger;
+      fitBoundsOfMarkers(getlatlng(s_latitude, s_longitude),getlatlng(e_latitude, e_longitude)); // eventually create loop to extend bounds for all markers
+    });
 
-    })
   });
 
 })
