@@ -60,9 +60,11 @@ $(document).ready(function() {
 
     request = $.ajax("/search", {"method": "get", "data": $(this).serialize()});
     request.done(function(response) {
-
+      debugger;
       var marker1 = markerMaker(response.start_location.lat, response.start_location.lng, "Start");
       var marker2 = markerMaker(response.end_location.lat, response.end_location.lng, "End");
+      var station1 = markerMaker(response.start_station.lat, response.start_station.lng, "Start Station");
+      var station2 = markerMaker(response.end_station.lat, response.end_station.lng, "End Station");
 
       setAllMap(map);
       fitBoundsOfMarkers();

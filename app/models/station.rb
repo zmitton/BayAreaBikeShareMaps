@@ -17,5 +17,9 @@ class Station < ActiveRecord::Base
     self.find(self.find_distances_from(lat, lng)[0][0])
   end
 
+  def self.get_coords_of_station(station)
+    station_coords = {"lat" => station.latitude.to_f, "lng" => station.longitude.to_f}
+  end
+
 end
 
