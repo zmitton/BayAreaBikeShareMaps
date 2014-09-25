@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
 	respond_to :json
+
 	def index
 		@start_location = "#{params[:start_location]} + Chicago, IL"
 		@end_location = "#{params[:end_location]} + Chicago, IL"
@@ -13,6 +14,5 @@ class HomeController < ApplicationController
         @end_location = ""
 		end
 	end
-
 
 end
