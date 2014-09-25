@@ -1,8 +1,11 @@
+require 'json'
+
 class GoogleApi
   def self.get_coordinates_from_address(address)
   	uri = URI("http://maps.googleapis.com/maps/api/geocode/json?address=#{URI::escape(address)}")
-	json_str = Net::HTTP.get(uri)
-  JSON.parse(json_str)
+	 json = Net::HTTP.get(uri)
+   result = JSON.parse(json)
+   result["results"][0]["geometry"]["location"]
   end
 
   def self.get_directions_from_addresses(start_address, end_address, mode = "bicycling")
@@ -11,4 +14,5 @@ class GoogleApi
   	json_str = Net::HTTP.get(uri)
     JSON.parse(json_str)
   end
+
 end

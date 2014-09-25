@@ -1,7 +1,14 @@
 @import "variables";
 
+
+body {
+  width: 900px;
+  height: 400px;
+}
+
 #map-canvas {
         height: 100%;
+        width: 100%;
         margin: 0px;
         padding: 0px
 }
