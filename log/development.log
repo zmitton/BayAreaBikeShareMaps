@@ -1,0 +1,51 @@
+  [1m[36m (26.2ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying(255) NOT NULL) [0m
+  [1m[35m (3.8ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateStations (20140924231247)
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (27.0ms)[0m  [1mCREATE TABLE "stations" ("id" serial primary key, "station_id" integer, "name" character varying(255), "available_docks" integer, "total_docks" integer, "latitude" decimal, "longitude" decimal, "status_value" character varying(255), "status_key" integer, "available_bikes" integer, "intersection" character varying(255), "intersection_2" character varying(255), "city" character varying(255), "postal_code" character varying(255), "location" character varying(255), "altitude" decimal, "test_station" boolean, "last_communication_time" timestamp, "landmark" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35mSQL (5.9ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20140924231247"]]
+  [1m[36m (6.3ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mSQL (6.7ms)[0m  [1mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (4.1ms)[0m  DROP TABLE "stations"
+  [1m[36m (6.0ms)[0m  [1mCREATE TABLE "stations" ("id" serial primary key, "station_id" integer, "name" character varying(255), "available_docks" integer, "total_docks" integer, "latitude" decimal, "longitude" decimal, "status_value" character varying(255), "status_key" integer, "available_bikes" integer, "intersection" character varying(255), "intersection_2" character varying(255), "city" character varying(255), "postal_code" character varying(255), "location" character varying(255), "altitude" decimal, "test_station" boolean, "last_communication_time" timestamp, "landmark" character varying(255), "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (0.3ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to AddIndexesToStations (20140924234702)
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (2.9ms)[0m  [1mCREATE  INDEX  "index_stations_on_latitude" ON "stations"  ("latitude")[0m
+  [1m[35m (0.8ms)[0m  CREATE  INDEX  "index_stations_on_longitude" ON "stations"  ("longitude")
+  [1m[36m (0.7ms)[0m  [1mCREATE  INDEX  "index_stations_on_station_id" ON "stations"  ("station_id")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ($1)  [["version", "20140924234702"]]
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+
+
+Started GET "/" for 127.0.0.1 at 2014-09-24 18:58:31 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by HomeController#index as HTML
+  Rendered home/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 533ms (Views: 515.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2014-09-24 18:58:31 -0500
+Processing by HomeController#index as HTML
+  Rendered home/index.html.erb within layouts/application (0.0ms)
+Completed 200 OK in 58ms (Views: 57.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2014-09-24 18:58:31 -0500
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2014-09-24 18:58:31 -0500
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2014-09-24 18:58:31 -0500
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2014-09-24 18:58:31 -0500
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2014-09-24 18:58:31 -0500
