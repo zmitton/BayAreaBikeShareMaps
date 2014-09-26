@@ -3,4 +3,6 @@ Rails.application.routes.draw do
   get '/search', to: 'home#search', defaults: {format: :json}
 
   get '/stations', to: 'stations#index', defaults: {format: :json}
+
+  
 end
