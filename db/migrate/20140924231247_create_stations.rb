@@ -24,3 +24,4 @@ class CreateStations < ActiveRecord::Migration
     end
   end
 end
+
