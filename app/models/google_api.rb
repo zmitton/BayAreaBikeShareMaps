@@ -19,6 +19,7 @@ class GoogleApi
 
   def self.fetch_address_json(address_string)
     uri = URI("http://maps.googleapis.com/maps/api/geocode/json?address=#{URI::escape(address_string)}")
+    # /sdlkblkjb
     json = Net::HTTP.get(uri)
     result = JSON.parse(json)
   end
