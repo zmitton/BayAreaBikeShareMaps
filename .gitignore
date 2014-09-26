@@ -1,4 +1,5 @@
 log/*
 tmp/*
+/coverage
 .DS_Store
 .env
