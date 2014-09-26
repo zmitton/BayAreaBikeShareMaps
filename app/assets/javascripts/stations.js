@@ -51,7 +51,7 @@ var getIconColor = function(number) {
 };
 
 var createDivvyIcon = function(color, number){
-  return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.7|0|' + color + '|13|b|' + number;
+  return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.5|0|' + color + '|13|b|' + number;
 };
 
 
