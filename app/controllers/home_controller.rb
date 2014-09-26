@@ -2,6 +2,7 @@ class HomeController < ApplicationController
 respond_to :json
 
 	def index
+    @stations = Station.all
     @start_location = ""
     @end_location = ""
 	end
@@ -23,8 +24,9 @@ respond_to :json
 
       @closest_end_coords = Station.get_coords_of_station(@closest_end_station)
 
+      @stations = [@closest_start_station, @closest_end_station]
 
-      coords_hash = {start_location: @start_location_coords, end_location: @end_location_coords, start_station: @closest_start_coords, end_station: @closest_end_coords}
+      coords_hash = {start_location: @start_location_coords, end_location: @end_location_coords, start_station: @closest_start_coords, end_station: @closest_end_coords, station_objects: @stations}
       respond_with coords_hash
 
       # @direction_json = GoogleApi.get_directions_from_addresses(@start_location, @end_location)

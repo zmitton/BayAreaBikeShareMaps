@@ -5,7 +5,6 @@
 $(document).ready(function() {
   var map;
   var markers = [];
-  var zoom = 12;
   var zoom = 11;
   var latitude = 41.8896848;
   var longitude = -87.6377502;
@@ -21,36 +20,45 @@ $(document).ready(function() {
 
   map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
 
-  var markerMaker = function(lat, lng, title) {
+  var createDivvyIcon = function(){
+    return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.7|0|2EB8E6|13|b|12'
+  }
+
+  var createLocationIcon = function(location){
+    return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.9|0|CCD3D3|13|b|' + location
+  }
+
+  var markerMaker = function(lat, lng, title, icon) {
     var marker =  new google.maps.Marker({
       position: getlatlng(lat, lng),
+      icon: icon,
       title: title
     });
     markers.push(marker);
   };
 
-    var clearMarkers = function() {
-      setAllMap(null);
-    }
+  var clearMarkers = function() {
+    setAllMap(null);
+  };
 
-    var deleteMarkers = function() {
-      clearMarkers();
-      markers = [];
-    }
+  var deleteMarkers = function() {
+    clearMarkers();
+    markers = [];
+  };
 
-    var setAllMap = function(map) {
+  var setAllMap = function(map) {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  };
+
+  var fitBoundsOfMarkers = function() {
+    var bounds = new google.maps.LatLngBounds();
       for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
+          bounds.extend(markers[i].getPosition());
       }
-    };
-
-    var fitBoundsOfMarkers = function() {
-      var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < markers.length; i++) {
-            bounds.extend(markers[i].getPosition());
-        }
-      map.fitBounds(bounds);
-    };
+    map.fitBounds(bounds);
+  };
 
   $(".form").on("submit", function(event) {
     event.preventDefault();
@@ -59,22 +67,42 @@ $(document).ready(function() {
 
     request = $.ajax("/search", {"method": "get", "data": $(this).serialize()});
     request.done(function(response) {
-      var marker1 = markerMaker(response.start_location.lat, response.start_location.lng, "Start");
-      var marker2 = markerMaker(response.end_location.lat, response.end_location.lng, "End");
-      var station1 = markerMaker(response.start_station.lat, response.start_station.lng, "Start Station");
-      var station2 = markerMaker(response.end_station.lat, response.end_station.lng, "End Station");
-
+      var marker1 = markerMaker(response.start_location.lat, response.start_location.lng, "Start", createLocationIcon("Start"));
+      var marker2 = markerMaker(response.end_location.lat, response.end_location.lng, "End", createLocationIcon("End"));
+      var station1 = markerMaker(response.start_station.lat, response.start_station.lng, "Start Station", createDivvyIcon());
+      var station2 = markerMaker(response.end_station.lat, response.end_station.lng, "End Station",createDivvyIcon());
       setAllMap(map);
       fitBoundsOfMarkers();
       map.setZoom(map.getZoom()-1);
     });
   });
+  $("#bikes").on("click", function(event) {
+    event.preventDefault();
+    clearStationMarkers();
+    deleteStationMarkers();
+
+    request = $.ajax("/stations", {"method": "get"});
+    request.done(function(response) {
+
+      makeBikeMarkers(response, map);
+      setStationsMap(map);
+    });
+  });
+
+  $("#docks").on("click", function(event) {
+    event.preventDefault();
+    clearStationMarkers();
+    deleteStationMarkers();
+
+    request = $.ajax("/stations", {"method": "get"});
+    request.done(function(response) {
+
+      makeDockMarkers(response, map);
+      setStationsMap(map);
+    });
+  });
+
 });
-
-
-
-
-
 
   var directionsDisplays = [];
   var directionsService1 = new google.maps.DirectionsService();

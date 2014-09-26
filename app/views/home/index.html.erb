@@ -1,6 +1,9 @@
-
-<%= render 'form' %>
-
+<div class="container">
+  <%= render 'form' %>
+  <br>
+  <%= button_to "Bikes", '/stations', method: "get", id:"bikes" %>
+  <%= button_to "Docks", '/stations', method: "get", id:"docks" %>
+</div>
 <div id="map-canvas"></div>
 
 <h1>start Location json</h1>
