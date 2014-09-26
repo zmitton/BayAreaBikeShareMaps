@@ -23,5 +23,6 @@ class CreateStations < ActiveRecord::Migration
       t.timestamps
     end
   end
+  
 end
 
