@@ -34,4 +34,4 @@ gem 'rails_12factor', group: :production
 
 ruby '2.0.0'
 
-gem 'clockwork'
+# gem 'clockwork' # for possible faster cron - not in use as of friday
