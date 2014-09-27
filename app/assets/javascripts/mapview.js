@@ -169,6 +169,7 @@ $(document).ready(function() {
             if (response.nc.travelMode == "BICYCLING") {
               if (response.routes[0].legs[0].duration.value > 1500) {
                 getCheckInStation(response, stations);
+                makeBikeMarkers(closestStation, map);
               }
             }
           }
