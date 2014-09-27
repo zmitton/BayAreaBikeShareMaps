@@ -9,7 +9,7 @@ respond_to :json
 
   def search
 
-    if params[:start_latitude] && params[:start_longitude]
+    if params[:start_latitude] != "" && params[:start_longitude] != ""
       @start_location_coords = {"lat" => params[:start_latitude].to_d, "lng" => params[:start_longitude].to_d}
     else
       @start_location = "#{params[:start_location]} + Chicago, IL"
