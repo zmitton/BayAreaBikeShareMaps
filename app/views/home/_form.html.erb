@@ -1,7 +1,9 @@
-<form class="form" action="/search" method="GET">
-  <input type="hidden" name="start_latitude" value="" />
-  <input type="hidden" name="start_longitude" value="" />
-  <input type="text" placeholder="Starting Address" name="start_location" value="navy pier" /> Chicago, IL <br>
-  <input type="text" placeholder="Ending Address" name="end_location" value="sears tower" /> Chicago, IL
-  <input type="submit" value="Go">
+<form class="search-form pure-form" action="/search" method="GET">
+  <fieldset class="pure-group">
+    <input type="hidden" name="start_latitude" value="" />
+    <input type="hidden" name="start_longitude" value=""/>
+    <input class="pure-input-1" type="text" placeholder="Starting point" name="start_location" />
+    <input class="pure-input-1" type="text" placeholder="Destination" name="end_location" />
+    <input type="submit" value="Go" class="pure-button pure-input-1 pure-button-primary">
+  </fieldset>
 </form>
