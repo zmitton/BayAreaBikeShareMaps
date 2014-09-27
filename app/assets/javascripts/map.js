@@ -50,11 +50,10 @@ Map.prototype.bindEvents = function() {
     request = $.ajax("/search", {"method": "get", "data": $(".form").serialize()});
     request.done(function(response) {
 
-      var marker1 = this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"));
-      var marker2 = this.addMarker(response.end_location.lat, response.end_location.lng, "End", Marker.createLocationIcon("End"));
-      var station1 = this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon("Pick up"));
-      var station2 = this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon("Drop off"));
-      // this.clearMarkers();
+      this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"));
+      this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon("Pick up"));
+      this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon("Drop off"));
+      this.addMarker(response.end_location.lat, response.end_location.lng, "End", Marker.createLocationIcon("End"));
       this.placeAllMarkers(this.map);
 
       this.fitBoundsOfMarkers();
@@ -87,24 +86,26 @@ Map.prototype.initialize = function(){
   }
 };
 
+Map.prototype.requests = function() {
+  return [{
+    origin: this.markers[0].marker.position,
+    destination: this.markers[1].marker.position,
+    travelMode: google.maps.TravelMode["WALKING"]
+  },
+  {
+    origin: this.markers[1].marker.position,
+    destination: this.markers[2].marker.position,
+    travelMode: google.maps.TravelMode["BICYCLING"]
+  },
+  {
+    origin: this.markers[2].marker.position,
+    destination: this.markers[3].marker.position,
+    travelMode: google.maps.TravelMode["WALKING"]
+  }];
+};
+
 Map.prototype.calcRoute = function(){
-  var requests = [
-    {
-      origin: this.markers[0].marker.position,
-      destination: this.markers[1].marker.position,
-      travelMode: google.maps.TravelMode["WALKING"]
-    },
-    {
-      origin: this.markers[1].marker.position,
-      destination: this.markers[2].marker.position,
-      travelMode: google.maps.TravelMode["BICYCLING"]
-    },
-    {
-      origin: this.markers[2].marker.position,
-      destination: this.markers[3].marker.position,
-      travelMode: google.maps.TravelMode["WALKING"]
-    }
-  ];
+  var requests = this.requests();
   var displayRouteWrapper = function(index) {
     var i = index;
     return function(response, status) {
