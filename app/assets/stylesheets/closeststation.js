@@ -15,7 +15,7 @@ var getCoords = function(step, timeIntoRoute) {
   var startLng = step.start_location.B;
   var distance = getDistance(endLat, endLng, startLat, startLng)
 
-}
+};
 
 var getCheckInStation = function(response) {
   var responseDuration = response.routes[0].legs[0].duration.value
