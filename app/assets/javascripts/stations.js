@@ -71,29 +71,3 @@ var deleteStationMarkers = function() {
   stationMarkers = [];
 };
 
-$(document).ready(function() {
-  // var zoom = 11;
-  // var latitude = 41.8896848;
-  // var longitude = -87.6377502;
-  // var latlng = new google.maps.LatLng(latitude, longitude);
-  // var mapOptions = {
-  //   zoom: zoom,
-  //   center: latlng
-  // };
-  // map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-
-
-  // $("#bikes").on("click", function(event) {
-  //   event.preventDefault();
-
-  //   request = $.ajax("/stations", {"method": "get"});
-  //   request.done(function(response) {
-
-  //     makeBikeMarkers(response);
-  //     setAllMap(map);
-
-  //   });
-
-  // });
-
-});
