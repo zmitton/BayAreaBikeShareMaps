@@ -5,7 +5,7 @@ function Map() {
   this.latlng = new google.maps.LatLng(this.latitude, this.longitude);
   this.zoom = 11;
   this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng });
-  this.directionsDisplays = [];
+  this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
   this.directionsService = new google.maps.DirectionsService();
 }
 Map.prototype.fitBoundsOfMarkers = function() {
@@ -68,10 +68,11 @@ Map.prototype.zoom = function(zoom) {
 
 Map.prototype.clearMarkers = function(){
   this.placeAllMarkers(null);
+
 };
-Map.prototype.placeAllMarkers = function(){
+Map.prototype.placeAllMarkers = function(map){
   for (var i = 0; i < this.markers.length; i++) {
-    this.markers[i].marker.setMap(this.map);
+    this.markers[i].marker.setMap(map);
   }
 };
 Map.prototype.deleteMarkers = function(){
@@ -80,9 +81,8 @@ Map.prototype.deleteMarkers = function(){
 };
 
 Map.prototype.initialize = function(){
-  directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
-  for(var i = 0 ; i < directionsDisplays.length ; i ++){
-    directionsDisplays[i].setMap(this.map);
+  for(var i = 0 ; i < this.directionsDisplays.length ; i ++){
+    this.directionsDisplays[i].setMap(this.map);
   }
 };
 
@@ -110,10 +110,10 @@ Map.prototype.calcRoute = function(){
     var i = index;
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-        directionsDisplays[index].setDirections(response);
+        this.directionsDisplays[index].setDirections(response);
       }
-    };
-  };
+    }.bind(this);
+  }.bind(this);
   for(var j = 0 ; j < requests.length; j++){
     this.directionsService.route(requests[j], displayRouteWrapper(j));
   }
@@ -123,14 +123,4 @@ Map.prototype.renderAllDirections = function(response){
   this.initialize();
   this.calcRoute();
 };
-
-
-
-
-
-
-
-
-
-
 
