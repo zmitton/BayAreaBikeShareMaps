@@ -15,7 +15,12 @@ respond_to :json
       @start_location_coords = GoogleApi.get_coordinates_from_address(@start_location)
       @end_location_coords = GoogleApi.get_coordinates_from_address(@end_location)
 
-      @closest_start_station = Station.find_closest_to(@start_location_coords["lat"], @start_location_coords["lng"])
+      if params[:start_latitude] && params[:start_longitude]
+        p params
+        @closest_start_station = Station.find_closest_to(params[:start_latitude].to_d, params[:start_longitude].to_d)
+      else
+        @closest_start_station = Station.find_closest_to(@start_location_coords["lat"], @start_location_coords["lng"])
+      end
 
       @closest_start_coords = Station.get_coords_of_station(@closest_start_station)
 
