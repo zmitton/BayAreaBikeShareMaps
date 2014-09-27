@@ -1,19 +1,10 @@
-<div class="container">
+<div class="search-form-container">
   <%= render 'form' %>
-  <br>
-  <%= button_to "Bikes", '/stations', method: "get", id:"bikes" %>
-  <%= button_to "Docks", '/stations', method: "get", id:"docks" %>
+  <ul>
+    <li><%= button_to "Bikes", '/stations', method: "get", id:"bikes", class: "button-xsmall pure-button" %></li>
+    <li><%= button_to "Docks", '/stations', method: "get", id:"docks", class: "button-xsmall pure-button" %></li>
+  </ul>
   <div id="test">
   </div>
 </div>
 <div id="map-canvas"></div>
-
-<h1>start Location json</h1>
-<%= @start_location_coords %>
-
-<h1>end Location json</h1>
-<%= @end_location_coords %>
-
-<h1>directions json</h1>
-<%= @direction_json %>
-

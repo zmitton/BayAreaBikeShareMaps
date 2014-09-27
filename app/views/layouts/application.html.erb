@@ -2,14 +2,19 @@
 <html>
 <head>
   <title>DivvyMaps</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
-<%= yield %>
-
+  <nav id="main-menu" class="pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
+    <a href="#">DivvyMaps</a>
+  </nav>
+  <div id="main-container">
+    <%= yield %>
+  </div>
 </body>
 </html>
