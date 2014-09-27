@@ -45,18 +45,16 @@ Map.prototype.bindEvents = function() {
   });
   $(".form").on("submit", function(event) {
     event.preventDefault();
-    this.clearMarkers();
     this.deleteMarkers();
 
     request = $.ajax("/search", {"method": "get", "data": $(".form").serialize()});
-    debugger;
     request.done(function(response) {
-      debugger;
 
       var marker1 = this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"));
       var marker2 = this.addMarker(response.end_location.lat, response.end_location.lng, "End", Marker.createLocationIcon("End"));
-      var station1 = this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon());
-      var station2 = this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon());
+      var station1 = this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon("Pick up"));
+      var station2 = this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon("Drop off"));
+      // this.clearMarkers();
       this.placeAllMarkers(this.map);
 
       this.fitBoundsOfMarkers();
@@ -67,7 +65,6 @@ Map.prototype.bindEvents = function() {
 };
 Map.prototype.zoom = function(zoom) {
   zoom = typeof a !== 'undefined' ? zoom : 11;
-  //actually call the zooming function here
 };
 
 Map.prototype.clearMarkers = function(){
@@ -84,7 +81,7 @@ Map.prototype.deleteMarkers = function(){
 };
 
 Map.prototype.initialize = function(){
-  directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true}), new google.maps.DirectionsRenderer({preserveViewport: true}), new google.maps.DirectionsRenderer({preserveViewport: true})];
+  directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
   for(var i = 0 ; i < directionsDisplays.length ; i ++){
     directionsDisplays[i].setMap(this.map);
   }
@@ -109,17 +106,10 @@ Map.prototype.calcRoute = function(){
     }
   ];
   var displayRouteWrapper = function(index) {
-    //this=window
     var i = index;
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-        console.log("from deep inside");
         directionsDisplays[index].setDirections(response);
-
-        // var leg = response.routes[0].legs[0];
-        // start = new google.maps.MarkerImage('https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.7|0|2EB8E6|13|b|12', new google.maps.Size( 44, 32 ), new google.maps.Point( 0, 0 ), new google.maps.Point( 13, 42 ));
-        // this.addMarker( leg.start_location, start, "BEGIN" );
-
       }
     };
   };
@@ -128,20 +118,10 @@ Map.prototype.calcRoute = function(){
   }
 };
 
-
 Map.prototype.renderAllDirections = function(response){
   this.initialize();
   this.calcRoute();
 };
-// function makeMarker( position, icon, title ) {
-//  new google.maps.Marker({
-//   position: position,
-//   map: this.map,
-//   icon: icon,
-//   title: title
-//  });
-// }
-
 
 
 
