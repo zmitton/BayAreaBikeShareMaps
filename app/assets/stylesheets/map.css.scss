@@ -1,55 +1,71 @@
 @import "variables";
 
-
-// body {
-//   width: 100%;
-//   height: 100%;
-// }
-
-// #map-canvas {
-//   height: 100%;
-//   width: 100%;
-//   margin: 0px;
-//   padding: 0px;
-//   position: absolute;
-// }
-
-
-html, body, #map-canvas {
-        width: 100%;
-        height: 100%;
-        margin: 0px;
-        padding: 0px;
-        position: fixed;
-      }
-
-.form {
-  // position: fixed;
-  // top: 3rem;
-  // right: 2rem;
-  // z-index: 2;
-  // background: white;
-  // padding: 1rem;
-  // border: solid 2px darkgrey;
-  font-size: 12px;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.container {
-  position: fixed;
-  top: 3rem;
-  right: 2rem;
-  z-index: 2;
-  background: white;
-  padding: 1rem;
-  border: solid 2px darkgrey;
+html, body {
+  height: 100%;
+}
+
+nav {
+  padding: 10px 0;
+}
+
+nav a {
+  font-size: 1.3em;
 }
 
 ul {
   list-style-type: none;
 }
+
 ul li {
   float: left;
+  margin: 0 auto;
 }
 
+#main-menu {
+  background-color: #2c3e50;
+}
 
+#main-menu a {
+  color: #fff;
+}
+
+#main-container {
+  height: 100%;
+  margin-top: 63px;
+  width: 100%;
+}
+
+#map-canvas {
+  height: 100%;
+}
+
+.search-form-container {
+  background: #fff;
+  -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  margin-top: 60px;
+  padding: 1rem;
+  position: fixed;
+  opacity: 0.85;
+  right: 1.5rem;
+  top: 3rem;
+  z-index: 2;
+}
+
+.start-location {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  float: right;
+}
+
+#bikes {
+  margin-right: 10px;
+}
 

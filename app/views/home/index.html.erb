@@ -1,9 +1,10 @@
-<div class="container">
+<div class="search-form-container">
   <%= render 'form' %>
   <ul>
-    <li><%= button_to "Bikes", '/stations', method: "get", id:"bikes" %></li>
-    <li><%= button_to "Docks", '/stations', method: "get", id:"docks" %></li>
-    <li><%= button_to "Clear Stations", '/stations', method: "get", id:"clear" %></li>
+    <li><%= button_to "Bikes", '/stations', method: "get", id:"bikes", class: "button-xsmall pure-button" %></li>
+    <li><%= button_to "Docks", '/stations', method: "get", id:"docks", class: "button-xsmall pure-button" %></li>
   </ul>
+  <div id="test">
+  </div>
 </div>
 <div id="map-canvas"></div>

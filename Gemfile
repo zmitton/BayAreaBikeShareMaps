@@ -15,13 +15,23 @@ gem 'spring',        group: :development
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
 group :development, :test do
+	gem 'capybara', '~> 2.2.1'
+	gem 'jasmine'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'debugger'
+  gem 'simplecov'
+  gem 'simplecov-console'
 end
+
+gem 'rails_12factor', group: :production
+
+ruby '2.0.0'
+
+# gem 'clockwork' # for possible faster cron - not in use as of friday
