@@ -43,11 +43,11 @@ Map.prototype.bindEvents = function() {
       setStationsMap(map);
     });
   });
-  $(".form").on("submit", function(event) {
+  $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers();
 
-    request = $.ajax("/search", {"method": "get", "data": $(".form").serialize()});
+    request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response) {
 
       this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"));
