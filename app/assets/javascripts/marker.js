@@ -12,3 +12,7 @@ Marker.createDivvyIcon = function(){
 Marker.createLocationIcon = function(){
   return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.9|0|CCD3D3|13|b|' + location
 }
+Marker.prototype.getlatlng = function(lat, lng){
+  return new google.maps.LatLng(lat, lng);
+};
+

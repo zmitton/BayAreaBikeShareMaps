@@ -119,10 +119,10 @@ $(document).ready(function() {
     var directionsService = new google.maps.DirectionsService();
 
     // var map1;
-    var startLatLng = new google.maps.LatLng(response.start_location.lat, response.start_location.lng);
-    var stationStartLatLng = new google.maps.LatLng(response.start_station.lat, response.start_station.lng);
-    var stationEndLatLng = new google.maps.LatLng(response.end_station.lat, response.end_station.lng);
-    var endLatLng = new google.maps.LatLng(response.end_location.lat, response.end_location.lng);
+    // var startLatLng = new google.maps.LatLng(response.start_location.lat, response.start_location.lng);
+    // var stationStartLatLng = new google.maps.LatLng(response.start_station.lat, response.start_station.lng);
+    // var stationEndLatLng = new google.maps.LatLng(response.end_station.lat, response.end_station.lng);
+    // var endLatLng = new google.maps.LatLng(response.end_location.lat, response.end_location.lng);
 
     // var directionsDisplay2;
     // var directionsService2 = new google.maps.DirectionsService();
