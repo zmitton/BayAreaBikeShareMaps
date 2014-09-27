@@ -10,8 +10,8 @@ $(document).ready(function() {
 
   function showCurrentLocation(position) {
     $("input[name='start_location']").val("Current location");
-    $("input[name='start_latitude']").val(position.coords.latitude)
-    $("input[name='start_longitude']").val(position.coords.longitude)
+    $("input[name='start_latitude']").val(position.coords.latitude);
+    $("input[name='start_longitude']").val(position.coords.longitude);
   }
 
   getLocation();
