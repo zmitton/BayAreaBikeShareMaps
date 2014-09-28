@@ -1,14 +1,17 @@
-<div class="search-form-container">
-  <%= render 'form' %>
-  <ul>
-    <li><%= button_to "Bikes", '/stations', method: "get", id:"bikes", class: "button-xsmall pure-button" %></li>
-    <li><%= button_to "Docks", '/stations', method: "get", id:"docks", class: "button-xsmall pure-button" %></li>
-  </ul>
-</div>
-<div class="directions-panel-container">
-  <div id="directions-panel-0"></div>
-  <div id="directions-panel-1"></div>
-  <div id="directions-panel-2"></div>
+<div id="user_control_div">
+  <div id="search-form-container">
+    <%= render 'form' %>
+      <%= button_to "Bikes", '/stations', method: "get", id:"bikes", class: "button-xsmall pure-button" %>
+      <%= button_to "Docks", '/stations', method: "get", id:"docks", class: "button-xsmall pure-button" %>
+      <button id="reload_button" class="button-xsmall pure-button" onclick="clickedReload()">reload</button>
+      <button id="directions_button" class="button-xsmall pure-button" onclick="clickedDirections()">List</button>
+      <button id="map_button" class="button-xsmall pure-button" onclick="clickedMap()">Map</button>
+  </div>
+  <div id="directions-panel-container">
+    <div id="directions-panel-0"></div>
+    <div id="directions-panel-1"></div>
+    <div id="directions-panel-2"></div>
+  </div>
 </div>
 <div id="map-canvas">
 </div>

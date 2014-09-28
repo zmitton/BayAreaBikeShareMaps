@@ -12,9 +12,9 @@ function Route(){
 Route.prototype.splitLargeBikeRoutes = function(response){
   console.log(response);
   console.log(this);
-  if (response.routes[0].legs[0].duration.value > 1500 && response.nc.travelMode == "BICYCLING") {
-    this.getCheckInStation(response, stations);
-  }
+  // if (response.routes[0].legs[0].duration.value > 1500 && response.nc.travelMode == "BICYCLING") {
+  //   this.getCheckInStation(response, stations);
+  // }
 
 };
 
