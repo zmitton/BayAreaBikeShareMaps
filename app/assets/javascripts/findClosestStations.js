@@ -2,8 +2,13 @@ function Route(){
   this.markers = [];
   this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
   this.directionsService = new google.maps.DirectionsService();
-  this.closestStations = [];
+  this.closestStation;
+  this.CUT_OFF_TIME = 25;
+  this.MIN_TIME_BETWEEN_STOPS = 2.5;
+  this.numCheckins;
+  this.buffers;
 }
+
 Route.prototype.splitLargeBikeRoutes = function(response){
   console.log(response);
   console.log(this);
