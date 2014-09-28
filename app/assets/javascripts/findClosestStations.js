@@ -1,6 +1,7 @@
 function Route(){
   this.markers = [];
-  this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
+  this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {
+    strokeOpacity: 0}}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0}})];
   this.directionsService = new google.maps.DirectionsService();
   this.checkinStations = [];
   this.TARGET_TIME = 25;
@@ -10,6 +11,31 @@ function Route(){
   this.stationsOnRoute = [];
   this.tripTime;
 }
+
+Route.prototype.setDashedLines = function(response, map) {
+  if (response.nc.travelMode == "WALKING") {
+    var lineSymbol = {
+      path: google.maps.SymbolPath.CIRCLE,
+      strokeOpacity: 1,
+      scale: 4,
+      strokeColor: '#73B9FF'
+    };
+    var steps = response.routes[0].legs[0].steps;
+    for(var i = 0; i < steps.length; i++) {
+      var lineCoordinates = [steps[i].start_location, steps[i].end_location];
+      var line = new google.maps.Polyline({
+        path: lineCoordinates,
+        strokeOpacity: 0,
+        icons: [{
+          icon: lineSymbol,
+          offset: '0',
+          repeat: '20px'
+        }],
+        map: map
+      });
+    }
+  };
+};
 
 Route.prototype.maxTargetTime = function(){return this.TARGET_TIME + this.MIN_BUFFER};
 Route.prototype.minTargetTime = function(){return this.TARGET_TIME - this.MIN_BUFFER};
@@ -22,9 +48,9 @@ Route.prototype.idealCheckinEndTime = function(){return this.midpointOfNextCheck
 
 Route.prototype.findNextStation = function(){
   var stationsOnRoute = this.stationsOnRoute();
-  // loop through the stationsOnRoute IN REVERSE. 
+  // loop through the stationsOnRoute IN REVERSE.
   //if any of them are inIdealTime(stationsOnRoute[i][2]). BOOM return that first one you find.
-  //else return this.closestStationWithinIdeaTime 
+  //else return this.closestStationWithinIdeaTime
 }
 
 Route.prototype.stationsOnRoute = function(){
@@ -48,11 +74,11 @@ Route.distanceFromPointToRoute = function(station){
 }
 
 Math.closestPointOnSegment = function(pointX, pointY, lineX1, lineY1, lineX2, lineY2){
- //make a line of purp slope. 
- //find the a line that connects the station with the new line purpendicularly. 
- //if station is east of the east point or orig line, 
- //its outside of scope 
- //check the slop of a line made from a station to an endpointa. if its 
+ //make a line of purp slope.
+ //find the a line that connects the station with the new line purpendicularly.
+ //if station is east of the east point or orig line,
+ //its outside of scope
+ //check the slop of a line made from a station to an endpointa. if its
  //retrns the purp point [3,2]
 }
 
@@ -106,7 +132,7 @@ function go(){
   for (var i =1 ; i < 5 ; i++){
     r.tripTime = i*25 - .01
     logstuff(r);
-    r.tripTime = i*25 
+    r.tripTime = i*25
     logstuff(r);
   }
 }
