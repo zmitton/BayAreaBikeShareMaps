@@ -21,5 +21,22 @@ class Station < ActiveRecord::Base
     station_coords = {"lat" => station.latitude.to_f, "lng" => station.longitude.to_f}
   end
 
+  def self.fetch_all
+    if self.stale?
+      uri = URI("http://www.divvybikes.com/stations/json")
+      string = Net::HTTP.get(uri)
+      json = JSON.parse(string)
+      Station.delete_all
+      json['stationBeanList'].each do |s|
+        Station.create(station_id: s["id"] , name: s["stationName"] , available_docks: s["availableDocks"] , total_docks: s["totalDocks"] , latitude: s["latitude"] , longitude: s["longitude"] , status_value: s["statusValue"] , status_key: s["statusKey"] , available_bikes: s["availableBikes"] , intersection: s["stAddress1"] , city: s["city"] , location: s["location"] , test_station: s["testStation"] , last_communication_time: s["lastCommunicationTime"] , landmark: s["landMark"], intersection_2: s["stAddress2"], postal_code: s["postalCode"], altitude: s["altitude"] )
+      end
+    end
+    self.all
+  end
+
+  def self.stale?
+    self.first.created_at < 1.minutes.ago || self.last.created_at < 1.minutes.ago
+  end
+
 end
 

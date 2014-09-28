@@ -60,7 +60,7 @@ Map.prototype.bindEvents = function() {
       this.placeAllMarkers(this.markers);
 
       this.fitBoundsOfMarkers();
-      // this.map.setZoom(this.map.getZoom()-1);
+      this.map.setZoom(this.map.getZoom());
       this.renderAllDirections(response);
     }.bind(this));
   }.bind(this));

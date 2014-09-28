@@ -2,7 +2,7 @@ require 'rake'
 
 task :fetch_and_save_station_data => :environment do
   
-  ActiveRecord::Base.logger = Logger::new(STDOUT)
+  # ActiveRecord::Base.logger = Logger::new(STDOUT)
 
   uri = URI("http://www.divvybikes.com/stations/json")
   string = Net::HTTP.get(uri)
