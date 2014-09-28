@@ -1,11 +1,22 @@
 $(document).ready(function() {
   $('.directions-panel-container').hide();
+  $('#directions').hide();
   $('.search-form').on('submit', function(event) {
     event.preventDefault();
-    $('.directions-panel-container').css('width', '100%');
-    $('.directions-panel-container').show().scroll();
-    // $('.directions-panel-container').scroll();
+    $('#directions').show();
 
-    // $('#directions-panel-0, #directions-panel-1, #directions-panel-2').css('width', '90%');
+
+  });
+  $('#directions').on('click', function(event) {
+    event.preventDefault();
+    if ($('#directions').text() === 'List Directions') {
+      $('.directions-panel-container').css('width', '100%');
+      $('.directions-panel-container').show().scroll();
+      $('#directions').html('Hide Directions');
+    } else {
+      $('.directions-panel-container').hide();
+      $('#directions').html('List Directions');
+    }
   });
 });
+
