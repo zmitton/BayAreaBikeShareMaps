@@ -42,6 +42,7 @@ ul li {
 
 #map-canvas {
   height: 100%;
+  width: 65%;
 }
 
 .search-form-container {
@@ -68,4 +69,20 @@ ul li {
 #bikes {
   margin-right: 10px;
 }
+
+.directions-panel-container {
+  position: absolute;
+  right: 0em;
+  top: 63px;
+  width: 35%;
+  margin: 0 auto;
+}
+
+#directions-panel-0, #directions-panel-1, #directions-panel-2 {
+  width: 90%;
+  padding: 1rem;
+  margin: 0;
+}
+
+
 
