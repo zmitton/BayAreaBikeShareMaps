@@ -162,6 +162,7 @@ Map.prototype.calcRoute = function(){
         this.handleRoute(response);
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
+        this.route.setDashedLines(response);
       }
     }.bind(this);
   }.bind(this);
