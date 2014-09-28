@@ -9,23 +9,6 @@ html, body {
   height: 100%;
 }
 
-nav {
-  padding: 10px 0;
-}
-
-nav a {
-  font-size: 1.3em;
-}
-
-ul {
-  list-style-type: none;
-}
-
-ul li {
-  float: left;
-  margin: 0 auto;
-}
-
 #main-menu {
   background-color: #2c3e50;
 }
@@ -36,7 +19,10 @@ ul li {
 
 #main-container {
   height: 100%;
+<<<<<<< HEAD
+=======
   // margin-top: 63px;
+>>>>>>> e54125617d6255eb1aaf7bb3844a47ee5055c025
   width: 100%;
 }
 
@@ -56,8 +42,20 @@ ul li {
   position: fixed;
   opacity: 0.85;
   right: 1.5rem;
-  top: 3rem;
-  z-index: 2;
+  top: 1.5rem;
+  z-index: 10;
+  margin: 0;
+  height: auto;
+  max-width: 300px;
+  max-height: 960px;
+}
+
+.search-form ul {
+  list-style-type: none;
+}
+
+.search-form input[type=text] {
+  width: 300px;
 }
 
 .start-location {
@@ -67,39 +65,43 @@ ul li {
   float: right;
 }
 
-#bikes {
-  margin-right: 10px;
-}
-
 .controls-container {
   text-align: center;
-  margin: 0.5rem auto;
 }
 
-.search-button, .bikes-button, .docks-button {
-  margin-right: 10px;
+.controls-container form {
+  display: inline-block;
 }
 
-.button-success {
-  background-color: $success-green;
-  color: #fff;
+#bikes, #docks {
+  margin-bottom: 1rem;
 }
 
 .directions-panel-container {
-  position: absolute;
+  border-top: 1px solid lightgray;
   right: 0em;
-  top: 63px;
-  width: 0%; /* 35%  after go button selected */
   margin: 0 auto;
   overflow: scroll;
-  max-height: 970px;
+  max-height: 640px;
+  font-size: .8rem;
 }
 
 #directions-panel-0, #directions-panel-1, #directions-panel-2 {
-  width: 0%; /* 90% after go button selected */
   padding: 1rem;
   margin: 0;
   overflow: scroll;
+}
+
+.adp .adp-warnbox {
+  display: none;
+}
+
+.adp .adp-legal {
+  display: none;
+}
+
+.adp img.adp-marker {
+  display: none;
 }
 
 .zoom_to_current a {
@@ -115,6 +117,4 @@ ul li {
   font-size: 20px;
   padding: .25rem .5rem;
 }
-
-
 
