@@ -5,14 +5,17 @@
     <%= button_to "Docks", '/stations', method: "get", id:"docks", class: "button-xsmall pure-button", form_class: "docks-form" %>
   </div>
   <div class="directions-panel-container">
-  <div id="directions-panel-0"></div>
-  <div id="directions-panel-1"></div>
-  <div id="directions-panel-2"></div>
+    <div id="directions-panel-0"></div>
+    <div id="directions-panel-1"></div>
+    <div id="directions-panel-2"></div>
+  </div>
 </div>
+
 <div class="zoom_to_current">
   <%= link_to "#", id: "zoom" do %>
-    <i class="fa fa-location-arrow"></i>
+  <i class="fa fa-location-arrow"></i>
   <% end %>
 </div>
+
 <div id="map-canvas">
 </div>
