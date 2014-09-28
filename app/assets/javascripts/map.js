@@ -111,6 +111,7 @@ Map.prototype.calcRoute = function(){
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         this.directionsDisplays[index].setDirections(response);
+        this.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
       }
     }.bind(this);
   }.bind(this);
@@ -118,6 +119,7 @@ Map.prototype.calcRoute = function(){
     this.directionsService.route(requests[j], displayRouteWrapper(j));
   }
 };
+
 
 Map.prototype.renderAllDirections = function(response){
   this.initialize();
