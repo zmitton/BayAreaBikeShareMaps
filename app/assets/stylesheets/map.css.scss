@@ -39,9 +39,11 @@ html, body {
   opacity: 0.85;
   right: 1.5rem;
   top: 1.5rem;
-  z-index: 2;
+  z-index: 10;
   margin: 0;
   height: auto;
+  max-width: 300px;
+  max-height: 960px;
 }
 
 .search-form ul {
@@ -67,22 +69,37 @@ html, body {
   display: inline-block;
 }
 
+#bikes, #docks {
+  margin-bottom: 1rem;
+}
+
 .directions-panel-container {
-  position: absolute;
+  border-top: 1px solid lightgray;
   right: 0em;
-  top: 63px;
-  width: 0%;
   margin: 0 auto;
   overflow: scroll;
-  max-height: 970px;
+  max-height: 640px;
+  font-size: .8rem;
 }
 
 #directions-panel-0, #directions-panel-1, #directions-panel-2 {
-  width: 0%; /* 90% after go button selected */
   padding: 1rem;
   margin: 0;
   overflow: scroll;
 }
+
+.adp .adp-warnbox {
+  display: none;
+}
+
+.adp .adp-legal {
+  display: none;
+}
+
+.adp img.adp-marker {
+  display: none;
+}
+
 
 
 
