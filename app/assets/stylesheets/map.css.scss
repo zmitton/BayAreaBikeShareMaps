@@ -71,6 +71,20 @@ ul li {
   margin-right: 10px;
 }
 
+.controls-container {
+  text-align: center;
+  margin: 0.5rem auto;
+}
+
+.search-button, .bikes-button, .docks-button {
+  margin-right: 10px;
+}
+
+.button-success {
+  background-color: $success-green;
+  color: #fff;
+}
+
 .directions-panel-container {
   position: absolute;
   right: 0em;
