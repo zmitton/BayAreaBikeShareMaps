@@ -176,6 +176,6 @@ Map.prototype.renderAllDirections = function(response){
 };
 
 Map.prototype.handleRoute = function(response){
-  this.route.splitLargeBikeRoutes();
+  // this.route.splitLargeBikeRoutes();
 };
 
