@@ -19,30 +19,48 @@ Map.prototype.fitBoundsOfMarkers = function() {
 Map.prototype.addMarker = function(lat, lng, title, icon, markers) {
   markers.push(new Marker(lat, lng, title, icon));
 };
+
+
+Map.prototype.buttonBinder = function(event, type) {
+  event.preventDefault();
+  this.deleteMarkers(this.stationMarkers);
+
+  request = $.ajax("/stations", {"method": "get"});
+  request.done(function(response) {
+
+    this.makeStationMarkers(response, type);
+    this.placeAllMarkers(this.stationMarkers);
+    // setStationsMap(this.map)
+  }.bind(this));
+};
+
 Map.prototype.bindEvents = function() {
   $("#bikes").on("click", function(event) {
-    event.preventDefault();
-    this.deleteMarkers(this.stationMarkers);
+    this.buttonBinder(event,"bikes");
+    // event.preventDefault();
+    // this.deleteMarkers(this.stationMarkers);
 
-    request = $.ajax("/stations", {"method": "get"});
-    request.done(function(response) {
+    // request = $.ajax("/stations", {"method": "get"});
+    // request.done(function(response) {
 
-      this.makeStationMarkers(response, "bikes");
-      this.placeAllMarkers(this.stationMarkers);
-      // setStationsMap(this.map)
-    }.bind(this));
+    //   this.makeStationMarkers(response, "bikes");
+    //   this.placeAllMarkers(this.stationMarkers);
+    //   // setStationsMap(this.map)
+    // }.bind(this));
   }.bind(this));
+
   $("#docks").on("click", function(event) {
-    event.preventDefault();
-    this.deleteMarkers(this.stationMarkers);
+    this.buttonBinder(event, "docks");
+    // event.preventDefault();
+    // this.deleteMarkers(this.stationMarkers);
 
 
-    request = $.ajax("/stations", {"method": "get"});
-    request.done(function(response) {
-      this.makeStationMarkers(response, "docks");
-      this.placeAllMarkers(this.stationMarkers);
-      // setStationsMap(this.map)
-    }.bind(this));
+    // request = $.ajax("/stations", {"method": "get"});
+    // request.done(function(response) {
+    //   this.makeStationMarkers(response, "docks");
+    //   this.placeAllMarkers(this.stationMarkers);
+    //   // setStationsMap(this.map)
+    // }.bind(this));
   }.bind(this));
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
