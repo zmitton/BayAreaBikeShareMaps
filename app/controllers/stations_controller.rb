@@ -1,7 +1,7 @@
 class StationsController < ApplicationController
 respond_to :json
   def index
-    @stations = Station.all
+    @stations = Station.fetch_all
     respond_with @stations
   end
 end
