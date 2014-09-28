@@ -3,8 +3,10 @@ function Map() {
   this.latitude = 41.8896848;
   this.longitude = -87.6377502;
   this.latlng = new google.maps.LatLng(this.latitude, this.longitude);
-  this.zoom = 11;
-  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng });
+  this.zoom = 12;
+  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
+  this.currentLatitude;
+  this.currentLongitude;
 
   this.route = new Route
   // this.route.markers = [];
@@ -12,6 +14,9 @@ function Map() {
   // this.route.directionsService = new google.maps.DirectionsService();
 
 }
+
+
+
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
   for (var i = 0; i < this.route.markers.length; i++) {
@@ -19,6 +24,17 @@ Map.prototype.fitBoundsOfMarkers = function() {
   }
   this.map.fitBounds(bounds);
 };
+
+Map.prototype.zoomToCurrentLocation = function(event) {
+  event.preventDefault;
+  this.currentLatitude = $("input[name='start_latitude']").val();
+  this.currentLongitude = $("input[name='start_longitude']").val();
+  if(this.currentLatitude != "" && this.currentLongitude != "") {
+    this.map.setCenter(new google.maps.LatLng(this.currentLatitude,this.currentLongitude));
+    this.map.setZoom(15);
+  }
+}
+
 Map.prototype.addMarker = function(lat, lng, title, icon, markers) {
   markers.push(new Marker(lat, lng, title, icon));
 };
@@ -33,37 +49,22 @@ Map.prototype.buttonBinder = function(event, type) {
 
     this.makeStationMarkers(response, type);
     this.placeAllMarkers(this.stationMarkers);
+    // var mc = new MarkerClusterer(this.map, this.stationMarkers, {gridSize: 50, maxZoom: 15 });
     // setStationsMap(this.map)
   }.bind(this));
 };
 
 Map.prototype.bindEvents = function() {
+  $(".zoom_to_current").on("click", function() {
+    this.zoomToCurrentLocation(event);
+  }.bind(this));
+
   $("#bikes").on("click", function(event) {
     this.buttonBinder(event,"bikes");
-    // event.preventDefault();
-    // this.deleteMarkers(this.stationMarkers);
-
-    // request = $.ajax("/stations", {"method": "get"});
-    // request.done(function(response) {
-
-    //   this.makeStationMarkers(response, "bikes");
-    //   this.placeAllMarkers(this.stationMarkers);
-    //   // setStationsMap(this.map)
-    // }.bind(this));
   }.bind(this));
 
   $("#docks").on("click", function(event) {
     this.buttonBinder(event, "docks");
-    // event.preventDefault();
-    // this.deleteMarkers(this.stationMarkers);
-
-
-    // request = $.ajax("/stations", {"method": "get"});
-    // request.done(function(response) {
-    //   this.makeStationMarkers(response, "docks");
-    //   this.placeAllMarkers(this.stationMarkers);
-    //   // setStationsMap(this.map)
-    // }.bind(this));
   }.bind(this));
   $(".search-form").on("submit", function(event) {
     event.preventDefault();

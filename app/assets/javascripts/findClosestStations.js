@@ -1,6 +1,6 @@
 function Route(){
   this.markers = [];
-  this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
+  this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
   this.directionsService = new google.maps.DirectionsService();
   this.closestStations = [];
 }
