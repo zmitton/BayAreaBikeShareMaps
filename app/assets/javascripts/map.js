@@ -4,7 +4,7 @@ function Map() {
   this.longitude = -87.6377502;
   this.latlng = new google.maps.LatLng(this.latitude, this.longitude);
   this.zoom = 11;
-  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng });
+  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false });
 
   this.route = new Route
   // this.route.markers = [];

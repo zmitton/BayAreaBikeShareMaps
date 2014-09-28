@@ -9,13 +9,13 @@ html, body {
   height: 100%;
 }
 
-nav {
+/*nav {
   padding: 10px 0;
 }
 
 nav a {
   font-size: 1.3em;
-}
+}*/
 
 ul {
   list-style-type: none;
@@ -23,7 +23,6 @@ ul {
 
 ul li {
   float: left;
-  margin: 0 auto;
 }
 
 #main-menu {
@@ -36,7 +35,6 @@ ul li {
 
 #main-container {
   height: 100%;
-  margin-top: 63px;
   width: 100%;
 }
 
@@ -56,8 +54,9 @@ ul li {
   position: fixed;
   opacity: 0.85;
   right: 1.5rem;
-  top: 3rem;
+  top: 1.5rem;
   z-index: 2;
+  margin: 0;
 }
 
 .start-location {
@@ -67,8 +66,10 @@ ul li {
   float: right;
 }
 
-#bikes {
-  margin-right: 10px;
+#bikes, #docks {
+  font-size: 90%;
+  padding: .4em .6em;
+  margin: 5px;
 }
 
 .controls-container {
@@ -101,6 +102,12 @@ ul li {
   margin: 0;
   overflow: scroll;
 }
+
+.pure-form input[type=text] {
+  width: 300px;
+}
+
+
 
 
 
