@@ -73,15 +73,14 @@ html, body {
   border-top: 1px solid lightgray;
   right: 0em;
   margin: 0 auto;
-  overflow: auto;
-  max-height: 400px;
+  overflow: scroll;
+  max-height: 200px;
   font-size: .8rem;
 }
 
 #directions-panel-0, #directions-panel-1, #directions-panel-2 {
   padding: 1rem;
   margin: 0;
-  overflow: scroll;
 }
 
 .adp .adp-warnbox {
