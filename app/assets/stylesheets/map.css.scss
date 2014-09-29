@@ -41,7 +41,8 @@ html, body {
   margin: 0;
   height: auto;
   max-width: 300px;
-  max-height: 700px;
+  max-height: 80%;
+  overflow: hidden;
 }
 
 .search-form input[type=text] {
@@ -72,7 +73,7 @@ html, body {
   border-top: 1px solid lightgray;
   right: 0em;
   margin: 0 auto;
-  overflow: scroll;
+  overflow: auto;
   max-height: 400px;
   font-size: .8rem;
 }
@@ -95,10 +96,15 @@ html, body {
   display: none;
 }
 
+td.adp-substep {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
 .zoom_to_current a {
   min-width: 1rem;
   min-height: 1rem;
-  z-index: 2;
+  z-index: 20;
   position: absolute;
   bottom: 1rem;
   right: 1rem;
@@ -117,14 +123,16 @@ html, body {
 .summary {
   display: inline;
   padding: 1rem;
-  font-size: 1rem;
+  font-size: .7rem;
 }
 
 .trip_time {
   float: left;
+  margin-left: 2rem;
 }
 .biking {
   float: right;
+  margin-right: 2rem;
 }
 
 .start_station {
@@ -132,16 +140,17 @@ html, body {
   text-align: left;
 }
 .end_station {
-  padding: .5rem 0rem 0rem 0rem;
+  margin: 1rem 0 0 0;
   text-align: left;
 }
 
 .station_data {
   background-color: #194775;
-  border-radius: 2rem;
+  border-radius: 10px;
   color: white;
   padding: .25rem;
-  font-size: 12px
+  font-size: .5rem;
+  float: right;
 }
 
   /* iPhone */
