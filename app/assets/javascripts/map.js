@@ -4,7 +4,7 @@ function Map() {
   this.longitude = -87.6377502;
   this.latlng = new google.maps.LatLng(this.latitude, this.longitude);
   this.zoom = 12;
-  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, scrollwheel: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
+  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
   this.currentLatitude;
   this.currentLongitude;
   this.route = new Route;
@@ -45,15 +45,6 @@ Map.prototype.buttonBinder = function(event, type) {
     // setStationsMap(this.map)
   }.bind(this));
 };
-
-$(window).resize(function(){
-    $('#map-canvas').css("height",$(window).height() + "px");
-    $('#main-container').css("height",$(window).height() + "px");
-    $('#map-canvas').css("width",$(window).width() + "px");
-    $('#main-container').css("width",$(window).width() + "px");
-    google.maps.event.trigger(map, 'resize');
-    map.setZoom( map.getZoom() );
-});
 
 Map.prototype.bindEvents = function() {
   $(".zoom_to_current").on("click", function() {
