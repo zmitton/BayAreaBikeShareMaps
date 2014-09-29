@@ -7,15 +7,8 @@ function Map() {
   this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
   this.currentLatitude;
   this.currentLongitude;
-
   this.route = new Route;
-  // this.route.markers = [];
-  // this.route.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
-  // this.route.directionsService = new google.maps.DirectionsService();
-
 }
-
-
 
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
@@ -60,11 +53,11 @@ Map.prototype.bindEvents = function() {
   }.bind(this));
 
   $("#bikes").on("click", function(event) {
-    this.buttonBinder(event,"bikes");
+    this.buttonBinder(event,"Bikes");
   }.bind(this));
 
   $("#docks").on("click", function(event) {
-    this.buttonBinder(event, "docks");
+    this.buttonBinder(event, "Docks");
   }.bind(this));
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
@@ -72,7 +65,7 @@ Map.prototype.bindEvents = function() {
 
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response) {
-
+      this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
       this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
       // this.makeStationMarker(response.start_station, "bikes")
       // this.makeStationMarker(response.end_station, "docks")
@@ -105,7 +98,7 @@ Map.prototype.makeStationMarkers = function(stations, type) {
 };
 
 Map.prototype.makeStationMarker = function(station, type) {
-  if(type == "bikes"){
+  if(type == "Bikes"){
       var availables = station.available_bikes
     }
   else{
@@ -115,7 +108,7 @@ Map.prototype.makeStationMarker = function(station, type) {
   lng = parseFloat(station.longitude),
   iconColor = Marker.getIconColor(availables),
   icon = Marker.createDivvyIcon(iconColor, availables);
-  this.stationMarkers.push(new Marker(lat, lng, "available" + type, icon));
+  this.stationMarkers.push(new Marker(lat, lng, station.location, icon));
 }
 
 Map.prototype.placeAllMarkers = function(markers){
@@ -160,6 +153,7 @@ Map.prototype.calcRoute = function(){
       if (status == google.maps.DirectionsStatus.OK) {
 
         this.handleRoute(response);
+        this.route.setSummary(response)
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
         this.route.setDashedLines(response, this.map);

@@ -6,7 +6,7 @@ function Marker(lat, lng, title, icon){
   });
 }
 Marker.createDivvyIcon = function(color, label){
-  return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.7|0|' + color + '|13|b|' + label;
+  // return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.7|0|' + color + '|13|b|' + label;
 };
 
 Marker.createLocationIcon = function(label){
