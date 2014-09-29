@@ -46,14 +46,14 @@ Map.prototype.buttonBinder = function(event, type) {
   }.bind(this));
 };
 
-$(window).resize(function(){
-    $('#map-canvas').css("height",$(window).height() + "px");
-    $('#main-container').css("height",$(window).height() + "px");
-    $('#map-canvas').css("width",$(window).width() + "px");
-    $('#main-container').css("width",$(window).width() + "px");
-    google.maps.event.trigger(map, 'resize');
-    map.setZoom( map.getZoom() );
-});
+// $(window).resize(function(){
+//     $('#map-canvas').css("height",$(window).height() + "px");
+//     $('#main-container').css("height",$(window).height() + "px");
+//     $('#map-canvas').css("width",$(window).width() + "px");
+//     $('#main-container').css("width",$(window).width() + "px");
+//     google.maps.event.trigger(map, 'resize');
+//     map.setZoom( map.getZoom() );
+// });
 
 Map.prototype.bindEvents = function() {
   $(".zoom_to_current").on("click", function() {
