@@ -115,7 +115,7 @@ html, body {
 }
 
 .summary {
-  display: none;
+  display: inline;
   padding: 1rem;
   font-size: 1rem;
 }
@@ -234,6 +234,12 @@ html, body {
     // font-size: 14px;
     padding: .5rem;
     text-align: left;
+  }
+
+  .summary {
+    display: none;
+    padding: 1rem;
+    font-size: 1rem;
   }
 
 }
