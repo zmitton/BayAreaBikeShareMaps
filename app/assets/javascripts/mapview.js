@@ -1,7 +1,5 @@
 $(document).ready(function() {
-
   var map = new Map("arg");
-  var stations = Station.all
   map.bindEvents();
 
   function getLocation() {
