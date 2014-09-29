@@ -1,5 +1,6 @@
 function Route(){
   this.markers = [];
+  this.routeStations;
   this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {
     strokeOpacity: 0}}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0}})];
   this.directionsService = new google.maps.DirectionsService();
@@ -11,7 +12,9 @@ function Route(){
   this.ON_ROUTE_DISTANCE = .001;
   this.closestStations = [];
   this.stationsOnRoute = [];
-  this.tripTime;
+  this.tripTime = 0;
+  this.bikeTime = 0;
+  this.bikeDistance = 0;
 }
 
 Route.prototype.setDashedLines = function(response, map) {
@@ -38,6 +41,19 @@ Route.prototype.setDashedLines = function(response, map) {
     }
   };
 };
+
+Route.prototype.setSummary = function(response) {
+  $(".summary").css("display", "inline")
+  $("#start_station_intersection").html(this.routeStations.start.intersection);
+  $("#end_station_intersection").html(this.routeStations.end.intersection);
+  $(".start_station_bikes").html(this.routeStations.start.available_bikes);
+  $(".end_station_docks").html(this.routeStations.start.available_docks);
+  $("#trip_time").html(this.tripTime += Math.round(response.routes[0].legs[0].duration.value / 60));
+  if(response.nc.travelMode == "BICYCLING") {
+    $("#biking_time").html(this.bikeTime += Math.round(response.routes[0].legs[0].duration.value / 60));
+    $("#biking_distance").html(this.bikeDistance += parseInt((response.routes[0].legs[0].distance.value / 1609.344).toFixed(1)));
+  }
+}
 
 Route.prototype.maxTargetTime = function(){return this.TARGET_TIME + this.MIN_BUFFER};
 Route.prototype.minTargetTime = function(){return this.TARGET_TIME - this.MIN_BUFFER};
