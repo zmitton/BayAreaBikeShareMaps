@@ -59,12 +59,12 @@ Route.shortestDistanceFromPointToRoute = function(station, leg_index){
   for (var i = 0 ; i < this.legs[leg_index].steps.length ; i++ ){
     var step = this.legs[leg_index].steps[i];
     var point = Route.closestPointOnStep(step, station.longitude, station.latitude);
-    var distance = Math.sqrt((point[0] - station.longitude)** + (point[1] - station.latitude)**);
+    var distance = Math.sqrt(Math.pow((point[0] - station.longitude)) + Math.pow((point[1] - station.latitude)));
     if(distance < shortestSoFar){
       shortestSoFar = distance; 
     }
   }
-  var checkinTime = ((Math.sqrt((step.x1 - station.longitude)** + (step.y1 - station.latitude)**))/distance)*step.durration();
+  var checkinTime = ((Math.sqrt(Math.pow((step.x1 - station.longitude)) + Math.pow((step.y1 - station.latitude))))/distance)*step.durration();
   return [distance,checkinTime]
 }
 
