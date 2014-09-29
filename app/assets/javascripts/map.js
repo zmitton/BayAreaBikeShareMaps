@@ -5,7 +5,7 @@ function Map() {
   this.latlng = new google.maps.LatLng(this.latitude, this.longitude);
 
   this.zoom = 12;
-  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
+  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, scrollwheel: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
   this.currentLatitude;
   this.currentLongitude;
 
