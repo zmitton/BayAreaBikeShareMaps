@@ -121,7 +121,7 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
-    opacity: 0.87;
+    opacity: 1;
     z-index: 10;
     height: auto;
     max-width: 100%;
@@ -133,8 +133,7 @@ html, body {
   }
 
   #map-canvas {
-    height: 95%;
-    top: 0;
+    height: 100%;
     min-height: 0px;
     width: 100%; /* 65% after go button selected */
   }
@@ -154,32 +153,20 @@ html, body {
 
   .controls-container {
     text-align: center;
-    height: 0;
-    width: 0;
+    height: auto;
+    width: auto;
   }
 
-.controls-container form {
-  display: inline-block;
-}
+  .controls-container form {
+    display: inline-block;
+  }
 
   #bikes, #docks, #directions {
-    margin-bottom: 0rem;
-    position: fixed;
-    bottom: 0;
+    margin-bottom: .5rem;
     opacity: 100%;
     height: 5%;
-    width: 50%;
+    width: 100%;
     font-size: .9rem;
-  }
-
-  #bikes {
-    bottom: 0;
-    right: 0;
-  }
-
-  #docks {
-    bottom: 0;
-    left: 0;
   }
 
   .zoom_to_current a {
@@ -187,13 +174,23 @@ html, body {
   min-height: 1rem;
   z-index: 2;
   position: absolute;
-  bottom: 3.5rem;
+  bottom: 2rem;
   right: 1rem;
   color: white;
   background-color: #194775;
   border-radius: 50%;
   font-size: 20px;
   padding: .25rem .5rem;
+  }
+
+  .directions-panel-container {
+    border-top: 1px solid lightgray;
+    right: 0em;
+    margin: 0 auto;
+    overflow: scroll;
+    max-height: 640px;
+    height: 100%;
+    font-size: .8rem;
   }
 }
 
