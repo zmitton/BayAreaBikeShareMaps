@@ -185,7 +185,7 @@ Map.prototype.calcRoute = function(){
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         // this.handleRoute(response, index);
-        this.route.setSummary(response)
+        this.route.setSummary(response);
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
         if ($('#directions-panel-1').html() === "") {
