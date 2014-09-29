@@ -24,7 +24,7 @@ html, body {
 
 #map-canvas {
   height: 100%;
-  width: 100%; /* 65% after go button selected */
+  width: 100%;
 }
 
 .search-form-container {
@@ -41,7 +41,8 @@ html, body {
   margin: 0;
   height: auto;
   max-width: 300px;
-  max-height: 700px;
+  max-height: 80%;
+  overflow: hidden;
 }
 
 .search-form input[type=text] {
@@ -73,14 +74,13 @@ html, body {
   right: 0em;
   margin: 0 auto;
   overflow: scroll;
-  max-height: 400px;
+  max-height: 200px;
   font-size: .8rem;
 }
 
 #directions-panel-0, #directions-panel-1, #directions-panel-2 {
   padding: 1rem;
   margin: 0;
-  overflow: scroll;
 }
 
 .adp .adp-warnbox {
@@ -95,10 +95,15 @@ html, body {
   display: none;
 }
 
+td.adp-substep {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
 .zoom_to_current a {
   min-width: 1rem;
   min-height: 1rem;
-  z-index: 2;
+  z-index: 20;
   position: absolute;
   bottom: 1rem;
   right: 1rem;
@@ -117,14 +122,16 @@ html, body {
 .summary {
   display: inline;
   padding: 1rem;
-  font-size: 1rem;
+  font-size: .7rem;
 }
 
 .trip_time {
   float: left;
+  margin-left: 2rem;
 }
 .biking {
   float: right;
+  margin-right: 2rem;
 }
 
 .start_station {
@@ -132,16 +139,17 @@ html, body {
   text-align: left;
 }
 .end_station {
-  padding: .5rem 0rem 0rem 0rem;
+  margin: 1rem 0 0 0;
   text-align: left;
 }
 
 .station_data {
   background-color: #194775;
-  border-radius: 2rem;
+  border-radius: 10px;
   color: white;
   padding: .25rem;
-  font-size: 12px
+  font-size: .5rem;
+  float: right;
 }
 
   /* iPhone */
@@ -164,12 +172,13 @@ html, body {
     font-size: 90%;
     padding: 0;
     text-align: center;
+    overflow: hidden;
   }
 
   #map-canvas {
     height: 100%;
     min-height: 0px;
-    width: 100%; /* 65% after go button selected */
+    width: 100%;
   }
 
   .search-form input[type=text] {
@@ -204,17 +213,17 @@ html, body {
   }
 
   .zoom_to_current a {
-  min-width: 1rem;
-  min-height: 1rem;
-  z-index: 2;
-  position: absolute;
-  bottom: 2rem;
-  right: 1rem;
-  color: white;
-  background-color: #194775;
-  border-radius: 50%;
-  font-size: 20px;
-  padding: .25rem .5rem;
+    min-width: 1rem;
+    min-height: 1rem;
+    z-index: 2;
+    position: absolute;
+    bottom: 2rem;
+    right: 1rem;
+    color: white;
+    background-color: #194775;
+    border-radius: 50%;
+    font-size: 20px;
+    padding: .25rem .5rem;
   }
 
   .directions-panel-container {
@@ -222,7 +231,6 @@ html, body {
     right: 0em;
     margin: 0 auto;
     overflow: scroll;
-    max-height: 640px;
     height: 100%;
     font-size: .8rem;
   }
@@ -231,7 +239,6 @@ html, body {
     margin-left: .5rem;
   }
   .trip_time, .biking, .end_station {
-    // font-size: 14px;
     padding: .5rem;
     text-align: left;
   }
@@ -243,4 +250,3 @@ html, body {
   }
 
 }
-

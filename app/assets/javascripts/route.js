@@ -40,6 +40,8 @@ Route.prototype.setDashedLines = function(response, map) {
 Route.prototype.setSummary = function(response) {
   if ($(window).width() > 480) {
     $('.summary').show();
+  } else {
+    $('.summary').hide();
   }
   $("#start_station_intersection").html(this.routeStations.start.intersection);
   $("#end_station_intersection").html(this.routeStations.end.intersection);
