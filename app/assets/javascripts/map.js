@@ -157,11 +157,10 @@ Map.prototype.calcRoute = function(){
     var i = index;
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-        this.handleRoute(response) ; //only if its also the midle bike route thingy
+        // this.handleRoute(response, index);
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
         this.route.setDashedLines(response, this.map);
-        this.route.legs.push(response.routes[0].legs[0]);
       }
     }.bind(this);
   }.bind(this);
@@ -206,18 +205,25 @@ Map.prototype.calcSecondaryRoute = function(){
 };
 
 
-Map.prototype.handleRoute = function(response){
+Map.prototype.handleRoute = function(response, index){
   var nextCheckinStation;
   var nextCheckinStationId;
-  var leg_index = this.route.legs.length-2
-  debugger;
-  if (this.route.legs[leg_index].tripTime){ //probably not called trip time!!!!
-    nextCheckinStationId = this.route.findNextCheckinStation(leg_index);
+  // if(index == 0){this.route.legs.unshift(new Leg(response.routes[0].legs[0]));}
+  // else if(index == 2){this.route.legs.push(new Leg(response.routes[0].legs[0]));}
+  // else
+    if(index == 1){
+    var legIndex = this.route.legs.length;
+    this.route.legs.splice(1,0, new Leg(response.routes[0].legs[0]));
+    if (this.route.legs[legIndex].tripTime >= this.route.legs[legIndex].TARGET_TIME ){
+      nextCheckinStationId = this.route.legs[legIndex].findNextCheckinStation(legIndex);
+      console.log("findNextCheckinStation found");
+      nextCheckinStation = Station.find(nextCheckinStationId)
+      this.deleteMarkers(this.route.markers);
+      initializeSecondary();
+      calcSecondaryRoute();
+    }
   }
-  nextCheckinStation = Station.find(nextCheckinStationId)
-  this.deleteMarkers(this.route.markers);
-  initializeSecondary();
-  calcSecondaryRoute();
+
 };
 
 
