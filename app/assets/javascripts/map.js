@@ -10,8 +10,6 @@ function Map() {
   this.route = new Route;
 }
 
-
-
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
   for (var i = 0; i < this.route.markers.length; i++) {
@@ -47,6 +45,16 @@ Map.prototype.buttonBinder = function(event, type) {
     // setStationsMap(this.map)
   }.bind(this));
 };
+
+$(window).resize(function(){
+    $('#map-canvas').css("height",$(window).height() + "px");
+    $('#main-container').css("height",$(window).height() + "px");
+    $('#map-canvas').css("width",$(window).width() + "px");
+    $('#main-container').css("width",$(window).width() + "px");
+    google.maps.event.trigger(map, 'resize');
+    map.setZoom( map.getZoom() );
+    console.log("hello");
+});
 
 Map.prototype.bindEvents = function() {
   $(".zoom_to_current").on("click", function() {
