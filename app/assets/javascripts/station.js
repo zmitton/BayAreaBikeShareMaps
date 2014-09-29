@@ -1,13 +1,13 @@
 function Station() {
   this.something = "something";
 }
-Station.fetch_all_live_data = function(){
+Station.fetchAllLiveData = function(){
   request = $.ajax("http://www.divvybikes.com/stations/json", {"method": "get"});
     request.done(function(response) {
       console.log(response);
     });
 };
-Station.all = function(){
+Station.fetchAll = function(){
   request = $.ajax("/stations", {"method": "get"});
     request.done(function(response) {
       Station.parse_server_response(response);
@@ -15,3 +15,10 @@ Station.all = function(){
     });
 };
 
+Station.find = function(id){
+  for (var i = 0 ; i < window.bikeStations.length ; i++ ){
+    if(window.bikeStations[i].id == id){
+      return window.bikeStations[i];
+    }
+  }
+};
