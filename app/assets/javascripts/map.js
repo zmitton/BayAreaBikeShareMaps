@@ -54,12 +54,37 @@ Map.prototype.bindEvents = function() {
   }.bind(this));
 
   $("#bikes").on("click", function(event) {
-    this.buttonBinder(event,"Bikes");
+    var $bikeButton = $("#bikes");
+    event.preventDefault();
+    if ($bikeButton.val() == "Hide Bikes") {
+      this.deleteMarkers(this.stationMarkers);
+      $bikeButton.val("Bikes");
+    } else if ($("#docks").val() == "Hide Docks") {
+      $("#docks").val("Docks");
+      $bikeButton.val('Hide Bikes');
+      this.buttonBinder(event,"Bikes");
+    } else {
+      $bikeButton.val('Hide Bikes');
+      this.buttonBinder(event,"Bikes");
+    }
   }.bind(this));
 
   $("#docks").on("click", function(event) {
-    this.buttonBinder(event, "Docks");
+    var $dockButton = $("#docks");
+    event.preventDefault();
+    if ($dockButton.val() == "Hide Docks"){
+      this.deleteMarkers(this.stationMarkers);
+      $dockButton.val("Docks");
+    } else if ($("#bikes").val() == "Hide Bikes") {
+      $("#bikes").val("Bikes");
+      $dockButton.val("Hide Docks");
+      this.buttonBinder(event, "Docks");
+    } else {
+      $dockButton.val("Hide Docks");
+      this.buttonBinder(event, "Docks");
+    }
   }.bind(this));
+
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers(this.route.markers);
