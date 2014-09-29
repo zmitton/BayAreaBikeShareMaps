@@ -129,6 +129,7 @@ html, body {
     max-height: 960px;
     font-size: 90%;
     padding: 0;
+    text-align: center;
   }
 
   #map-canvas {
@@ -138,7 +139,7 @@ html, body {
     width: 100%; /* 65% after go button selected */
   }
 
-  .search-form  input[type=text] {
+  .search-form input[type=text] {
     width: 95%;
     font-size: 90%;
     padding: .4rem;
@@ -146,9 +147,20 @@ html, body {
     margin-top: .3rem;
   }
 
-  .search-form .go-button input[type=submit] {
-    max-width: 90%;
+  .pure-form button[type=submit] {
+    width: 95%;
+    padding: .3rem;
   }
+
+  .controls-container {
+    text-align: center;
+    height: 0;
+    width: 0;
+  }
+
+.controls-container form {
+  display: inline-block;
+}
 
   #bikes, #docks, #directions {
     margin-bottom: 0rem;
@@ -175,7 +187,7 @@ html, body {
   min-height: 1rem;
   z-index: 2;
   position: absolute;
-  bottom: 5rem;
+  bottom: 3.5rem;
   right: 1rem;
   color: white;
   background-color: #194775;
