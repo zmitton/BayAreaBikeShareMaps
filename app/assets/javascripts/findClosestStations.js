@@ -111,11 +111,42 @@ Route.closestPointOnStep = function(step, x1, y1){
  else{
 
  }
- //if station is east of the east point of orig line, 
- //its outside of scope 
- //check the slop of a line made from a station to an endpointa. if its 
- //retrns the purp point [3,2]
-}
+//  //if station is east of the east point of orig line, 
+// Route.prototype.findNextStation = function(){
+//   var stationsOnRoute = this.stationsOnRoute();
+//   // loop through the stationsOnRoute IN REVERSE. 
+//   //if any of them are inIdealTime(stationsOnRoute[i][2]). BOOM return that first one you find.
+//   //else return this.closestStationWithinIdeaTime 
+// }
+
+// Route.prototype.stationsOnRoute = function(){
+//   // var stations = [];
+//   // var stationsByDistance = this.stationsByDistance();
+//   //return array of stations within this.ON_ROUTE_DISTANCE
+// }
+
+// Route.prototype.stationsByDistance = function(){
+//   //for each station run Route.distanceFromPointToRoute
+//   //return a sorted 2darray of form [[closeststationid, distancefromroute, checkinTime],[nextclosestid, distancefromroute, checkinTime],...]
+// }
+
+// Route.distanceFromPointToRoute = function(station){
+//  //for each segment
+//    //Math.closestPointOnSegment
+//    //var distance between station and segment (pythagor)
+//    //var checkintime is the distance from step beginpoint to station weighted by the total step time/distance       + step start time
+//  //reugular answer
+//  //return[distance,checkinTime]
+// }
+
+// Math.closestPointOnSegment = function(pointX, pointY, lineX1, lineY1, lineX2, lineY2){
+//  //make a line of purp slope. 
+//  //find the a line that connects the station with the new line purpendicularly. 
+//  //if station is east of the east point or orig line, 
+//  //its outside of scope 
+//  //check the slop of a line made from a station to an endpointa. if its 
+//  //retrns the purp point [3,2]
+// }
 
 Route.prototype.inIdealTime = function(time){
   return (time > this.idealCheckinStartTime && time < this.idealCheckinEndTime)
@@ -137,6 +168,20 @@ Route.prototype.closestStationWithinIdeaTime = function(leg_index){
 // // Route.prototype.findDistanceToStation = function(x,y){
 // //   //for distancefrompointtoline for each line segment and return the lowest value;
 // // }
+  //true if ideal time is within idealCheckinStartTime and idealCheckinEndTime
+}
+
+// Route.prototype.closestStationWithinIdeaTime = function(){
+//   //var stationsByDistance = this.stationsByDistance();
+//   //var stationsBycheckintimes = stationsByDistance sorted by checkin times
+//   // loop through checkin times until
+//   // return the first one in inIdealRange()
+//   //else return "route not found"
+// }
+
+// Route.prototype.findDistanceToStation = function(x,y){
+//   //for distancefrompointtoline for each line segment and return the lowest value;
+// }
 
 
 
