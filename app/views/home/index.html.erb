@@ -58,6 +58,7 @@ $(document).ready(function() {
     event.preventDefault();
     $('form.search-form').slideUp();
     $('.nav-caret').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+    $('.controls-container').css('margin-top', '.5rem', 'margin-bottom', '.5rem');
   });
 
   $('.search-form-container').on('click', '.nav-caret.fa-chevron-down', function(event) {
