@@ -36,24 +36,18 @@ Map.prototype.addMarker = function(lat, lng, title, icon, markers) {
 Map.prototype.buttonBinder = function(event, type) {
   event.preventDefault();
   this.deleteMarkers(this.stationMarkers);
-
-  request = $.ajax("/stations", {"method": "get"});
-  request.done(function(response) {
-    this.makeStationMarkers(response, type);
-    this.placeAllMarkers(this.stationMarkers);
-    // var mc = new MarkerClusterer(this.map, this.stationMarkers, {gridSize: 50, maxZoom: 15 });
-    // setStationsMap(this.map)
-  }.bind(this));
+  this.makeStationMarkers(window.bikeStations, type);
+  this.placeAllMarkers(this.stationMarkers);
 };
 
-$(window).resize(function(){
-    $('#map-canvas').css("height",$(window).height() + "px");
-    $('#main-container').css("height",$(window).height() + "px");
-    $('#map-canvas').css("width",$(window).width() + "px");
-    $('#main-container').css("width",$(window).width() + "px");
-    google.maps.event.trigger(map, 'resize');
-    map.setZoom( map.getZoom() );
-});
+// $(window).resize(function(){
+//     $('#map-canvas').css("height",$(window).height() + "px");
+//     $('#main-container').css("height",$(window).height() + "px");
+//     $('#map-canvas').css("width",$(window).width() + "px");
+//     $('#main-container').css("width",$(window).width() + "px");
+//     google.maps.event.trigger(map, 'resize');
+//     map.setZoom( map.getZoom() );
+// });
 
 Map.prototype.bindEvents = function() {
   $(".zoom_to_current").on("click", function() {
@@ -95,9 +89,11 @@ Map.prototype.bindEvents = function() {
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers(this.route.markers);
-    this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response) {
+      this.route.tripTime = 0;
+      this.route.bikeTime = 0;
+      this.route.bikeDistance = 0;
       this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
       this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
       // this.makeStationMarker(response.start_station, "bikes")
