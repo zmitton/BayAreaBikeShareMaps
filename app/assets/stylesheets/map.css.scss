@@ -153,9 +153,7 @@ td.adp-substep {
 }
 
 .nav-caret {
-  position: absolute;
-  right: 1.25rem;
-  bottom: 1rem;
+  display: none;
 }
 
   /* iPhone */
@@ -253,6 +251,12 @@ td.adp-substep {
     display: none;
     padding: 1rem;
     font-size: 1rem;
+  }
+
+  .nav-caret {
+    position: absolute;
+    right: 1.25rem;
+    margin-top: .5rem;
   }
 
 }

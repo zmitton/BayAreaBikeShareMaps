@@ -67,6 +67,15 @@ $(document).ready(function() {
     $('.nav-caret').removeClass('fa-chevron-down').addClass('fa-chevron-up');
   });
 
+  $(window).resize(function() {
+    if ($(window).width() < 480) {
+      $('.nav-caret').show();
+    } else {
+      $('.nav-caret').hide();
+    }
+  });
+
+
   $('.summary').hide();
 });
 </script>
