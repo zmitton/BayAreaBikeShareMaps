@@ -8,12 +8,12 @@ respond_to :json
   end
 
   def search
-
-    if params[:start_latitude] != "" && params[:start_longitude] != ""
-      @start_location_coords = {"lat" => params[:start_latitude].to_d, "lng" => params[:start_longitude].to_d}
-    else
+    if params[:start_location] != "Current location"
       @start_location = "#{params[:start_location]} + Chicago, IL"
       @start_location_coords = GoogleApi.get_coordinates_from_address(@start_location)
+
+    else params[:start_latitude] != "" && params[:start_longitude] != ""
+      @start_location_coords = {"lat" => params[:start_latitude].to_d, "lng" => params[:start_longitude].to_d}
     end
 
     @closest_start_station = Station.find_closest_to(@start_location_coords["lat"], @start_location_coords["lng"])
