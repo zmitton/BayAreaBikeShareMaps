@@ -18,5 +18,7 @@ $(document).ready(function() {
       $('#directions').html('List Directions');
     }
   });
+
+  $('.summary').hide();
 });
 

@@ -43,7 +43,9 @@ Route.prototype.setDashedLines = function(response, map) {
 };
 
 Route.prototype.setSummary = function(response) {
-  $(".summary").css("display", "inline")
+  if ($(window).width() > 480) {
+    $(".summary").show();
+  }
   $("#start_station_intersection").html(this.routeStations.start.intersection);
   $("#end_station_intersection").html(this.routeStations.end.intersection);
   $(".start_station_bikes").html(this.routeStations.start.available_bikes);
