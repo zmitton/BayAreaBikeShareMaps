@@ -4,6 +4,7 @@
     <%= button_to "Bikes", '/stations', method: "get", id:"bikes", class: "button-xsmall pure-button", form_class: "bikes-form" %>
     <%= button_to "Docks", '/stations', method: "get", id:"docks", class: "button-xsmall pure-button", form_class: "docks-form" %>
     <form><div><button class="button-xsmall pure-button" id="directions">List Directions</button></div></form>
+    <a href="#"><i class="nav-caret fa fa-chevron-up"></i></a>
   </div>
   <div class="summary">
       <div class="trip_time"> Total Trip: <span id="trip_time"></span> min</div>
@@ -52,6 +53,19 @@ $(document).ready(function() {
       $('#directions').html('List Directions');
     }
   });
+
+  $('.search-form-container').on('click', '.nav-caret.fa-chevron-up', function(event) {
+    event.preventDefault();
+    $('form.search-form').slideUp();
+    $('.nav-caret').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+  });
+
+  $('.search-form-container').on('click', '.nav-caret.fa-chevron-down', function(event) {
+    event.preventDefault();
+    $('form.search-form').slideDown();
+    $('.nav-caret').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+  });
+
   $('.summary').hide();
 });
 </script>

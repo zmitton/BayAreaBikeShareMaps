@@ -152,6 +152,12 @@ td.adp-substep {
   float: right;
 }
 
+.nav-caret {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1rem;
+}
+
   /* iPhone */
 @media screen and (max-width: 480px) {
   .search-form-container {
