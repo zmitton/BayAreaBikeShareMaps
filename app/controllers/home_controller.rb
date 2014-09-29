@@ -15,7 +15,7 @@ respond_to :json
       @start_location = "#{params[:start_location]} + Chicago, IL"
       @start_location_coords = GoogleApi.get_coordinates_from_address(@start_location)
     end
-    
+
     @closest_start_station = Station.find_closest_to(@start_location_coords["lat"], @start_location_coords["lng"])
 
     @end_location = "#{params[:end_location]} + Chicago, IL"
@@ -30,7 +30,7 @@ respond_to :json
 
     @stations = [@closest_start_station, @closest_end_station]
 
-    coords_hash = {start_location: @start_location_coords, end_location: @end_location_coords, start_station: @closest_start_coords, end_station: @closest_end_coords, station_objects: @stations}
+    coords_hash = {start_location: @start_location_coords, end_location: @end_location_coords, start_station: @closest_start_coords, end_station: @closest_end_coords, station_objects: @stations, start_station_object: @closest_start_station, end_station_object: @closest_end_station}
     respond_with coords_hash
 
   end

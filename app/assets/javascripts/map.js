@@ -3,20 +3,12 @@ function Map() {
   this.latitude = 41.8896848;
   this.longitude = -87.6377502;
   this.latlng = new google.maps.LatLng(this.latitude, this.longitude);
-
   this.zoom = 12;
-  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
+  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, scrollwheel: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
   this.currentLatitude;
   this.currentLongitude;
-
   this.route = new Route;
-  // this.route.markers = [];
-  // this.route.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
-  // this.route.directionsService = new google.maps.DirectionsService();
-
 };
-
-
 
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
@@ -25,7 +17,6 @@ Map.prototype.fitBoundsOfMarkers = function() {
   }
   this.map.fitBounds(bounds);
 };
-
 
 Map.prototype.zoomToCurrentLocation = function(event) {
   event.preventDefault;
@@ -48,7 +39,6 @@ Map.prototype.buttonBinder = function(event, type) {
 
   request = $.ajax("/stations", {"method": "get"});
   request.done(function(response) {
-
     this.makeStationMarkers(response, type);
     this.placeAllMarkers(this.stationMarkers);
     // var mc = new MarkerClusterer(this.map, this.stationMarkers, {gridSize: 50, maxZoom: 15 });
@@ -62,31 +52,33 @@ Map.prototype.bindEvents = function() {
   }.bind(this));
 
   $("#bikes").on("click", function(event) {
-    this.buttonBinder(event,"bikes");
+    this.buttonBinder(event,"Bikes");
   }.bind(this));
 
   $("#docks").on("click", function(event) {
-    this.buttonBinder(event, "docks");
+    this.buttonBinder(event, "Docks");
   }.bind(this));
-
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers(this.route.markers);
     this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response) {
+      this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
       this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
+      // this.makeStationMarker(response.start_station, "bikes")
+      // this.makeStationMarker(response.end_station, "docks")
       this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon("2EB8E6", "Pick up"), this.route.markers);
       this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon("2EB8E6", "Drop off"), this.route.markers);
       this.addMarker(response.end_location.lat, response.end_location.lng, "End", Marker.createLocationIcon("End"), this.route.markers);
       this.placeAllMarkers(this.route.markers);
+
       this.fitBoundsOfMarkers();
       this.map.setZoom(this.map.getZoom());
       this.renderPrimaryDirections(response);
     }.bind(this));
   }.bind(this));
 };
-
 Map.prototype.zoom = function(zoom) {
   zoom = typeof a !== 'undefined' ? zoom : 11;
 };
@@ -95,6 +87,7 @@ Map.prototype.clearMarkers = function(markers){
   for (var i = 0; i < markers.length; i++) {
     markers[i].marker.setMap(null);
   }
+
 };
 
 Map.prototype.makeStationMarkers = function(stations, type) {
@@ -104,7 +97,7 @@ Map.prototype.makeStationMarkers = function(stations, type) {
 };
 
 Map.prototype.makeStationMarker = function(station, type) {
-  if(type == "bikes"){
+  if(type == "Bikes"){
       var availables = station.available_bikes
     }
   else{
@@ -114,7 +107,7 @@ Map.prototype.makeStationMarker = function(station, type) {
   lng = parseFloat(station.longitude),
   iconColor = Marker.getIconColor(availables),
   icon = Marker.createDivvyIcon(iconColor, availables);
-  this.stationMarkers.push(new Marker(lat, lng, "available" + type, icon));
+  this.stationMarkers.push(new Marker(lat, lng, station.location, icon));
 }
 
 Map.prototype.placeAllMarkers = function(markers){
@@ -158,6 +151,7 @@ Map.prototype.calcRoute = function(){
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
         // this.handleRoute(response, index);
+        this.route.setSummary(response)
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
         this.route.setDashedLines(response, this.map);
