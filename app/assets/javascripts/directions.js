@@ -1,25 +1,22 @@
 $(document).ready(function() {
+  $('.directions-panel-container').hide();
+  $('#directions').hide();
   $('.search-form').on('submit', function(event) {
     event.preventDefault();
-    var controlsContainer = $("<div class='controls-container'></div>");
-    var newSearchButton = $("<button class='search-button pure-button button-success'>New Search</button>");
-    var bikesButton = $("<button class='bikes-button pure-button'>Bikes</button>");
-    var docksButton = $("<button class='docks-button pure-button'>Docks</button>");
+    $('#directions').show();
 
-    $('.search-form-container').hide();
-    $('#map-canvas').css('width', '65%');
-    $('.directions-panel-container').css('width', '35%');
-    $('.direcitons-panel-container').scroll();
-    $('#directions-panel-0, #directions-panel-1, #directions-panel-2').css('width', '90%');
-    $('.directions-panel-container').prepend(controlsContainer);
-    $('.controls-container').append(newSearchButton, bikesButton, docksButton);
 
-    $('body').on('click', '.search-button', function(event) {
-      event.preventDefault();
+  });
+  $('#directions').on('click', function(event) {
+    event.preventDefault();
+    if ($('#directions').text() === 'List Directions') {
+      $('.directions-panel-container').css('width', '100%');
+      $('.directions-panel-container').show().scroll();
+      $('#directions').html('Hide Directions');
+    } else {
       $('.directions-panel-container').hide();
-      $('.search-form-container').show();
-      $('#map-canvas').css('width', '100%');
-      $('.directions-panel-container').css('width', '0%');
-    });
+      $('#directions').html('List Directions');
+    }
   });
 });
+

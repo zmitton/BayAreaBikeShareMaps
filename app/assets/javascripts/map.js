@@ -3,10 +3,20 @@ function Map() {
   this.latitude = 41.8896848;
   this.longitude = -87.6377502;
   this.latlng = new google.maps.LatLng(this.latitude, this.longitude);
-  this.zoom = 11;
-  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng });
-  this.route = new Route
+
+  this.zoom = 12;
+  this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
+  this.currentLatitude;
+  this.currentLongitude;
+
+  this.route = new Route;
+  // this.route.markers = [];
+  // this.route.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
+  // this.route.directionsService = new google.maps.DirectionsService();
+
 }
+
+
 
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
@@ -15,6 +25,17 @@ Map.prototype.fitBoundsOfMarkers = function() {
   }
   this.map.fitBounds(bounds);
 };
+
+
+Map.prototype.zoomToCurrentLocation = function(event) {
+  event.preventDefault;
+  this.currentLatitude = $("input[name='start_latitude']").val();
+  this.currentLongitude = $("input[name='start_longitude']").val();
+  if(this.currentLatitude != "" && this.currentLongitude != "") {
+    this.map.setCenter(new google.maps.LatLng(this.currentLatitude,this.currentLongitude));
+    this.map.setZoom(15);
+  }
+}
 
 Map.prototype.addMarker = function(lat, lng, title, icon, markers) {
   markers.push(new Marker(lat, lng, title, icon));
@@ -30,11 +51,16 @@ Map.prototype.buttonBinder = function(event, type) {
 
     this.makeStationMarkers(response, type);
     this.placeAllMarkers(this.stationMarkers);
+    // var mc = new MarkerClusterer(this.map, this.stationMarkers, {gridSize: 50, maxZoom: 15 });
     // setStationsMap(this.map)
   }.bind(this));
 };
 
 Map.prototype.bindEvents = function() {
+  $(".zoom_to_current").on("click", function() {
+    this.zoomToCurrentLocation(event);
+  }.bind(this));
+
   $("#bikes").on("click", function(event) {
     this.buttonBinder(event,"bikes");
   }.bind(this));
@@ -133,6 +159,7 @@ Map.prototype.calcRoute = function(){
         this.handleRoute(response);
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
+        this.route.setDashedLines(response, this.map);
       }
     }.bind(this);
   }.bind(this);
