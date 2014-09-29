@@ -54,12 +54,23 @@ Map.prototype.bindEvents = function() {
   }.bind(this));
 
   $("#bikes").on("click", function(event) {
+    var $bikeButton = $("#bikes");
+    event.preventDefault();
+    //if val is hide bikes, delete markers
+    //else do buttonbinder and bind to map
+    if ($bikeButton.val() == "Hide Bikes") {
+      this.deleteMarkers(this.stationMarkers);
+      $bikeButton.val("Bikes");
+    } else {
+    $bikeButton.val('Hide Bikes');
     this.buttonBinder(event,"Bikes");
+    }
   }.bind(this));
 
   $("#docks").on("click", function(event) {
     this.buttonBinder(event, "Docks");
   }.bind(this));
+
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers(this.route.markers);
