@@ -53,7 +53,6 @@ $(window).resize(function(){
     $('#main-container').css("width",$(window).width() + "px");
     google.maps.event.trigger(map, 'resize');
     map.setZoom( map.getZoom() );
-    console.log("hello");
 });
 
 Map.prototype.bindEvents = function() {
