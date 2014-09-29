@@ -4,6 +4,8 @@ function Route(){
   this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {
     strokeOpacity: 0}}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0}})];
   this.directionsService = new google.maps.DirectionsService();
+  this.reponses = [];
+  this.legs = [];
   this.checkinStations = [];
   this.TARGET_TIME = 25;
   this.MIN_BUFFER = 2.5;
@@ -62,53 +64,136 @@ Route.prototype.midpointOfNextCheckinTime = function(){return this.tripTime/(thi
 Route.prototype.idealCheckinStartTime = function(){return this.midpointOfNextCheckinTime() - (this.averageExtraTimeBetweenStops()/2)};
 Route.prototype.idealCheckinEndTime = function(){return this.midpointOfNextCheckinTime() + (this.averageExtraTimeBetweenStops()/2)};
 
-Route.prototype.findNextStation = function(){
-  var stationsOnRoute = this.stationsOnRoute();
-  // loop through the stationsOnRoute IN REVERSE.
-  //if any of them are inIdealTime(stationsOnRoute[i][2]). BOOM return that first one you find.
-  //else return this.closestStationWithinIdeaTime
+Route.prototype.findNextStation = function(leg_index){
+  var leg_index = 2 //hard coded the bike route for now
+  var stationsOnRoute = this.stationsOnRoute(leg_index);
+  stationsOnRoute = stationsOnRoute.sort(function(a,b){return parseFloat(b[2]) - parseFloat(b[2])}); //2 is check-in time // decendingorder
+  for (var i = 0 ; i < stationsOnRoute.length ; i++ ){
+    if(stationsOnRoute[i][1] <= this.idealCheckinEndTime() && stationsOnRoute[i][1] >= this.idealCheckinStartTime() ){
+      return stationsOnRoute[i][0]; //returns stationId 
+    }
+  }   
+  return this.closestStationWithinIdeaTime(leg_index);
 }
 
-Route.prototype.stationsOnRoute = function(){
-  // var stations = [];
-  // var stationsByDistance = this.stationsByDistance();
-  //return array of stations within this.ON_ROUTE_DISTANCE
+Route.prototype.stationsOnRoute = function(leg_index){
+  var stations = [];
+  var stationsByDistance = this.stationsByDistance(leg_index);
+  for (var i = 0 ; i < stationsByDistance.length ; i++ ){
+    if(stationsByDistance[i][1] <= this.ON_ROUTE_DISTANCE){
+      stations.push(stationsByDistance[i]);
+    }
+  }  
+  return stations
 }
 
-Route.prototype.stationsByDistance = function(){
-  //for each station run Route.distanceFromPointToRoute
-  //return a sorted 2darray of form [[closeststationid, distancefromroute, checkinTime],[nextclosestid, distancefromroute, checkinTime],...]
+Route.prototype.stationsByDistance = function(leg_index){
+  var stations = [];
+  for (var i = 0 ; i < window.bikeStations.length ; i++ ){
+    stations.push(Route.shortestDistanceFromPointToRoute(window.bikeStations[i]), leg_index);
+  }
+  stations = stations.sort(function(a,b){return parseFloat(a[1]) - parseFloat(b[1])}); // 1 is distance from route //assendingoreder
+  return stations //2darray of form [[closeststationid, distancefromroute, checkinTime],[nextclosestid, distancefromroute, checkinTime],...]
 }
 
-Route.distanceFromPointToRoute = function(station){
- //for each segment
-   //Math.closestPointOnSegment
-   //var distance between station and segment (pythagor)
-   //var checkintime is the distance from step beginpoint to station weighted by the total step time/distance       + step start time
- //reugular answer
- //return[distance,checkinTime]
+Route.shortestDistanceFromPointToRoute = function(station, leg_index){
+  var shortestSoFar;
+  for (var i = 0 ; i < this.legs[leg_index].steps.length ; i++ ){
+    var step = this.legs[leg_index].steps[i];
+    var point = Route.closestPointOnStep(step, station.longitude, station.latitude);
+    var distance = Math.sqrt(Math.pow((point[0] - station.longitude)) + Math.pow((point[1] - station.latitude)));
+    if(distance < shortestSoFar){
+      shortestSoFar = distance; 
+    }
+  }
+  var checkinTime = ((Math.sqrt(Math.pow((step.x1 - station.longitude)) + Math.pow((step.y1 - station.latitude))))/distance)*step.durration();
+  return [distance,checkinTime]
 }
 
-Math.closestPointOnSegment = function(pointX, pointY, lineX1, lineY1, lineX2, lineY2){
- //make a line of purp slope.
- //find the a line that connects the station with the new line purpendicularly.
- //if station is east of the east point or orig line,
- //its outside of scope
- //check the slop of a line made from a station to an endpointa. if its
- //retrns the purp point [3,2]
-}
+Route.closestPointOnStep = function(step, x1, y1){
+ var distance;
+ var purpLineM = (1.0/(step.m())) * (-1);
+ var purpLineB = y1 - (purpLineM * x1);
+ var xintersect = (step.b() - purpLineB)/(purpLineM - step.m())
+ var yintersect = step.m() * xintersect + step.b();
+ if(yintersect > step.northPoint()[1]){
+  // distance = step.shortestDistanceToAnEnd(xintersect, yintersect);
+  return step.northPoint()
+ }
+ else if(yintersect <= step.southPoint()[1]){
+  // distance = step.shortestDistanceToAnEnd(xintersect, yintersect);
+  return step.southPoint() //[x,y]
+ }
+ else{
+
+ }
+//  //if station is east of the east point of orig line, 
+// Route.prototype.findNextStation = function(){
+//   var stationsOnRoute = this.stationsOnRoute();
+//   // loop through the stationsOnRoute IN REVERSE. 
+//   //if any of them are inIdealTime(stationsOnRoute[i][2]). BOOM return that first one you find.
+//   //else return this.closestStationWithinIdeaTime 
+// }
+
+// Route.prototype.stationsOnRoute = function(){
+//   // var stations = [];
+//   // var stationsByDistance = this.stationsByDistance();
+//   //return array of stations within this.ON_ROUTE_DISTANCE
+// }
+
+// Route.prototype.stationsByDistance = function(){
+//   //for each station run Route.distanceFromPointToRoute
+//   //return a sorted 2darray of form [[closeststationid, distancefromroute, checkinTime],[nextclosestid, distancefromroute, checkinTime],...]
+// }
+
+// Route.distanceFromPointToRoute = function(station){
+//  //for each segment
+//    //Math.closestPointOnSegment
+//    //var distance between station and segment (pythagor)
+//    //var checkintime is the distance from step beginpoint to station weighted by the total step time/distance       + step start time
+//  //reugular answer
+//  //return[distance,checkinTime]
+// }
+
+// Math.closestPointOnSegment = function(pointX, pointY, lineX1, lineY1, lineX2, lineY2){
+//  //make a line of purp slope. 
+//  //find the a line that connects the station with the new line purpendicularly. 
+//  //if station is east of the east point or orig line, 
+//  //its outside of scope 
+//  //check the slop of a line made from a station to an endpointa. if its 
+//  //retrns the purp point [3,2]
+// }
 
 Route.prototype.inIdealTime = function(time){
+  return (time > this.idealCheckinStartTime && time < this.idealCheckinEndTime)
   //true if ideal time is within idealCheckinStartTime and idealCheckinEndTime
 }
 
-Route.prototype.closestStationWithinIdeaTime = function(){
-  //var stationsByDistance = this.stationsByDistance();
-  //var stationsBycheckintimes = stationsByDistance sorted by checkin times
-  // loop through checkin times until
-  // return the first one in inIdealRange()
-  //else return "route not found"
+Route.prototype.closestStationWithinIdeaTime = function(leg_index){
+
+  var stationsByDistance = this.stationsByDistance(leg_index);
+  var stationsBycheckintimes = stationsByDistance.sort(function(a,b){return parseFloat(a[2]) - parseFloat(b[2])});// sorted by checkin times
+  for (var i = 0 ; i < stationsBycheckintimes.length ; i++ ){
+    if(inIdealTime(stationsBycheckintimes[i][2])){
+      return stationsBycheckintimes[i][0] //returns the id
+    }
+  }
+  return "route not found" // return the first one in inIdealRange() //else return "route not found"
 }
+
+// // Route.prototype.findDistanceToStation = function(x,y){
+// //   //for distancefrompointtoline for each line segment and return the lowest value;
+// // }
+  //true if ideal time is within idealCheckinStartTime and idealCheckinEndTime
+}
+
+// Route.prototype.closestStationWithinIdeaTime = function(){
+//   //var stationsByDistance = this.stationsByDistance();
+//   //var stationsBycheckintimes = stationsByDistance sorted by checkin times
+//   // loop through checkin times until
+//   // return the first one in inIdealRange()
+//   //else return "route not found"
+// }
 
 // Route.prototype.findDistanceToStation = function(x,y){
 //   //for distancefrompointtoline for each line segment and return the lowest value;

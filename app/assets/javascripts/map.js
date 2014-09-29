@@ -10,6 +10,8 @@ function Map() {
   this.route = new Route;
 }
 
+
+
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
   for (var i = 0; i < this.route.markers.length; i++) {
@@ -39,7 +41,6 @@ Map.prototype.buttonBinder = function(event, type) {
 
   request = $.ajax("/stations", {"method": "get"});
   request.done(function(response) {
-
     this.makeStationMarkers(response, type);
     this.placeAllMarkers(this.stationMarkers);
     // var mc = new MarkerClusterer(this.map, this.stationMarkers, {gridSize: 50, maxZoom: 15 });
