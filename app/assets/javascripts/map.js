@@ -14,7 +14,7 @@ function Map() {
   // this.route.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true})];
   // this.route.directionsService = new google.maps.DirectionsService();
 
-}
+};
 
 
 
@@ -72,6 +72,7 @@ Map.prototype.bindEvents = function() {
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers(this.route.markers);
+    this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response) {
       this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
@@ -81,7 +82,7 @@ Map.prototype.bindEvents = function() {
       this.placeAllMarkers(this.route.markers);
       this.fitBoundsOfMarkers();
       this.map.setZoom(this.map.getZoom());
-      this.renderAllDirections(response);
+      this.renderPrimaryDirections(response);
     }.bind(this));
   }.bind(this));
 };
@@ -156,10 +157,11 @@ Map.prototype.calcRoute = function(){
     var i = index;
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-        this.handleRoute(response);
+        this.handleRoute(response) ; //only if its also the midle bike route thingy
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
         this.route.setDashedLines(response, this.map);
+        this.route.legs.push(response.routes[0].legs[0]);
       }
     }.bind(this);
   }.bind(this);
@@ -168,12 +170,58 @@ Map.prototype.calcRoute = function(){
   }
 };
 
-Map.prototype.renderAllDirections = function(response){
+Map.prototype.renderPrimaryDirections = function(response){
   this.initialize();
   this.calcRoute();
 };
 
-Map.prototype.handleRoute = function(response){
-  // this.route.splitLargeBikeRoutes();
+Map.prototype.renderSecondaryDirections = function(response){
+  this.initializeSecondary();
+  this.calcSecondaryRoute();
 };
+
+Map.prototype.initializeSecondary = function(){
+    this.route.markers.splice(-1,0, new Marker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start")));
+    this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
+    this.route.directionsDisplays[-2].setMap(this.map);
+};
+
+Map.prototype.calcSecondaryRoute = function(){
+  var request = {origin: this.route.markers[this.route.markers.length-2].marker.position,
+                 destination: this.route.markers[this.route.markers.length-1].marker.position,
+                 travelMode: google.maps.TravelMode["BICYCLING"]
+                }
+  var displaySecondaryRouteHandler = function(response) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      var length = this.route.directionsDisplays.length;
+      this.handleRoute(response);
+      this.route.directionsDisplays[length-2].setDirections(response);
+      $('directions-panel-' + length-1).id = 'directions-panel-' + length;
+      $('<div id="directions-panel-' + length + '"></div>');
+      this.route.directionsDisplays[length-2].setPanel(document.getElementById('directions-panel-' + length-2));
+      this.route.legs.push(response.routes[0].legs[0]);
+    }
+  }
+  this.route.directionsService.route(request, displaySecondaryRouteHandler);
+};
+
+
+Map.prototype.handleRoute = function(response){
+  var nextCheckinStation;
+  var nextCheckinStationId;
+  var leg_index = this.route.legs.length-2
+  debugger;
+  if (this.route.legs[leg_index].tripTime){ //probably not called trip time!!!!
+    nextCheckinStationId = this.route.findNextCheckinStation(leg_index);
+  }
+  nextCheckinStation = Station.find(nextCheckinStationId)
+  this.deleteMarkers(this.route.markers);
+  initializeSecondary();
+  calcSecondaryRoute();
+};
+
+
+
+
+
 

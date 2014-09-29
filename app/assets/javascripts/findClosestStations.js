@@ -1,7 +1,6 @@
 function Route(){
   this.markers = [];
-  this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {
-    strokeOpacity: 0}}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0}})];
+  this.directionsDisplays = [new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0}}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}), new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0}})];
   this.directionsService = new google.maps.DirectionsService();
   this.reponses = [];
   this.legs = [];
@@ -37,6 +36,7 @@ Route.prototype.setDashedLines = function(response, map) {
       });
     }
   };
+      debugger;
 };
 
 Route.prototype.maxTargetTime = function(){return this.TARGET_TIME + this.MIN_BUFFER};
@@ -111,42 +111,6 @@ Route.closestPointOnStep = function(step, x1, y1){
  else{
 
  }
-//  //if station is east of the east point of orig line, 
-// Route.prototype.findNextStation = function(){
-//   var stationsOnRoute = this.stationsOnRoute();
-//   // loop through the stationsOnRoute IN REVERSE. 
-//   //if any of them are inIdealTime(stationsOnRoute[i][2]). BOOM return that first one you find.
-//   //else return this.closestStationWithinIdeaTime 
-// }
-
-// Route.prototype.stationsOnRoute = function(){
-//   // var stations = [];
-//   // var stationsByDistance = this.stationsByDistance();
-//   //return array of stations within this.ON_ROUTE_DISTANCE
-// }
-
-// Route.prototype.stationsByDistance = function(){
-//   //for each station run Route.distanceFromPointToRoute
-//   //return a sorted 2darray of form [[closeststationid, distancefromroute, checkinTime],[nextclosestid, distancefromroute, checkinTime],...]
-// }
-
-// Route.distanceFromPointToRoute = function(station){
-//  //for each segment
-//    //Math.closestPointOnSegment
-//    //var distance between station and segment (pythagor)
-//    //var checkintime is the distance from step beginpoint to station weighted by the total step time/distance       + step start time
-//  //reugular answer
-//  //return[distance,checkinTime]
-// }
-
-// Math.closestPointOnSegment = function(pointX, pointY, lineX1, lineY1, lineX2, lineY2){
-//  //make a line of purp slope. 
-//  //find the a line that connects the station with the new line purpendicularly. 
-//  //if station is east of the east point or orig line, 
-//  //its outside of scope 
-//  //check the slop of a line made from a station to an endpointa. if its 
-//  //retrns the purp point [3,2]
-// }
 
 Route.prototype.inIdealTime = function(time){
   return (time > this.idealCheckinStartTime && time < this.idealCheckinEndTime)
