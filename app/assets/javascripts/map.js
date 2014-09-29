@@ -88,22 +88,22 @@ Map.prototype.bindEvents = function() {
     this.deleteMarkers(this.route.markers);
     this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
-    request.done(function(response) {
-      this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
-      this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
-      // this.makeStationMarker(response.start_station, "bikes")
-      // this.makeStationMarker(response.end_station, "docks")
-      this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon("2EB8E6", "Pick up"), this.route.markers);
-      this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon("2EB8E6", "Drop off"), this.route.markers);
-      this.addMarker(response.end_location.lat, response.end_location.lng, "End", Marker.createLocationIcon("End"), this.route.markers);
-      this.placeAllMarkers(this.route.markers);
-
-      this.fitBoundsOfMarkers();
-      this.map.setZoom(this.map.getZoom());
-      this.renderPrimaryDirections(response);
-    }.bind(this));
+    request.done(this.createRoute.bind(this));
   }.bind(this));
 };
+Map.prototype.createRoute = function(response) {
+  this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
+  this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
+  this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon("2EB8E6", "Pick up"), this.route.markers);
+  this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon("2EB8E6", "Drop off"), this.route.markers);
+  this.addMarker(response.end_location.lat, response.end_location.lng, "End", Marker.createLocationIcon("End"), this.route.markers);
+  this.placeAllMarkers(this.route.markers);
+
+  this.fitBoundsOfMarkers();
+  this.map.setZoom(this.map.getZoom());
+  this.renderPrimaryDirections(response);
+}
+
 Map.prototype.zoom = function(zoom) {
   zoom = typeof a !== 'undefined' ? zoom : 11;
 };
