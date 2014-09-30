@@ -37,13 +37,26 @@ Map.prototype.buttonBinder = function(event, type) {
   event.preventDefault();
   this.deleteMarkers(this.stationMarkers);
 
-  request = $.ajax("/stations", {"method": "get"});
-  request.done(function(response) {
+  now = new Date();
+  stationUpdateTime = new Date(window.bikeStations[0].updated_at);
+  differenceInMilliseconds = now - stationUpdateTime;
+  differenceInMinutes = Math.round(((differenceInMilliseconds % 86400000) % 3600000) / 60000);
+
+  if ( differenceInMinutes > 1 ) { // it is out of date
+    console.log("data is old");
+    // console.log(Station.fetchAll());
+
+    // request = Station.fetchAll();
+    request = $.ajax("/stations", {"method": "get"});
+    request.done(function(response) {
+      this.makeStationMarkers(response, type);
+      this.placeAllMarkers(this.stationMarkers);
+    }.bind(this));
+  } else {
+    response = window.bikeStations;
     this.makeStationMarkers(response, type);
     this.placeAllMarkers(this.stationMarkers);
-    // var mc = new MarkerClusterer(this.map, this.stationMarkers, {gridSize: 50, maxZoom: 15 });
-    // setStationsMap(this.map)
-  }.bind(this));
+  }
 };
 
 Map.prototype.bindEvents = function() {
@@ -91,6 +104,7 @@ Map.prototype.bindEvents = function() {
     request.done(this.createRoute.bind(this));
   }.bind(this));
 };
+
 Map.prototype.createRoute = function(response) {
   this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
   this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
@@ -123,9 +137,9 @@ Map.prototype.makeStationMarkers = function(stations, type) {
 
 Map.prototype.makeStationMarker = function(station, type) {
   if(type == "Bikes"){
-      var availables = station.available_bikes
+      var availables = station.available_bikes;
     }
-  else{
+  else {
     var availables = station.available_docks;
   }
   var lat = parseFloat(station.latitude),
