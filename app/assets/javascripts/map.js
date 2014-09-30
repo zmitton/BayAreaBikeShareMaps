@@ -108,17 +108,27 @@ Map.prototype.bindEvents = function() {
   }.bind(this));
 };
 
+// Map.prototype.renderRoute = function(markers, zoom, response) {
+//   this.placeAllMarkers(markers);
+//   this.fitBoundsOfMarkers();
+//   this.map.setZoom(zoom);
+//   this.renderPrimaryDirections(response);
+// };
+
 Map.prototype.createRoute = function(response) {
   this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
   this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
   this.addMarker(response.start_station.lat, response.start_station.lng, "Pick-up Station", Marker.createDivvyIcon("2EB8E6", "Pick up"), this.route.markers);
   this.addMarker(response.end_station.lat, response.end_station.lng, "Drop-off Station", Marker.createDivvyIcon("2EB8E6", "Drop off"), this.route.markers);
   this.addMarker(response.end_location.lat, response.end_location.lng, "Destination", Marker.createLocationIcon("End"), this.route.markers);
-  this.placeAllMarkers(this.route.markers);
 
+  // this.renderRoute(this.route.markers, this.map.getZoom(), response);
+
+  this.placeAllMarkers(this.route.markers);
   this.fitBoundsOfMarkers();
   this.map.setZoom(this.map.getZoom());
   this.renderPrimaryDirections(response);
+  debugger;
 }
 
 Map.prototype.zoom = function(zoom) {
@@ -226,7 +236,6 @@ Map.prototype.initializeSecondary = function(){
     this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "checkin", Marker.createLocationIcon("checkin")));
     this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
     this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
-  debugger;
 };
 
 Map.prototype.calcSecondaryRoute = function(){

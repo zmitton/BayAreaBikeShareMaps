@@ -26,8 +26,10 @@ class Station < ActiveRecord::Base
   def self.fetch_all
     if self.stale?
       uri = URI("http://www.divvybikes.com/stations/json")
-      string = Net::HTTP.get(uri)
-      json = JSON.parse(string)
+
+      # string = Net::HTTP.get(uri)
+      # json = JSON.parse(string)
+      json = JSON.parse(Net::HTTP.get(uri))
       Station.delete_all
       json['stationBeanList'].each do |s|
         Station.create(station_id: s["id"] , name: s["stationName"] , available_docks: s["availableDocks"] , total_docks: s["totalDocks"] , latitude: s["latitude"] , longitude: s["longitude"] , status_value: s["statusValue"] , status_key: s["statusKey"] , available_bikes: s["availableBikes"] , intersection: s["stAddress1"] , city: s["city"] , location: s["location"] , test_station: s["testStation"] , last_communication_time: s["lastCommunicationTime"] , landmark: s["landMark"], intersection_2: s["stAddress2"], postal_code: s["postalCode"], altitude: s["altitude"] )
