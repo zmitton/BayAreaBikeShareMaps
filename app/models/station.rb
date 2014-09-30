@@ -19,8 +19,19 @@ class Station < ActiveRecord::Base
     self.find(self.find_distances_from(lat, lng)[0][0])
   end
 
+  def self.find_three(lat, lng)
+    sorted_stations = self.find_distances_from(lat, lng)
+    stations = []
+    i = 0
+    while i < 3
+      stations << sorted_stations[i][0]
+      i+=1
+    end
+    return stations
+  end
+
   def self.get_coords_of_station(station)
-    station_coords = {"lat" => station.latitude.to_f, "lng" => station.longitude.to_f}
+    p station_coords = {"lat" => station.latitude.to_f, "lng" => station.longitude.to_f}
   end
 
   def self.fetch_all
