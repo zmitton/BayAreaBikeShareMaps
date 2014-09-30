@@ -152,6 +152,10 @@ td.adp-substep {
   float: right;
 }
 
+.nav-caret {
+  display: none;
+}
+
   /* iPhone */
 @media screen and (max-width: 480px) {
   .search-form-container {
@@ -168,11 +172,11 @@ td.adp-substep {
     height: auto;
     max-width: 100%;
     width: 100%;
-    max-height: 900px;
+    max-height: 100%;
     font-size: 90%;
     padding: 0;
     text-align: center;
-    overflow: hidden;
+    overflow: scroll;
   }
 
   #map-canvas {
@@ -230,8 +234,8 @@ td.adp-substep {
     border-top: 1px solid lightgray;
     right: 0em;
     margin: 0 auto;
-    overflow: scroll;
-    height: 100%;
+    overflow: visible;
+    height: 900px;
     font-size: .8rem;
   }
 
@@ -247,6 +251,13 @@ td.adp-substep {
     display: none;
     padding: 1rem;
     font-size: 1rem;
+  }
+
+  .nav-caret {
+    position: absolute;
+    right: 1.25rem;
+    margin-top: .5rem;
+    display: inline;
   }
 
 }
