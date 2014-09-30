@@ -128,7 +128,6 @@ Map.prototype.createRoute = function(response) {
   this.fitBoundsOfMarkers();
   this.map.setZoom(this.map.getZoom());
   this.renderPrimaryDirections(response);
-  debugger;
 }
 
 Map.prototype.zoom = function(zoom) {
