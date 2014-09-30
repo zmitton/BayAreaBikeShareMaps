@@ -25,4 +25,26 @@ class GoogleApi
     result = JSON.parse(json)
   end
 
+  def self.get_optimal_route(closest_start_stations, closest_end_stations, start_coords, end_coords)
+    matrix = self.fetch_matrix_json
+  end
+
+  def self.fetch_matrix_json(closest_start_stations, closest_end_stations)
+    root_url = "http://maps.googleapis.com/maps/api/distancematrix/json?"
+    origins_url = "origins=#{self.format_stations(closest_start_stations)}"
+    destinations_url = "destinations=#{self.format_stations(closest_end_stations)}"
+    options = "&key=#{@@api}&avoid=highways&mode=#{bicycling}"
+    print uri = URI("#{root_url}#{origins_url}#{destinations_url}#{options}")
+    # json = Net::HTTP.get(uri)
+    # result = JSON.parse(json)
+  end
+
+  def self.format_stations(stations)
+    parameters = ""
+    stations.each_with_index do |station, index|
+      if index != 0
+      paramaters << "|#{Station.find(station.id).latitude},#{Station.find(station.id).longitude}"
+    end
+  end
+
 end
