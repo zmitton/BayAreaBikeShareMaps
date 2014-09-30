@@ -47,10 +47,14 @@ $(document).ready(function() {
     if ($('#directions').text() === 'List Directions') {
       $('.directions-panel-container').css('width', '100%');
       $('.directions-panel-container').show().scroll();
-      $('.search-form-container').css('height', '100%');
+      if ($(window).width() < 480) {
+        $('.search-form-container').css('height', '100%');
+      }
       $('#directions').html('Hide Directions');
     } else {
-      $('.search-form-container').css('height', 'auto');
+      if ($(window).width() < 480) {
+        $('.search-form-container').css('height', 'auto');
+      }
       $('.directions-panel-container').hide();
       $('#directions').html('List Directions');
     }
