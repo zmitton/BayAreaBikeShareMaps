@@ -18,8 +18,7 @@ Map.prototype.fitBoundsOfMarkers = function() {
   this.map.fitBounds(bounds);
 };
 
-Map.prototype.zoomToCurrentLocation = function(event) {
-  event.preventDefault;
+Map.prototype.zoomToCurrentLocation = function() {
   this.currentLatitude = $("input[name='start_latitude']").val();
   this.currentLongitude = $("input[name='start_longitude']").val();
   if(this.currentLatitude != "" && this.currentLongitude != "") {
@@ -61,7 +60,8 @@ Map.prototype.buttonBinder = function(event, type) {
 
 Map.prototype.bindEvents = function() {
   $(".zoom_to_current").on("click", function() {
-    this.zoomToCurrentLocation(event);
+    event.preventDefault;
+    this.zoomToCurrentLocation();
   }.bind(this));
 
   $("#bikes").on("click", function(event) {
@@ -278,6 +278,20 @@ Map.prototype.showCurrentLocation = function(position) {
   $("input[name='start_location']").val("Current location");
   $("input[name='start_latitude']").val(position.coords.latitude);
   $("input[name='start_longitude']").val(position.coords.longitude);
+  this.map.zoomToCurrentLocation();
+
+  var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+  var shellCircle = new google.maps.Circle({
+      map: this.map.map,
+      fillColor: '#73B9FF',
+      fillOpacity: 1,
+      center: userLatLng,
+      strokeColor: '#000000'
+  });
+
+      shellCircle.setRadius(20);
+
 }
 
 
