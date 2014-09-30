@@ -10,11 +10,9 @@ Station.fetchAllLiveData = function(){
 };
 
 Station.fetchAll = function(){
-  request = $.ajax("/stations", {"method": "get"});
-    request.done(function(response) {
-      console.log(response);
-      return response;
-    });
+  return request = $.ajax("/stations", {"method": "get"});
+    // request.done(function(response) {
+    // });
 };
 
 Station.find = function(id){

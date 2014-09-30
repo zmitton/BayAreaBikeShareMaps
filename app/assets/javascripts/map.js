@@ -44,17 +44,17 @@ Map.prototype.buttonBinder = function(event, type) {
 
   if ( differenceInMinutes > 1 ) { // it is out of date
     console.log("data is old");
-    // console.log(Station.fetchAll());
 
-    // request = Station.fetchAll();
-    request = $.ajax("/stations", {"method": "get"});
-    request.done(function(response) {
+    var stationsRequest = Station.fetchAll();
+
+    stationsRequest.done(function(response) {
+      window.bikeStations = response;
       this.makeStationMarkers(response, type);
       this.placeAllMarkers(this.stationMarkers);
     }.bind(this));
   } else {
-    response = window.bikeStations;
-    this.makeStationMarkers(response, type);
+    currentStationData = window.bikeStations;
+    this.makeStationMarkers(currentStationData, type);
     this.placeAllMarkers(this.stationMarkers);
   }
 };
