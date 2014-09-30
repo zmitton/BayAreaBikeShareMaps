@@ -99,6 +99,9 @@ Map.prototype.bindEvents = function() {
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers(this.route.markers);
+    this.route.tripTime = 0;
+    this.route.bikeTime = 0;
+    this.route.bikeDistance = 0;
     this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(this.createRoute.bind(this));
