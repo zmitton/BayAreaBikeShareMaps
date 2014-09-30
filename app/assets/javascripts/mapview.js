@@ -1,13 +1,12 @@
-function MapView() {
-  this.map = new Map("arg");
-  this.stations = Station.all;
-}
-MapView.prototype.getLocation = function() {
+// function MapView() {
+//   this.map = new Map("arg");
+// }
+Map.prototype.getLocation = function() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(this.showCurrentLocation);
   }
 }
-MapView.prototype.showCurrentLocation = function(position) {
+Map.prototype.showCurrentLocation = function(position) {
   $("input[name='start_location']").val("Current location");
   $("input[name='start_latitude']").val(position.coords.latitude);
   $("input[name='start_longitude']").val(position.coords.longitude);

@@ -6,7 +6,7 @@ function Route(){
   this.directionsService = new google.maps.DirectionsService();
   this.reponses = [];
   this.legs = [];
-  this.checkinStations = [];
+  this.checkInStations = [];
   this.tripTime = 0;
   this.bikeTime = 0;
   this.bikeDistance = 0;

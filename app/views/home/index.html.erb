@@ -29,9 +29,10 @@
 
 <script>
 $(document).ready(function () {
-  var mapView = new MapView();
-  mapView.map.bindEvents();
-  mapView.getLocation();
+  // var mapView = new MapView();
+  window.map =  new Map("arg");
+  map.bindEvents();
+  map.getLocation();
 });
 
 $(document).ready(function() {
