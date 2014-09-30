@@ -248,8 +248,19 @@ Map.prototype.handleRoute = function(response, index){
       calcSecondaryRoute();
     }
   }
-
 };
+
+Map.prototype.getLocation = function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(this.showCurrentLocation);
+  }
+}
+
+Map.prototype.showCurrentLocation = function(position) {
+  $("input[name='start_location']").val("Current location");
+  $("input[name='start_latitude']").val(position.coords.latitude);
+  $("input[name='start_longitude']").val(position.coords.longitude);
+}
 
 
 
