@@ -223,7 +223,7 @@
             for(var minute = startMinuteOfStep; minute < timeIntoRoute; minute++) {
               x += xDistancePerMinute;
               y += yDistancePerMinute;
-                debugger;
+
               if (minute > min && minute < max) {
                 coordsCheckInWindow.push([x, y]);
               }
