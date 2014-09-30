@@ -2,12 +2,16 @@ function Step(googleStep){
   this.googleStep = googleStep;
   this.x1 = googleStep.start_location.B;
   this.y1 = googleStep.start_location.k;
-  this.x2 = googleStep.start_location.B;
-  this.y2 = googleStep.start_location.k;
+  this.x2 = googleStep.end_location.B;
+  this.y2 = googleStep.end_location.k;
   this.duration = googleStep.duration.value; //seconds
+  this.startTime;
+  this.endTime;
+
 }
 
 Step.prototype.m = function(){
+  if (this.x2 == this.x1){return 10000}; //infinite slope!
   return (this.y2 - this.y1)/(this.x2 - this.x1);
 }
 Step.prototype.b = function(){
@@ -15,7 +19,7 @@ Step.prototype.b = function(){
 }
 
 Step.prototype.distance = function(){
-  return Math.sqrt(Math.pow((this.x2 - this.x1)) + Math.pow((this.y2 - this.y1))) ;
+  return Math.sqrt(Math.pow((this.x2 - this.x1), 2) + Math.pow((this.y2 - this.y1), 2)) ;
 }
 
 Step.prototype.northPoint = function(){

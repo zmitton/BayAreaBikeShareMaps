@@ -94,9 +94,9 @@ Map.prototype.bindEvents = function() {
 Map.prototype.createRoute = function(response) {
   this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
   this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
-  this.addMarker(response.start_station.lat, response.start_station.lng, "Start Station", Marker.createDivvyIcon("2EB8E6", "Pick up"), this.route.markers);
-  this.addMarker(response.end_station.lat, response.end_station.lng, "End Station", Marker.createDivvyIcon("2EB8E6", "Drop off"), this.route.markers);
-  this.addMarker(response.end_location.lat, response.end_location.lng, "End", Marker.createLocationIcon("End"), this.route.markers);
+  this.addMarker(response.start_station.lat, response.start_station.lng, "Pick-up Station", Marker.createDivvyIcon("2EB8E6", "Pick up"), this.route.markers);
+  this.addMarker(response.end_station.lat, response.end_station.lng, "Drop-off Station", Marker.createDivvyIcon("2EB8E6", "Drop off"), this.route.markers);
+  this.addMarker(response.end_location.lat, response.end_location.lng, "Destination", Marker.createLocationIcon("End"), this.route.markers);
   this.placeAllMarkers(this.route.markers);
 
   this.fitBoundsOfMarkers();
@@ -175,7 +175,7 @@ Map.prototype.calcRoute = function(){
     var i = index;
     return function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
-        // this.handleRoute(response, index);
+        this.handleRoute(response, index);
         this.route.setSummary(response);
         this.route.directionsDisplays[index].setDirections(response);
         this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
@@ -205,9 +205,11 @@ Map.prototype.renderSecondaryDirections = function(response){
 };
 
 Map.prototype.initializeSecondary = function(){
-    this.route.markers.splice(-1,0, new Marker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start")));
+    var checkInStation = this.route.checkInStations[this.route.checkInStations.length -1];
+    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "checkin", Marker.createLocationIcon("checkin")));
     this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
-    this.route.directionsDisplays[-2].setMap(this.map);
+    this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
+  debugger;
 };
 
 Map.prototype.calcSecondaryRoute = function(){
@@ -241,11 +243,13 @@ Map.prototype.handleRoute = function(response, index){
     this.route.legs.splice(1,0, new Leg(response.routes[0].legs[0]));
     if (this.route.legs[legIndex].tripTime >= this.route.legs[legIndex].TARGET_TIME ){
       nextCheckinStationId = this.route.legs[legIndex].findNextCheckinStation(legIndex);
-      console.log("findNextCheckinStation found");
       nextCheckinStation = Station.find(nextCheckinStationId)
-      this.deleteMarkers(this.route.markers);
-      initializeSecondary();
-      calcSecondaryRoute();
+      this.route.checkInStations.push(nextCheckinStation);
+      console.log("findNextCheckinStation found");
+      console.log(nextCheckinStation);
+      // makeTempMarker(nextCheckinStation.latitude, nextCheckinStation.longitude, nextCheckinStation.name)
+      // this.deleteMarkers(this.route.markers); //untested
+      this.renderSecondaryDirections();
     }
   }
 };

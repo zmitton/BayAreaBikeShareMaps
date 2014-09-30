@@ -17,7 +17,15 @@ Station.fetchAll = function(){
 
 Station.find = function(id){
   for (var i = 0 ; i < window.bikeStations.length ; i++ ){
-    if(window.bikeStations[i].id == id){
+    if(window.bikeStations[i].station_id == id){
+      return window.bikeStations[i];
+    }
+  }
+};
+
+Station.findBy = function(id){
+  for (var i = 0 ; i < window.bikeStations.length ; i++ ){
+    if(window.bikeStations[i].station_id == id){
       return window.bikeStations[i];
     }
   }
