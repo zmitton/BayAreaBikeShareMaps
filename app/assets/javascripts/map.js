@@ -33,20 +33,26 @@ Map.prototype.zoomToCurrentLocation = function() {
 
 var timeUp = false;
 
+var changeTimeUp = function(time) {
+  time = true;
+  console.log(time);
+}
+
 function minuteTimer() {
-  setTimeout(function(){timeUp == true;}, 3000);
+  setTimeout(function(){changeTimeUp(timeUp);}, 6000);
 }
 
 
 Map.prototype.buttonBinder = function(event, type) {
   event.preventDefault();
-  this.deleteStationMarkers();
 
+  minuteTimer();
+  this.deleteMarkers(this.stationMarkers);
  if ( timeUp == false ) { // it is out of date
     currentStationData = window.bikeStations;
     this.makeStationMarkers(currentStationData, type);
     this.placeAllMarkers(this.stationMarkers);
-  } else {
+  } else if (timeUp == true ) {
     console.log("data is old");
     var stationsRequest = Station.fetchAll();
     stationsRequest.done(function(response) {
