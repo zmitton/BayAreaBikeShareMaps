@@ -61,6 +61,7 @@ $(document).ready(function() {
     event.preventDefault();
     $('form.search-form').slideUp();
     $('.nav-caret').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+    $('.nav-caret').css('top', '.0075rem');
     $('.controls-container').css('margin-top', '.5rem', 'margin-bottom', '.5rem');
   });
 
@@ -68,6 +69,7 @@ $(document).ready(function() {
     event.preventDefault();
     $('form.search-form').slideDown();
     $('.nav-caret').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+    $('.nav-caret').css('top', '6.9rem');
   });
 
   $(window).resize(function() {
