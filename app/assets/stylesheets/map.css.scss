@@ -138,22 +138,19 @@ td.adp-substep {
   margin-right: 2rem;
 }
 
-.start_station {
+.station_summary {
   padding: 1rem 0rem 0rem 0rem;
-  text-align: left;
-}
-.end_station {
-  margin: 1rem 0 0 0;
   text-align: left;
 }
 
 .station_data {
-  background-color: #194775;
-  border-radius: 10px;
+  background-color: $divvy-blue;
+  border-radius: 2px;
   color: white;
   padding: .25rem;
-  font-size: .5rem;
+  font-size: .7rem;
   float: right;
+  // font-weight: bold;
 }
 
 .nav-caret {
@@ -228,7 +225,7 @@ td.adp-substep {
     bottom: 2rem;
     right: 1rem;
     color: white;
-    background-color: #194775;
+    background-color: $divvy-blue;
     border-radius: 50%;
     font-size: 20px;
     padding: .25rem .5rem;
@@ -243,9 +240,6 @@ td.adp-substep {
     font-size: .8rem;
   }
 
-  .start_station {
-    margin-left: .5rem;
-  }
   .trip_time, .biking, .end_station {
     padding: .5rem;
     text-align: left;
