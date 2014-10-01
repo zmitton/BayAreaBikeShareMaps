@@ -292,7 +292,6 @@ Map.prototype.showCurrentLocation = function(position) {
   this.map.zoomToCurrentLocation();
 
   var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
   var shellCircle = new google.maps.Circle({
       map: this.map.map,
       fillColor: '#73B9FF',
@@ -300,9 +299,7 @@ Map.prototype.showCurrentLocation = function(position) {
       center: userLatLng,
       strokeColor: '#000000'
   });
-
-      shellCircle.setRadius(20);
-
+  shellCircle.setRadius(20);
 }
 
 
