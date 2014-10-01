@@ -31,33 +31,54 @@ Map.prototype.zoomToCurrentLocation = function() {
   }
 };
 
+var timeUp = false;
+
+function minuteTimer() {
+  setTimeout(function(){timeUp == true;}, 3000);
+}
 
 
 Map.prototype.buttonBinder = function(event, type) {
   event.preventDefault();
   this.deleteStationMarkers();
 
-  now = new Date();
-  stationUpdateTime = new Date(window.bikeStations[0].updated_at);
-  differenceInMilliseconds = now - stationUpdateTime;
-  differenceInMinutes = Math.round(((differenceInMilliseconds % 86400000) % 3600000) / 60000);
-
-  if ( differenceInMinutes > 1 ) { // it is out of date
+ if ( timeUp == false ) { // it is out of date
+    currentStationData = window.bikeStations;
+    this.makeStationMarkers(currentStationData, type);
+    this.placeAllMarkers(this.stationMarkers);
+  } else {
     console.log("data is old");
-
     var stationsRequest = Station.fetchAll();
-
     stationsRequest.done(function(response) {
       window.bikeStations = response;
       this.makeStationMarkers(response, type);
       this.placeAllStationMarkers(this.stationMarkers);
     }.bind(this));
-  } else {
-    currentStationData = window.bikeStations;
-    this.makeStationMarkers(currentStationData, type);
-    this.placeAllStationMarkers(this.stationMarkers);
   }
 };
+
+  // now = new Date();
+  // stationUpdateTime = new Date(window.bikeStations[0].updated_at);
+  // differenceInMilliseconds = now - stationUpdateTime;
+  // differenceInMinutes = Math.round(((differenceInMilliseconds % 86400000) % 3600000) / 60000);
+
+
+//   if ( differenceInMinutes > 1 ) { // it is out of date
+//     console.log("data is old");
+
+//     minuteTimer();
+//     var stationsRequest = Station.fetchAll();
+//     stationsRequest.done(function(response) {
+//       window.bikeStations = response;
+//       this.makeStationMarkers(response, type);
+//       this.placeAllMarkers(this.stationMarkers);
+//     }.bind(this));
+//   } else {
+//     currentStationData = window.bikeStations;
+//     this.makeStationMarkers(currentStationData, type);
+//     this.placeAllMarkers(this.stationMarkers);
+//   }
+// };
 
 Map.prototype.bindEvents = function() {
   $(".zoom_to_current").on("click", function() {
