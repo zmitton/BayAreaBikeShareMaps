@@ -31,18 +31,12 @@ Map.prototype.zoomToCurrentLocation = function() {
   }
 };
 
-var timeUp = false;
-
-var changeTimeUp = function(time) {
-  time = true;
-  console.log(time);
-}
 
 function minuteTimer() {
   setTimeout(function(){changeTimeUp(timeUp);}, 6000);
 }
 
-  minuteTimer();
+minuteTimer();
 Map.prototype.buttonBinder = function(event, type) {
   event.preventDefault();
   this.deleteMarkers(this.stationMarkers);
