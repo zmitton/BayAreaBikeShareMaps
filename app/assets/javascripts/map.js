@@ -1,4 +1,4 @@
-function Map() {
+function Map(lat,lng) {
   this.stationMarkers = [];
   this.latitude = 41.8896848;
   this.longitude = -87.6377502;
@@ -7,30 +7,27 @@ function Map() {
   this.map = new google.maps.Map(document.getElementById('map-canvas'),{ zoom: this.zoom, center: this.latlng, mapTypeControl: false, mapTypeId: google.maps.MapTypeId.ROADMAP, scale: 2});
   this.currentLatitude;
   this.currentLongitude;
-  this.route = new Route;
+  this.route = new Route(lat,lng);
 };
 
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
-  for (var i = 0; i < this.route.markers.length; i++) {
-    bounds.extend(this.route.markers[i].marker.getPosition());
+  for (var i = 0; i < this.route.bikingLegs.length; i++) {
+    bounds.extend(this.route.bikingLegs.marker.marker.getPosition());
   }
   this.map.fitBounds(bounds);
 };
 
 Map.prototype.zoomToCurrentLocation = function(event) {
-  event.preventDefault;
+  event.preventDefault();
   this.currentLatitude = $("input[name='start_latitude']").val();
   this.currentLongitude = $("input[name='start_longitude']").val();
-  if(this.currentLatitude != "" && this.currentLongitude != "") {
+  if(this.currentLatitude !== "" && this.currentLongitude !== "") {
     this.map.setCenter(new google.maps.LatLng(this.currentLatitude,this.currentLongitude));
     this.map.setZoom(15);
   }
-}
-
-Map.prototype.addMarker = function(lat, lng, title, icon, markers) {
-  markers.push(new Marker(lat, lng, title, icon));
 };
+
 
 
 Map.prototype.buttonBinder = function(event, type) {
@@ -85,45 +82,44 @@ Map.prototype.bindEvents = function() {
 
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
-    this.deleteMarkers(this.route.markers);
-    this.route.legs = []; //reset legs
+    this.clearMarkers();
+    this.clearDirections();
+    this.route.bikingLegs = []; //reset legs
+
+    // var requests = this.createRequests(getOrigin(), $('#destination').val())
+    // this.fetchRoutes(requests);
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
-    request.done(this.createRoute.bind(this));
+    request.done(function(response){
+      this.route = new Route(response.start_location.lat, response.start_location.lng)
+      var requests = this.createBaseRequests(response);
+      this.fetchBaseRoute(requests);
+    }.bind(this));
   }.bind(this));
 };
-Map.prototype.createRoute = function(response) {
-  this.route.routeStations = {start: response.start_station_object, end: response.end_station_object}
-  this.addMarker(response.start_location.lat, response.start_location.lng, "Start", Marker.createLocationIcon("Start"), this.route.markers);
-  this.addMarker(response.start_station.lat, response.start_station.lng, "Pick-up Station", Marker.createDivvyIcon("2EB8E6", "Pick up"), this.route.markers);
-  this.addMarker(response.end_station.lat, response.end_station.lng, "Drop-off Station", Marker.createDivvyIcon("2EB8E6", "Drop off"), this.route.markers);
-  this.addMarker(response.end_location.lat, response.end_location.lng, "Destination", Marker.createLocationIcon("End"), this.route.markers);
-  this.placeAllMarkers(this.route.markers);
-
-  this.fitBoundsOfMarkers();
-  this.map.setZoom(this.map.getZoom());
-  this.renderPrimaryDirections(response);
-}
 
 Map.prototype.zoom = function(zoom) {
   zoom = typeof a !== 'undefined' ? zoom : 11;
 };
 
-Map.prototype.clearMarkers = function(markers){
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].marker.setMap(null);
+Map.prototype.clearMarkers = function(){
+  this.route.startMarker.marker.setMap(null);
+  for (var i = 0; i < this.route.bikingLegs.length; i++) {
+    this.route.bikingLegs[i].endMarker.marker.setMap(null);
   }
-
+  for (var i = 0; i < this.route.walkingLegs.length; i++) {
+    this.route.walkingLegs[i].endMarker.marker.setMap(null);
+  }
 };
 
 Map.prototype.makeStationMarkers = function(stations, type) {
   for(var i = 0; i <  stations.length; i++) {
-    this.makeStationMarker(stations[i], type)
+    this.makeStationMarker(stations[i], type);
   }
 };
 
 Map.prototype.makeStationMarker = function(station, type) {
   if(type == "Bikes"){
-      var availables = station.available_bikes
+      var availables = station.available_bikes;
     }
   else{
     var availables = station.available_docks;
@@ -133,59 +129,92 @@ Map.prototype.makeStationMarker = function(station, type) {
   iconColor = Marker.getIconColor(availables),
   icon = Marker.createDivvyIcon(iconColor, availables);
   this.stationMarkers.push(new Marker(lat, lng, station.location, icon));
+};
+
+Map.prototype.placeAllMarkers = function(){
+  this.route.startMarker.marker.setMap(this.map);
+  for (var i = 0; i < this.route.bikingLegs.length; i++) {
+    this.route.bikingLegs[i].endMarker.marker.setMap(this.map);
+  }
+  for (var i = 0; i < this.route.walkingLegs.length; i++) {
+    this.route.walkingLegs[i].endMarker.marker.setMap(this.map);
+  }
+};
+// Map.prototype.deleteMarkers = function(){
+//   // this.clearMarkers();
+// };
+
+Map.prototype.clearDirections = function(){
+  for(var i = 0 ; i < this.route.bikingLegs.length ; i ++){
+    this.route.bikingLegs[i].directionsDisplay.setMap(null);
+  }
+  for(var i = 0 ; i < this.route.walkingLegs.length ; i ++){
+    this.route.walkingLegs[i].directionsDisplay.setMap(null);
+  }
 }
 
-Map.prototype.placeAllMarkers = function(markers){
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].marker.setMap(this.map);
+Map.prototype.placeAllDirections = function(){
+  for(var i = 0 ; i < this.route.bikingLegs.length ; i ++){
+    this.route.bikingLegs[i].directionsDisplay.setMap(null);
+    this.route.bikingLegs[i].directionsDisplay.setDirections(this.route.bikingLegs[i].response);
+    this.route.bikingLegs[i].directionsDisplay.setMap(this.map);
   }
-};
-Map.prototype.deleteMarkers = function(markers){
-  this.clearMarkers(markers);
-  markers.splice(0, markers.length)
-};
-
-Map.prototype.initialize = function(){
-  for(var i = 0 ; i < this.route.directionsDisplays.length ; i ++){
-    this.route.directionsDisplays[i].setMap(this.map);
+  for(var i = 0 ; i < this.route.walkingLegs.length ; i ++){
+    this.route.walkingLegs[i].directionsDisplay.setMap(null);
+    this.route.walkingLegs[i].directionsDisplay.setDirections(this.route.walkingLegs[i].response);
+    this.route.walkingLegs[i].directionsDisplay.setMap(this.map);
   }
 };
 
-Map.prototype.requests = function() {
+Map.prototype.createBaseRequests = function(response) {
   return [{
-    origin: this.route.markers[0].marker.position,
-    destination: this.route.markers[1].marker.position,
+    origin: new google.maps.LatLng(response.start_location.lat, response.start_location.lng),
+    destination: new google.maps.LatLng(response.start_station.lat, response.start_station.lng),
     travelMode: google.maps.TravelMode["WALKING"]
   },
   {
-    origin: this.route.markers[1].marker.position,
-    destination: this.route.markers[2].marker.position,
+    origin:new google.maps.LatLng(response.start_station.lat, response.start_station.lng),
+    destination: new google.maps.LatLng(response.end_station.lat, response.end_station.lng),
     travelMode: google.maps.TravelMode["BICYCLING"]
   },
   {
-    origin: this.route.markers[2].marker.position,
-    destination: this.route.markers[3].marker.position,
+    origin:  new google.maps.LatLng(response.end_station.lat, response.end_station.lng),
+    destination:  new google.maps.LatLng(response.end_location.lat, response.end_location.lng),
     travelMode: google.maps.TravelMode["WALKING"]
   }];
 };
 
-Map.prototype.calcRoute = function(){
-  var requests = this.requests();
+Map.prototype.createSubsequentRequests = function() {
+  var length = this.route.bikingLegs.length;
+  if(length <= 1){var lastStation = this.route.walkingLegs[0].endMarker.marker.position}
+  else{          var lastStation = this.route.bikingLegs[length-2].endMarker.marker.position;};
+  var checkIn =  new google.maps.LatLng(this.route.nextCheckinStation.latitude, this.route.nextCheckinStation.longitude)//just found
+  var dropOff = this.route.bikingLegs[length-1].endMarker.marker.position;
+  this.route.bikingLegs.shift();
+  return [{
+    origin: lastStation,
+    destination: checkIn,
+    travelMode: google.maps.TravelMode["BICYCLING"]
+  },
+  {
+    origin: checkIn,
+    destination: dropOff,
+    travelMode: google.maps.TravelMode["BICYCLING"]
+  }];
+};
+
+Map.prototype.fetchBaseRoute = function(requests){
   var displayRouteWrapper = function(index) {
     var i = index;
-    return function(response, status) {
-      if (status == google.maps.DirectionsStatus.OK) {
-        this.handleRoute(response, index);
-        this.route.setSummary(response);
-        this.route.directionsDisplays[index].setDirections(response);
-        this.route.directionsDisplays[index].setPanel(document.getElementById('directions-panel-' + index));
-        if ($('#directions-panel-1').html() === "") {
-          $('#directions-panel-1').prepend('Pickup: ' + this.route.routeStations.start.intersection);
+    return function(response, status){
+      if (status == google.maps.DirectionsStatus.OK){
+        if ( index == 1 ){
+          this.route.bikingLegs.push(new Leg(response, {"markerTitle": "DropOff"}));
         }
-        if ($('#directions-panel-2').html() === "") {
-          $('#directions-panel-2').prepend('Drop-off: ' + this.route. routeStations.end.intersection);
-        }
-        this.route.setDashedLines(response, this.map);
+        else if( index == 0 ){this.route.walkingLegs.unshift(new Leg(response, {"walking": true, "markerTitle": "Pickup"}))}
+        else if( index == 2 ){this.route.walkingLegs.push( new Leg(response, {"walking": true, "markerTitle": "End"}))};
+
+        if(this.route.walkingLegs.length >= 2 && this.route.bikingLegs.length >=1){this.handleBikeRoute();}
       }
     }.bind(this);
   }.bind(this);
@@ -194,63 +223,50 @@ Map.prototype.calcRoute = function(){
   }
 };
 
-Map.prototype.renderPrimaryDirections = function(response){
-  this.initialize();
-  this.calcRoute();
-};
-
-Map.prototype.renderSecondaryDirections = function(response){
-  this.initializeSecondary();
-  this.calcSecondaryRoute();
-};
-
-Map.prototype.initializeSecondary = function(){
-    var checkInStation = this.route.checkInStations[this.route.checkInStations.length -1];
-    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "checkin", Marker.createLocationIcon("checkin")));
-    this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
-    this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
-  debugger;
-};
-
-Map.prototype.calcSecondaryRoute = function(){
-  var request = {origin: this.route.markers[this.route.markers.length-2].marker.position,
-                 destination: this.route.markers[this.route.markers.length-1].marker.position,
-                 travelMode: google.maps.TravelMode["BICYCLING"]
-                }
-  var displaySecondaryRouteHandler = function(response) {
-    if (status == google.maps.DirectionsStatus.OK) {
-      var length = this.route.directionsDisplays.length;
-      this.handleRoute(response);
-      this.route.directionsDisplays[length-2].setDirections(response);
-      $('directions-panel-' + length-1).id = 'directions-panel-' + length;
-      $('<div id="directions-panel-' + length + '"></div>');
-      this.route.directionsDisplays[length-2].setPanel(document.getElementById('directions-panel-' + length-2));
-      this.route.legs.push(response.routes[0].legs[0]);
-    }
+Map.prototype.fetchSubsequentRoute = function(requests){
+  var displayRouteWrapper = function(index, length) {
+    var l = length;
+    var i = index;
+    return function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        if ( index == 0 ){
+          this.route.bikingLegs.splice(l,0,new Leg(response, {}));
+        }
+        else if( index == 1 ){
+          this.route.bikingLegs.push(new Leg(response, {"markerTitle": "DropOff"}));
+        };
+        if(this.route.bikingLegs.length == l+2){
+          this.handleBikeRoute();
+        }
+      }
+    }.bind(this);
+  }.bind(this);
+  for(var j = 0 ; j < requests.length; j++){
+    this.route.directionsService.route(requests[j], displayRouteWrapper(j, this.route.bikingLegs.length));
   }
-  this.route.directionsService.route(request, displaySecondaryRouteHandler);
 };
 
 
-Map.prototype.handleRoute = function(response, index){
+Map.prototype.handleBikeRoute = function(){
   var nextCheckinStation;
   var nextCheckinStationId;
-  // if(index == 0){this.route.legs.unshift(new Leg(response.routes[0].legs[0]));}
-  // else if(index == 2){this.route.legs.push(new Leg(response.routes[0].legs[0]));}
-  // else
-    if(index == 1){
-    var legIndex = this.route.legs.length;
-    this.route.legs.splice(1,0, new Leg(response.routes[0].legs[0]));
-    if (this.route.legs[legIndex].tripTime >= this.route.legs[legIndex].TARGET_TIME ){
-      nextCheckinStationId = this.route.legs[legIndex].findNextCheckinStation(legIndex);
-      nextCheckinStation = Station.find(nextCheckinStationId)
-      this.route.checkInStations.push(nextCheckinStation);
-      console.log("findNextCheckinStation found");
-      console.log(nextCheckinStation);
-      // makeTempMarker(nextCheckinStation.latitude, nextCheckinStation.longitude, nextCheckinStation.name)
-      // this.deleteMarkers(this.route.markers); //untested
-      this.renderSecondaryDirections();
-    }
+  var legIndex = this.route.bikingLegs.length-1;
+  if (this.route.bikingLegs[legIndex].tripTime >= this.route.bikingLegs[legIndex].TARGET_TIME ){
+    nextCheckinStationId = this.route.bikingLegs[legIndex].findNextCheckinStation(legIndex);
+    nextCheckinStation = Station.find(nextCheckinStationId);
+    this.route.nextCheckinStation = nextCheckinStation;
+
+    console.log("findNextCheckinStation found");
+    console.log(nextCheckinStation);
+    // makeTempMarker(nextCheckinStation.latitude, nextCheckinStation.longitude, nextCheckinStation.name)
+
+    var requests = this.createSubsequentRequests();
+    this.fetchSubsequentRoute(requests);
+  }
+  else{ //routes done.. base case.. display everything
+    this.placeAllMarkers();
+    this.placeAllDirections();
+    //change name of last marker;
   }
 };
 
@@ -258,16 +274,10 @@ Map.prototype.getLocation = function() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(this.showCurrentLocation);
   }
-}
+};
 
 Map.prototype.showCurrentLocation = function(position) {
   $("input[name='start_location']").val("Current location");
   $("input[name='start_latitude']").val(position.coords.latitude);
   $("input[name='start_longitude']").val(position.coords.longitude);
-}
-
-
-
-
-
-
+};
