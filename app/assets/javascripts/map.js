@@ -42,18 +42,16 @@ function minuteTimer() {
   setTimeout(function(){changeTimeUp(timeUp);}, 6000);
 }
 
-
+  minuteTimer();
 Map.prototype.buttonBinder = function(event, type) {
   event.preventDefault();
-
-  minuteTimer();
   this.deleteMarkers(this.stationMarkers);
- if ( timeUp == false ) { // it is out of date
+ if ( timeUp == false ) {
     currentStationData = window.bikeStations;
     this.makeStationMarkers(currentStationData, type);
     this.placeAllMarkers(this.stationMarkers);
   } else if (timeUp == true ) {
-    console.log("data is old");
+    console.log("data is being updated");
     var stationsRequest = Station.fetchAll();
     stationsRequest.done(function(response) {
       window.bikeStations = response;
@@ -63,31 +61,8 @@ Map.prototype.buttonBinder = function(event, type) {
   }
 };
 
-  // now = new Date();
-  // stationUpdateTime = new Date(window.bikeStations[0].updated_at);
-  // differenceInMilliseconds = now - stationUpdateTime;
-  // differenceInMinutes = Math.round(((differenceInMilliseconds % 86400000) % 3600000) / 60000);
-
-
-//   if ( differenceInMinutes > 1 ) { // it is out of date
-//     console.log("data is old");
-
-//     minuteTimer();
-//     var stationsRequest = Station.fetchAll();
-//     stationsRequest.done(function(response) {
-//       window.bikeStations = response;
-//       this.makeStationMarkers(response, type);
-//       this.placeAllMarkers(this.stationMarkers);
-//     }.bind(this));
-//   } else {
-//     currentStationData = window.bikeStations;
-//     this.makeStationMarkers(currentStationData, type);
-//     this.placeAllMarkers(this.stationMarkers);
-//   }
-// };
-
 Map.prototype.bindEvents = function() {
-  $(".zoom_to_current").on("click", function() {
+  $(".zoom_to_current").on("click", function(event) {
     event.preventDefault;
     this.zoomToCurrentLocation();
   }.bind(this));
@@ -96,15 +71,15 @@ Map.prototype.bindEvents = function() {
     var $bikeButton = $("#bikes");
     event.preventDefault();
     if ($bikeButton.val() == "Hide Bikes") {
-      this.deleteStationMarkers();
       $bikeButton.val("Bikes");
+      this.deleteMarkers(this.stationMarkers);
     } else if ($("#docks").val() == "Hide Docks") {
       $("#docks").val("Docks");
       $bikeButton.val('Hide Bikes');
       this.buttonBinder(event,"Bikes");
     } else {
-      $bikeButton.val('Hide Bikes');
       this.buttonBinder(event,"Bikes");
+      $bikeButton.val('Hide Bikes');
     }
   }.bind(this));
 
@@ -145,7 +120,28 @@ Map.prototype.bindEvents = function() {
     }.bind(this));
   }.bind(this));
 };
+  // now = new Date();
+  // stationUpdateTime = new Date(window.bikeStations[0].updated_at);
+  // differenceInMilliseconds = now - stationUpdateTime;
+  // differenceInMinutes = Math.round(((differenceInMilliseconds % 86400000) % 3600000) / 60000);
 
+
+//   if ( differenceInMinutes > 1 ) { // it is out of date
+//     console.log("data is old");
+
+//     minuteTimer();
+//     var stationsRequest = Station.fetchAll();
+//     stationsRequest.done(function(response) {
+//       window.bikeStations = response;
+//       this.makeStationMarkers(response, type);
+//       this.placeAllMarkers(this.stationMarkers);
+//     }.bind(this));
+//   } else {
+//     currentStationData = window.bikeStations;
+//     this.makeStationMarkers(currentStationData, type);
+//     this.placeAllMarkers(this.stationMarkers);
+//   }
+// };
 
 Map.prototype.zoom = function(zoom) {
   zoom = typeof a !== 'undefined' ? zoom : 11;
