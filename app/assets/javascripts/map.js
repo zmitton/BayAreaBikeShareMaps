@@ -190,7 +190,7 @@ Map.prototype.createSubsequentRequests = function() {
   else{          var lastStation = this.route.bikingLegs[length-2].endMarker.marker.position;};
   var checkIn =  new google.maps.LatLng(this.route.nextCheckinStation.latitude, this.route.nextCheckinStation.longitude)//just found
   var dropOff = this.route.bikingLegs[length-1].endMarker.marker.position;
-  this.route.bikingLegs.shift();
+  this.route.bikingLegs.pop();
   return [{
     origin: lastStation,
     destination: checkIn,
