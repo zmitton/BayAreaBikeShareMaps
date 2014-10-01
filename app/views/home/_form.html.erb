@@ -1,9 +1,9 @@
 <form class="search-form pure-form" action="/search" method="GET">
   <fieldset class="pure-group">
-    <input type="hidden" name="start_latitude" value="" />
-    <input type="hidden" name="start_longitude" value=""/>
-    <input class="pure-input-1 input-field" type="text" placeholder="Starting point" name="start_location" value="351 w hubbard" />
-    <input class="pure-input-1 input-field" type="text" placeholder="Destination" name="end_location" value="kedzie and milwaukee"/>
+    <input id="originLatitude" type="hidden" name="start_latitude" value="" />
+    <input id="originLongitude" type="hidden" name="start_longitude" value=""/>
+    <input id="origin" class="pure-input-1 input-field" type="text" placeholder="Starting point" name="start_location" value="351 w hubbard" />
+    <input id="destination" class="pure-input-1 input-field" type="text" placeholder="Destination" name="end_location" value="kedzie and milwaukee"/>
     <button type="submit" class="pure-button pure-input-1 pure-button-primary go-button ">Go</button>
   </fieldset>
 </form>

@@ -31,3 +31,24 @@ Station.findBy = function(id){
     }
   }
 };
+
+
+  Station.findDistancesFrom = function(lat, lng){
+    stationDistances = []
+    for(var i  = 0 ; i < window.bikeStations.length ; i++){
+      if (bikeStations[i].available_bikes > 0){
+        var tempArr = [bikeStations[i].station_id];
+        var x_distance = Math.abs(bikeStations[i].latitude - lat)
+        var y_distance = Math.abs(bikeStations[i].longitude - lng)
+        var distance_sqrd = Math.pow(x_distance, 2) + Math.pow(y_distance, 2)
+        var distance = Math.sqrt(distance_sqrd);
+        tempArr.push(distance);
+        stationDistances.push(tempArr);
+      }
+    }
+    return stationDistances.sort(function(a,b){return parseFloat(a[1]) - parseFloat(b[1])});
+  }
+
+  Station.findClosestTo = function(lat, lng){
+    return this.find(this.findDistancesFrom(lat, lng)[0][0]);
+  }

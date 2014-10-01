@@ -1,2 +1,12 @@
 window.map = "";
 window.bikeStations = <%= (Station.fetch_all).to_json %>
+
+function getOrigin(){
+  var lat = $('#originLatitude');
+  var lng = $('#originLongitude');
+  if (lat !== "" && lng !== "")
+    return  Marker(lat, lng, "start", createLocationIcon("start"));
+  else{
+    return $('#origin').val();
+  }
+}
