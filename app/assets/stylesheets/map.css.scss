@@ -133,6 +133,10 @@ td.adp-substep {
   margin-top: 1rem;
   clear: both;
 }
+.summary div:last-child {
+  margin-bottom: 1rem;
+  clear: both;
+}
 
 .trip_time {
   float: left;
@@ -162,6 +166,12 @@ td.adp-substep {
   display: none;
   color: $divvy-blue;
 }
+
+.adp-text {
+  display: none;
+}
+
+
 
   /* iPhone */
 @media screen and (max-width: 480px) {

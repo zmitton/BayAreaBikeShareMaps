@@ -357,17 +357,25 @@ Map.prototype.parseAndRenderDirections = function(){
   $div.attr("id",'directions-panel-' + i);
   directionContainer.append($div);
   this.route.walkingLegs[i].directionsDisplay.setPanel(document.getElementById('directions-panel-' + i));
+  var $startDiv = $('<div class="station_summary"><b>Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span><b></div>')
+  $($div).append($startDiv)
+  var $divStation;
   i++;
   for(j ; j < this.route.bikingLegs.length ; j++){
     $div = $('<div  class="directions-panel-leg-container"></div>');
     $div.attr("id",'directions-panel-' + (i + j));
     directionContainer.append($div);
     this.route.bikingLegs[j].directionsDisplay.setPanel(document.getElementById('directions-panel-' + (j + i)));
+    $divStation = $('<div class="station_summary"><b>Check-In: <span class="station_intersection">'+ this.route.routeStations[j+1].intersection +'</span><b></div>');
+    $($div).append($divStation)
   }
   $div = $('<div class="directions-panel-leg-container"></div>');
   directionContainer.append($div);
   $div.attr("id",'directions-panel-' + (i + j));
   this.route.walkingLegs[i].directionsDisplay.setPanel(document.getElementById('directions-panel-' + (i + j)));
+
+  var $endDiv = $('<div class="station_summary"><b>Drop-Off: <span class="station_intersection">'+ this.route.routeStations[this.route.routeStations.length -1].intersection +'</span><b></div>')
+  $($div).append($endDiv)
 }
 
 
@@ -406,8 +414,6 @@ Map.prototype.setSummary = function(response) {
     summaryContainer.append($div);
   }
   var $endDiv = $('<div class="station_summary">Drop-Off: <span class="station_intersection">'+ this.route.routeStations[numStations -1].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[numStations -1].available_docks +'</span> docks</span></div>')
-
-
   summaryContainer.append($endDiv);
 
 }
