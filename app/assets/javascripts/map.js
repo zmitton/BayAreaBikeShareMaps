@@ -406,6 +406,8 @@ Map.prototype.setSummary = function(response) {
     summaryContainer.append($div);
   }
   var $endDiv = $('<div class="station_summary">Drop-Off: <span class="station_intersection">'+ this.route.routeStations[numStations -1].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[numStations -1].available_docks +'</span> docks</span></div>')
+
+
   summaryContainer.append($endDiv);
 
 }
