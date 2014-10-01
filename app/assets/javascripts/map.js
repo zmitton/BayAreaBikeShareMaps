@@ -390,10 +390,11 @@ Map.prototype.showCurrentLocation = function(position) {
   var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
   var shellCircle = new google.maps.Circle({
       map: this.map.map,
-      fillColor: '#73B9FF',
+      fillColor: '#3db7e4',
       fillOpacity: 1,
       center: userLatLng,
-      strokeColor: '#000000'
+      strokeColor: '#3db7e4',
+      strokeOpacity: .4
   });
   shellCircle.setRadius(20);
 }
