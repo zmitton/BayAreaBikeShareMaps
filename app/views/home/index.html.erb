@@ -13,9 +13,6 @@
       <div class="end_station">Drop-off: <span id="end_station_intersection"></span> <span class="station_data"><span class="end_station_docks"> </span> docks</span></div>
   </div>
   <div class="directions-panel-container">
-    <div id="directions-panel-0" class="directions-panel-leg-container"></div>
-    <div id="directions-panel-1" class="directions-panel-leg-container"></div>
-    <div id="directions-panel-2" class="directions-panel-leg-container"></div>
   </div>
 </div>
 
@@ -30,7 +27,7 @@
 
 <script>
 $(document).ready(function () {
-  window.map =  new Map("arg");
+  window.map =  new Map();
   map.bindEvents();
   map.getLocation();
 });

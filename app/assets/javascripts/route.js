@@ -5,9 +5,12 @@ function Route(startingLat, startingLng){
   this.nextCheckinStation;
   this.bikingLegs = [];
   this.walkingLegs = [];
+  this.bikeTime = 0;
+  this.bikeDistance = 0;
+  this.walkingLines = [];
 }
 
-Route.prototype.setDashedLines = function(response, map) {
+Route.prototype.setDashedLines = function(response) {
   if (response.nc.travelMode == "WALKING") {
     var lineSymbol = {
       path: google.maps.SymbolPath.CIRCLE,
@@ -15,10 +18,10 @@ Route.prototype.setDashedLines = function(response, map) {
       scale: 4,
       strokeColor: '#73B9FF'
     };
-    var steps = response.routes[0].bikingLegs[0].steps;
+    var steps = response.routes[0].legs[0].steps;
     for(var i = 0; i < steps.length; i++) {
       var lineCoordinates = [steps[i].start_location, steps[i].end_location];
-      var line = new google.maps.Polyline({
+      var walkingLine = new google.maps.Polyline({
         path: lineCoordinates,
         strokeOpacity: 0,
         icons: [{
@@ -26,8 +29,9 @@ Route.prototype.setDashedLines = function(response, map) {
           offset: '0',
           repeat: '20px'
         }],
-        map: map
+        map: map.map
       });
+      this.walkingLines.push(walkingLine);
     }
   };
 };
