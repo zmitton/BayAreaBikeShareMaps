@@ -103,16 +103,15 @@ Map.prototype.bindEvents = function() {
     this.clearDirections();
     this.route.bikingLegs = []; //reset legs
     this.route.walkingLegs = [];
+    this.route.routeStations = [];
 
     this.deleteWalkingLines(this.route.walkingLines);
     // this.deleteMarkers(this.route.markers);
-    this.route.tripTime = 0;
-    this.route.bikeTime = 0;
-    this.route.bikeDistance = 0;
     // this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response){
       this.route = new Route(response.start_location.lat, response.start_location.lng)
+      this.route.routeStations = [response.start_station_object, response.end_station_object];
       var requests = this.createBaseRequests(response);
       this.fetchBaseRoute(requests);
     }.bind(this));
@@ -254,7 +253,7 @@ Map.prototype.fetchBaseRoute = function(requests){
     return function(response, status){
       if (status == google.maps.DirectionsStatus.OK){
         if ( index == 1 ){
-          this.route.bikingLegs.push(new Leg(response, {"markerTitle": "DropOff"}));
+          this.route.bikingLegs.push(new Leg(response, {"markerTitle": "Drop-Off"}));
         }
         else if( index == 0 ){this.route.walkingLegs.unshift(new Leg(response, {"walking": true, "markerTitle": "Pickup"}))}
         else if( index == 2 ){this.route.walkingLegs.push( new Leg(response, {"walking": true, "markerTitle": "End"}))};
@@ -278,7 +277,7 @@ Map.prototype.fetchSubsequentRoute = function(requests){
           this.route.bikingLegs.splice(l,0,new Leg(response, {}));
         }
         else if( index == 1 ){
-          this.route.bikingLegs.push(new Leg(response, {"markerTitle": "DropOff"}));
+          this.route.bikingLegs.push(new Leg(response, {"markerTitle": "Drop-Off"}));
         };
         if(this.route.bikingLegs.length == l+2){
           this.handleBikeRoute();
@@ -303,7 +302,7 @@ Map.prototype.renderSecondaryDirections = function(response){
 
 Map.prototype.initializeSecondary = function(){
     var checkInStation = this.route.checkInStations[this.route.checkInStations.length -1];
-    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "checkin", Marker.createLocationIcon("checkin")));
+    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "Check-In", Marker.createLocationIcon("Check-In")));
     this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
     this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
 };
@@ -335,7 +334,7 @@ Map.prototype.handleBikeRoute = function(){
     nextCheckinStationId = this.route.bikingLegs[legIndex].findNextCheckinStation(legIndex);
     nextCheckinStation = Station.find(nextCheckinStationId);
     this.route.nextCheckinStation = nextCheckinStation;
-
+    this.route.routeStations.splice(this.route.routeStations.length-1,0, nextCheckinStation);
     console.log("findNextCheckinStation found");
     console.log(nextCheckinStation);
     // makeTempMarker(nextCheckinStation.latitude, nextCheckinStation.longitude, nextCheckinStation.name)
@@ -352,6 +351,7 @@ Map.prototype.handleBikeRoute = function(){
       this.route.setDashedLines(this.route.walkingLegs[i].response);
     }
     this.parseAndRenderDirections();
+    this.setSummary();
   }
 };
 Map.prototype.parseAndRenderDirections = function(){
@@ -374,6 +374,46 @@ Map.prototype.parseAndRenderDirections = function(){
   directionContainer.append($div);
   $div.attr("id",'directions-panel-' + (i + j));
   this.route.walkingLegs[i].directionsDisplay.setPanel(document.getElementById('directions-panel-' + (i + j)));
+}
+
+
+Map.prototype.setSummary = function(response) {
+  if ($(window).width() > 480) {
+    $('.summary').show();
+  } else {
+    $('.summary').hide();
+  }
+  $('.summary').empty();
+  var numStations = this.route.routeStations.length;
+  var summaryContainer = $(".summary")
+
+  var tripTime = 0;
+  var bikingTime = 0;
+  var bikingDistance = 0;
+  var leg;
+  for(var i = 0; i < this.route.bikingLegs.length; i++) {
+    leg = this.route.bikingLegs[i].response.routes[0].legs[0];
+    bikingTime += (leg.duration.value / 60)
+    bikingDistance += (leg.distance.value / 1609.344)
+  }
+  for(var i = 0; i < this.route.walkingLegs.length; i++) {
+    tripTime += (this.route.walkingLegs[i].response.routes[0].legs[0].duration.value/60)
+  }
+
+  $tripTimeDiv = '<div class="trip_time"> Total Trip: <span id="trip_time">'+ parseInt(tripTime) +' </span> min</div>'
+  $bikingDiv = '<div class="biking"><span id="bike"><i class="fa fa-bicycle"></span></i> <span id="biking_time">'+ parseInt(bikingTime)+'</span> min <span id="biking_distance">'+bikingDistance.toFixed(1)+'</span> miles </div>'
+  summaryContainer.append($tripTimeDiv);
+  summaryContainer.append($bikingDiv);
+
+  var $startDiv = $('<div class="station_summary">Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[0].available_docks +'</span> bikes</span></div>')
+  summaryContainer.append($startDiv);
+  for(var i = 1; i < (numStations - 1); i++) {
+    var $div = $('<div class="station_summary">Check-In: <span class="station_intersection">'+ this.route.routeStations[i].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[i].available_docks +'</span> docks</span></div>')
+    summaryContainer.append($div);
+  }
+  var $endDiv = $('<div class="station_summary">Drop-Off: <span class="station_intersection">'+ this.route.routeStations[numStations -1].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[numStations -1].available_docks +'</span> docks</span></div>')
+  summaryContainer.append($endDiv);
+
 }
 
 Map.prototype.getLocation = function() {

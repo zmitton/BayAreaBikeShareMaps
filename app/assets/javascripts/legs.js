@@ -1,11 +1,11 @@
 function Leg(response, options){
-  var markertitle = ((options["markerTitle"]) ? options["markerTitle"] : "checkin");
+  var markertitle = ((options["markerTitle"]) ? options["markerTitle"] : "Check-In");
   if(options["walking"]){ var options = {preserveViewport: true, suppressBicyclingLayer: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0} };}
   else{var options = {preserveViewport: true, suppressBicyclingLayer: true, suppressMarkers: true };};
   this.googleLegObject = response.routes[0].legs[0];
   this.directionsDisplay = new google.maps.DirectionsRenderer(options)
   this.response = response;
-  this.routeStation;
+  this.endStation;
   this.endMarker = new Marker(this.googleLegObject.end_location.k, this.googleLegObject.end_location.B, markertitle, Marker.createLocationIcon(markertitle));
   this.stationType = response.nc.travelMode;
 
