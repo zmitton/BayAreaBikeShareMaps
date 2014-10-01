@@ -31,36 +31,30 @@ Map.prototype.zoomToCurrentLocation = function() {
   }
 };
 
-
-
 Map.prototype.buttonBinder = function(event, type) {
   event.preventDefault();
   this.deleteStationMarkers();
-
-  now = new Date();
-  stationUpdateTime = new Date(window.bikeStations[0].updated_at);
-  differenceInMilliseconds = now - stationUpdateTime;
-  differenceInMinutes = Math.round(((differenceInMilliseconds % 86400000) % 3600000) / 60000);
-
-  if ( differenceInMinutes > 1 ) { // it is out of date
-    console.log("data is old");
-
-    var stationsRequest = Station.fetchAll();
-
-    stationsRequest.done(function(response) {
-      window.bikeStations = response;
-      this.makeStationMarkers(response, type);
-      this.placeAllStationMarkers(this.stationMarkers);
-    }.bind(this));
-  } else {
-    currentStationData = window.bikeStations;
-    this.makeStationMarkers(currentStationData, type);
-    this.placeAllStationMarkers(this.stationMarkers);
+  this.type = type;
+ if ( timeUp == false ) {
+    this.makeStationMarkers(window.bikeStations, type);
+    this.placeAllStationMarkers();
+  } else if (timeUp == true ) {
+    this.reloadAllStations(event, this.type);
   }
 };
 
+Map.prototype.reloadAllStations = function(event, type) {
+  var stationsRequest = Station.fetchAll();
+    stationsRequest.done(function(response) {
+      startMinuteTimer();
+      window.bikeStations = response;
+      map.makeStationMarkers(window.bikeStations, type);
+      map.placeAllStationMarkers(map.stationMarkers);
+    }.bind(this));
+}
+
 Map.prototype.bindEvents = function() {
-  $(".zoom_to_current").on("click", function() {
+  $(".zoom_to_current").on("click", function(event) {
     event.preventDefault();
     this.zoomToCurrentLocation();
   }.bind(this));
@@ -69,8 +63,8 @@ Map.prototype.bindEvents = function() {
     var $bikeButton = $("#bikes");
     event.preventDefault();
     if ($bikeButton.val() == "Hide Bikes") {
-      this.deleteStationMarkers();
       $bikeButton.val("Bikes");
+      this.deleteStationMarkers();
     } else if ($("#docks").val() == "Hide Docks") {
       $("#docks").val("Docks");
       $bikeButton.val('Hide Bikes');
@@ -118,7 +112,6 @@ Map.prototype.bindEvents = function() {
     }.bind(this));
   }.bind(this));
 };
-
 
 Map.prototype.zoom = function(zoom) {
   zoom = typeof a !== 'undefined' ? zoom : 11;
