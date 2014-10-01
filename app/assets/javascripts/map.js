@@ -8,7 +8,7 @@ function Map(lat,lng) {
   this.currentLatitude;
   this.currentLongitude;
   this.route = new Route(lat,lng);
-};
+}
 
 Map.prototype.fitBoundsOfMarkers = function() {
   var bounds = new google.maps.LatLngBounds();
@@ -19,7 +19,7 @@ Map.prototype.fitBoundsOfMarkers = function() {
     bounds.extend(this.route.walkingLegs[i].endMarker.marker.getPosition());
   }
   this.map.fitBounds(bounds);
-};$("input[name='start_latitude']")
+};$("input[name='start_latitude']");
 
 
 Map.prototype.zoomToCurrentLocation = function() {
@@ -61,7 +61,7 @@ Map.prototype.buttonBinder = function(event, type) {
 
 Map.prototype.bindEvents = function() {
   $(".zoom_to_current").on("click", function() {
-    event.preventDefault;
+    event.preventDefault();
     this.zoomToCurrentLocation();
   }.bind(this));
 
@@ -110,10 +110,11 @@ Map.prototype.bindEvents = function() {
     // this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response){
-      this.route = new Route(response.start_location.lat, response.start_location.lng)
+      this.route = new Route(response.start_location.lat, response.start_location.lng);
       this.route.routeStations = [response.start_station_object, response.end_station_object];
       var requests = this.createBaseRequests(response);
       this.fetchBaseRoute(requests);
+      $('#bikes, #docks, #directions').css('margin-bottom', '1rem');
     }.bind(this));
   }.bind(this));
 };
