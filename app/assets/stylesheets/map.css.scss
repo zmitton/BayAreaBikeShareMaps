@@ -125,8 +125,13 @@ td.adp-substep {
 
 .summary {
   display: inline;
-  padding: 1rem;
+  // padding: 1rem;
   font-size: .7rem;
+}
+
+.summary div:nth-of-type(3) {
+  margin-top: 1rem;
+  clear: both;
 }
 
 .trip_time {

@@ -16,13 +16,13 @@ Marker.createLocationIcon = function(label){
 Marker.getIconColor = function(number) {
   var color;
   if (number > 5) {
-    color = "66FF33";
+    color = "CCFF99";
   }
   else if (number > 0) {
-    color = "FFD119";
+    color = "FFFF66";
   }
   else if (number === 0) {
-    color = "FF3333";
+    color = "DE5959";
   }
   return color;
 };
