@@ -31,4 +31,9 @@ Marker.prototype.getlatlng = function(lat, lng){
   return new google.maps.LatLng(lat, lng);
 };
 
-
+function makeTempMarker(lat, lng, value){
+  if (value == null ){value = 1;}
+  var icon = Marker.createLocationIcon(value)
+  var marker = new Marker(lat, lng, "", icon);
+  marker.marker.setMap(window.map.map);
+}
