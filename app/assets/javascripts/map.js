@@ -98,6 +98,7 @@ Map.prototype.bindEvents = function() {
 
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
+    this.deleteWalkingLines(this.route.walkingLines);
     this.deleteMarkers(this.route.markers);
     this.route.tripTime = 0;
     this.route.bikeTime = 0;
@@ -138,7 +139,6 @@ Map.prototype.clearMarkers = function(markers){
   for (var i = 0; i < markers.length; i++) {
     markers[i].marker.setMap(null);
   }
-
 };
 
 Map.prototype.makeStationMarkers = function(stations, type) {
@@ -169,6 +169,13 @@ Map.prototype.placeAllMarkers = function(markers){
 Map.prototype.deleteMarkers = function(markers){
   this.clearMarkers(markers);
   markers.splice(0, markers.length)
+};
+
+Map.prototype.deleteWalkingLines = function(walkingLines){
+  for (var i = 0; i < walkingLines.length; i++) {
+    walkingLines[i].setMap(null);
+  }
+  walkingLines.splice(0, walkingLines.length)
 };
 
 Map.prototype.initialize = function(){
