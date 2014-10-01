@@ -99,6 +99,9 @@ Map.prototype.bindEvents = function() {
   $(".search-form").on("submit", function(event) {
     event.preventDefault();
     this.deleteMarkers(this.route.markers);
+    this.route.tripTime = 0;
+    this.route.bikeTime = 0;
+    this.route.bikeDistance = 0;
     this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(this.createRoute.bind(this));
@@ -223,7 +226,6 @@ Map.prototype.initializeSecondary = function(){
     this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "checkin", Marker.createLocationIcon("checkin")));
     this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
     this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
-  debugger;
 };
 
 Map.prototype.calcSecondaryRoute = function(){
@@ -281,7 +283,6 @@ Map.prototype.showCurrentLocation = function(position) {
   this.map.zoomToCurrentLocation();
 
   var userLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
   var shellCircle = new google.maps.Circle({
       map: this.map.map,
       fillColor: '#73B9FF',
@@ -289,9 +290,7 @@ Map.prototype.showCurrentLocation = function(position) {
       center: userLatLng,
       strokeColor: '#000000'
   });
-
-      shellCircle.setRadius(20);
-
+  shellCircle.setRadius(20);
 }
 
 

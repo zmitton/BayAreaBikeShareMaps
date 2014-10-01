@@ -31,7 +31,7 @@ class Station < ActiveRecord::Base
   end
 
   def self.get_coords_of_station(station)
-    p station_coords = {"lat" => station.latitude.to_f, "lng" => station.longitude.to_f}
+    station_coords = {"lat" => station.latitude.to_f, "lng" => station.longitude.to_f}
   end
 
   def self.fetch_all
