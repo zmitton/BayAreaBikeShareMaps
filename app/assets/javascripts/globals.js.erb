@@ -1,6 +1,4 @@
 window.map = "";
-window.bikeStations = <%= (Station.fetch_all).to_json %>
-
 
 function getOrigin(){
   var lat = $('#originLatitude');
@@ -10,6 +8,7 @@ function getOrigin(){
   else{
     return $('#origin').val();
   }
+};
 
 var timeUp;
 
@@ -18,7 +17,7 @@ var changeTimeUp = function() {
   console.log(timeUp);
 }
 
-function startMinuteTimer() {
+var startMinuteTimer = function() {
   timeUp = false;
-  setTimeout(function(){ changeTimeUp(); }, 15000);
+  setTimeout(function(){ changeTimeUp(); }, 60000);
 }

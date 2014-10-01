@@ -26,8 +26,12 @@
 </div>
 
 <script>
+
+window.bikeStations = <%= (Station.fetch_all).to_json.html_safe %>
+
 $(document).ready(function () {
   window.map =  new Map();
+  startMinuteTimer();
   map.bindEvents();
   map.getLocation();
 });
