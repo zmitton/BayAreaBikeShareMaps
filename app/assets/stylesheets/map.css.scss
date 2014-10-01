@@ -49,6 +49,10 @@ html, body {
   width: 300px;
 }
 
+.go-button {
+  background-color: $divvy-blue;
+}
+
 .start-location {
   margin: 0;
   padding: 0;
@@ -105,10 +109,10 @@ td.adp-substep {
   min-height: 1rem;
   z-index: 20;
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  bottom: 2rem;
+  right: 2rem;
   color: white;
-  background-color: #194775;
+  background-color: $divvy-blue;
   border-radius: 50%;
   font-size: 20px;
   padding: .25rem .5rem;
