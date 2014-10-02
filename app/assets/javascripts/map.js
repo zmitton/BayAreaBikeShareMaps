@@ -250,7 +250,10 @@ Map.prototype.fetchBaseRoute = function(requests){
           this.route.bikingLegs.push(new Leg(response, {"markerTitle": "Drop-Off"}));
         }
         else if( index == 0 ){this.route.walkingLegs.unshift(new Leg(response, {"walking": true, "markerTitle": "Pickup"}))}
-        else if( index == 2 ){this.route.walkingLegs.push( new Leg(response, {"walking": true, "markerTitle": "End"}))};
+        else if( index == 2 )
+          {
+            this.route.walkingLegs.push( new Leg(response, {"walking": true, "markerTitle": "End"}))
+          };
 
         if(this.route.walkingLegs.length >= 2 && this.route.bikingLegs.length >=1){this.handleBikeRoute();}
       }
@@ -296,7 +299,7 @@ Map.prototype.renderSecondaryDirections = function(response){
 
 Map.prototype.initializeSecondary = function(){
     var checkInStation = this.route.checkInStations[this.route.checkInStations.length -1];
-    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "Check-In", Marker.createLocationIcon("Check-In")));
+    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "Check-In", Marker.createDivvyRoutingIcon("Check-In")));
     this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
     this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
 };

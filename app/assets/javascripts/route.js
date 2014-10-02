@@ -1,6 +1,6 @@
 function Route(startingLat, startingLng){
   this.directionsService = new google.maps.DirectionsService();
-  this.startMarker = new Marker(startingLat, startingLng, "Start", Marker.createLocationIcon("Start"));
+  this.startMarker = new Marker();
   this.nextCheckinStation;
   this.bikingLegs = [];
   this.walkingLegs = [];
