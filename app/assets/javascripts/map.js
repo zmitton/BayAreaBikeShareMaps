@@ -357,7 +357,7 @@ Map.prototype.parseAndRenderDirections = function(){
   $div.attr("id",'directions-panel-' + i);
   directionContainer.append($div);
   this.route.walkingLegs[i].directionsDisplay.setPanel(document.getElementById('directions-panel-' + i));
-  var $startDiv = $('<div class="station_summary"><b>Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span><b></div>')
+  var $startDiv = $('<div class="directions_station_summary"><b>Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span><b></div>')
   $($div).append($startDiv)
   var $divStation;
   i++;
@@ -366,7 +366,7 @@ Map.prototype.parseAndRenderDirections = function(){
     $div.attr("id",'directions-panel-' + (i + j));
     directionContainer.append($div);
     this.route.bikingLegs[j].directionsDisplay.setPanel(document.getElementById('directions-panel-' + (j + i)));
-    $divStation = $('<div class="station_summary"><b>Check-In: <span class="station_intersection">'+ this.route.routeStations[j+1].intersection +'</span><b></div>');
+    $divStation = $('<div class="directions_station_summary"><b>Check-In: <span class="station_intersection">'+ this.route.routeStations[j+1].intersection +'</span><b></div>');
     $($div).append($divStation)
   }
   $div = $('<div class="directions-panel-leg-container"></div>');
@@ -374,7 +374,7 @@ Map.prototype.parseAndRenderDirections = function(){
   $div.attr("id",'directions-panel-' + (i + j));
   this.route.walkingLegs[i].directionsDisplay.setPanel(document.getElementById('directions-panel-' + (i + j)));
 
-  var $endDiv = $('<div class="station_summary"><b>Drop-Off: <span class="station_intersection">'+ this.route.routeStations[this.route.routeStations.length -1].intersection +'</span><b></div>')
+  var $endDiv = $('<div class="directions_station_summary"><b>Drop-Off: <span class="station_intersection">'+ this.route.routeStations[this.route.routeStations.length -1].intersection +'</span><b></div>')
   $($div).append($endDiv)
 }
 

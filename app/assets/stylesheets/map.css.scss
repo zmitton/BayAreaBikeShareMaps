@@ -171,7 +171,14 @@ td.adp-substep {
   display: none;
 }
 
+.directions-panel-container {
+  padding-top: 1rem;
+}
 
+.directions-panel-leg-container {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
   /* iPhone */
 @media screen and (max-width: 480px) {
