@@ -104,8 +104,6 @@ Map.prototype.bindEvents = function() {
     this.route.routeStations = [];
 
     this.deleteWalkingLines(this.route.walkingLines);
-    // this.deleteMarkers(this.route.markers);
-    // this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response){
       this.route = new Route(response.start_location.lat, response.start_location.lng);
@@ -305,25 +303,6 @@ Map.prototype.initializeSecondary = function(){
     this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
 };
 
-// Map.prototype.calcSecondaryRoute = function(){
-//   var request = {origin: this.route.markers[this.route.markers.length-2].marker.position,
-//                  destination: this.route.markers[this.route.markers.length-1].marker.position,
-//                  travelMode: google.maps.TravelMode["BICYCLING"]
-//                 }
-//   var displaySecondaryRouteHandler = function(response) {
-//     if (status == google.maps.DirectionsStatus.OK) {
-//       var length = this.route.directionsDisplays.length;
-//       this.handleRoute(response);
-//       this.route.directionsDisplays[length-2].setDirections(response);
-//       $('directions-panel-' + length-1).id = 'directions-panel-' + length;
-//       $('<div id="directions-panel-' + length + '"></div>');
-//       this.route.directionsDisplays[length-2].setPanel(document.getElementById('directions-panel-' + length-2));
-//       this.route.legs.push(response.routes[0].legs[0]);
-//     }
-//   }
-// };
-
-
 Map.prototype.handleBikeRoute = function(){
   var nextCheckinStation;
   var nextCheckinStationId;
@@ -335,12 +314,11 @@ Map.prototype.handleBikeRoute = function(){
     this.route.routeStations.splice(this.route.routeStations.length-1,0, nextCheckinStation);
     console.log("findNextCheckinStation found");
     console.log(nextCheckinStation);
-    // makeTempMarker(nextCheckinStation.latitude, nextCheckinStation.longitude, nextCheckinStation.name)
 
     var requests = this.createSubsequentRequests();
     this.fetchSubsequentRoute(requests);
   }
-  else{ //routes done.. base case.. display everything RENDER DIRECTIONS
+  else { 
     this.placeAllMarkers();
     this.fitBoundsOfMarkers();
     this.map.setZoom(this.map.getZoom());
@@ -384,11 +362,6 @@ Map.prototype.parseAndRenderDirections = function(){
 
 
 Map.prototype.setSummary = function(response) {
-  if ($(window).width() > 480) {
-    $('.summary').show();
-  } else {
-    $('.summary').hide();
-  }
   $('.summary').empty();
   var numStations = this.route.routeStations.length;
   var summaryContainer = $(".summary")
