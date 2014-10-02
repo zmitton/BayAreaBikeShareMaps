@@ -9,7 +9,7 @@ function Route(startingLat, startingLng){
 }
 
 Route.prototype.setDashedLines = function(response) {
-  if (response.nc.travelMode == "WALKING") {
+  if (response.oc.travelMode == "WALKING") {
     var lineSymbol = {
       path: google.maps.SymbolPath.CIRCLE,
       strokeOpacity: 1,
