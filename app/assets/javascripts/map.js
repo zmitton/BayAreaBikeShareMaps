@@ -370,11 +370,12 @@ Map.prototype.setSummary = function(response) {
   var leg;
   for(var i = 0; i < this.route.bikingLegs.length; i++) {
     leg = this.route.bikingLegs[i].response.routes[0].legs[0];
-    bikingTime += (leg.duration.value / 60)
-    bikingDistance += (leg.distance.value / 1609.344)
+    bikingTime += (leg.duration.value / 60);
+    bikingDistance += (leg.distance.value / 1609.344);
+    tripTime += (this.route.bikingLegs[i].response.routes[0].legs[0].duration.value/60);
   }
   for(var i = 0; i < this.route.walkingLegs.length; i++) {
-    tripTime += (this.route.walkingLegs[i].response.routes[0].legs[0].duration.value/60)
+    tripTime += (this.route.walkingLegs[i].response.routes[0].legs[0].duration.value/60);
   }
 
   $tripTimeDiv = '<div class="trip_time"> Total Trip: <span id="trip_time">'+ parseInt(tripTime) +' </span> min</div>'
