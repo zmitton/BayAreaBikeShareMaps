@@ -65,12 +65,16 @@ Map.prototype.bindEvents = function() {
     if ($bikeButton.val() == "Hide Bikes") {
       $bikeButton.val("Bikes");
       this.deleteStationMarkers();
+
     } else if ($("#docks").val() == "Hide Docks") {
-      $("#docks").val("Docks");
-      $bikeButton.val('Hide Bikes');
+      $("#docks").val("Docks"); //
+      $bikeButton.className('pure-button pure-button-disabled'); //
+
       this.buttonBinder(event,"Bikes");
     } else {
-      $bikeButton.val('Hide Bikes');
+
+      $bikeButton.val('Hide Bikes'); //
+
       this.buttonBinder(event,"Bikes");
     }
   }.bind(this));
