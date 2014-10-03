@@ -1,6 +1,6 @@
 function Route(startingLat, startingLng){
   this.directionsService = new google.maps.DirectionsService();
-  this.startMarker = new Marker();
+  this.startMarker = new Marker(startingLat, startingLng, "Start", Marker.createLocationIcon("Start"));
   this.nextCheckinStation;
   this.bikingLegs = [];
   this.walkingLegs = [];
@@ -9,7 +9,7 @@ function Route(startingLat, startingLng){
 }
 
 Route.prototype.setDashedLines = function(response) {
-  if (response.nc.travelMode == "WALKING") {
+  if (response.oc.travelMode == "WALKING") {
     var lineSymbol = {
       path: google.maps.SymbolPath.CIRCLE,
       strokeOpacity: 1,
@@ -33,5 +33,4 @@ Route.prototype.setDashedLines = function(response) {
     }
   };
 };
-
 

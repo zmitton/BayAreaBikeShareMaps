@@ -2,8 +2,7 @@ function Marker(lat, lng, title, icon){
   this.marker = new google.maps.Marker({
     position: this.getlatlng(lat, lng),
     icon: icon,
-    title: title,
-    zIndex: 1000
+    title: title
   });
 }
 Marker.createDivvyIcon = function(color, label){
@@ -12,10 +11,6 @@ Marker.createDivvyIcon = function(color, label){
 
 Marker.createLocationIcon = function(label){
   return 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.9|0|CCD3D3|13|b|' + label;
-};
-
-Marker.createDivvyRoutingIcon = function(label){
-  return 'https://chart.googleapis.com/chart?chst=d_bubble_text_small&chld=bbbr|'+ label +'|59c3ea';
 };
 
 Marker.getIconColor = function(number) {

@@ -1,13 +1,13 @@
 function Leg(response, options){
-  this.markertitle = ((options["markerTitle"]) ? options["markerTitle"] : "Check-In");
-  if(options["walking"]){ var options = {preserveViewport: true, suppressBicyclingLayer: true, polylineOptions: {strokeOpacity: 0} };}
-  else{var options = {preserveViewport: true, suppressBicyclingLayer: true};};
+  var markertitle = ((options["markerTitle"]) ? options["markerTitle"] : "Check-In");
+  if(options["walking"]){ var options = {preserveViewport: true, suppressBicyclingLayer: true, suppressMarkers: true, polylineOptions: {strokeOpacity: 0} };}
+  else{var options = {preserveViewport: true, suppressBicyclingLayer: true, suppressMarkers: true };};
   this.googleLegObject = response.routes[0].legs[0];
   this.directionsDisplay = new google.maps.DirectionsRenderer(options)
   this.response = response;
   this.endStation;
-  this.endMarker = this.makeLegMarker();
-  this.stationType = response.nc.travelMode;
+  this.endMarker = new Marker(this.googleLegObject.end_location.k, this.googleLegObject.end_location.B, markertitle, Marker.createLocationIcon(markertitle));
+  this.stationType = response.oc.travelMode;
 
   this.tripTime = this.googleLegObject.duration.value;
   this.TARGET_TIME = 1500;
@@ -24,13 +24,6 @@ function Leg(response, options){
     currentStep.endTime = this.timeIntoLeg + currentStep.duration;
     this.timeIntoLeg += currentStep.duration;
   }
-}
-
-Leg.prototype.makeLegMarker = function() {
-  // if (this.markertitle != "End") {
-  //   debugger;
-    return new Marker(this.googleLegObject.end_location.k, this.googleLegObject.end_location.B, this.markertitle, Marker.createDivvyRoutingIcon(this.markertitle));
-  // }
 }
 
 Leg.prototype.addStepsFromResponse = function(response){
@@ -138,5 +131,3 @@ Leg.prototype.closestStationWithinIdealTime = function(leg_index){
   }
   return "Leg not found" // return the first one in inIdealRange() //else return "Leg not found"
 }
-
-

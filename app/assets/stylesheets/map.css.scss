@@ -260,7 +260,7 @@ td.adp-substep {
     margin: 0 auto;
     overflow: visible;
     height: 900px;
-    font-size: .8rem;
+    font-size: .7rem;
   }
 
   .trip_time, .biking, .end_station {
@@ -269,9 +269,21 @@ td.adp-substep {
   }
 
   .summary {
-    display: none;
+    font-size: .7rem;
     padding: 1rem;
-    font-size: 1rem;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .station_summary {
+    padding: 1rem 0rem 0rem 0rem;
+    text-align: left;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    white-space: nowrap;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .nav-caret {
@@ -283,5 +295,4 @@ td.adp-substep {
     margin-left: .5rem;
     display: inline;
   }
-
 }

@@ -61,32 +61,34 @@ Map.prototype.bindEvents = function() {
 
   $("#bikes").on("click", function(event) {
     var $bikeButton = $("#bikes");
+    var $dockButton = $("#docks");
     event.preventDefault();
-    if ($bikeButton.val() == "Hide Bikes") {
-      $bikeButton.val("Bikes");
+    if ($bikeButton.hasClass("pure-button-active")) {
+      $bikeButton.removeClass("pure-button-active");
       this.deleteStationMarkers();
-    } else if ($("#docks").val() == "Hide Docks") {
-      $("#docks").val("Docks");
-      $bikeButton.val('Hide Bikes');
+    } else if ($dockButton.hasClass("pure-button-active")) {
+      $bikeButton.addClass("pure-button-active");
+      $dockButton.removeClass("pure-button-active");
       this.buttonBinder(event,"Bikes");
     } else {
-      $bikeButton.val('Hide Bikes');
+      $bikeButton.addClass("pure-button-active");
       this.buttonBinder(event,"Bikes");
     }
   }.bind(this));
 
   $("#docks").on("click", function(event) {
+    var $bikeButton = $("#bikes");
     var $dockButton = $("#docks");
     event.preventDefault();
-    if ($dockButton.val() == "Hide Docks"){
+    if ($dockButton.hasClass("pure-button-active")){
+      $dockButton.removeClass("pure-button-active");
       this.deleteStationMarkers();
-      $dockButton.val("Docks");
-    } else if ($("#bikes").val() == "Hide Bikes") {
-      $("#bikes").val("Bikes");
-      $dockButton.val("Hide Docks");
+    } else if ($bikeButton.hasClass("pure-button-active")) {
+      $bikeButton.removeClass("pure-button-active");
+      $dockButton.addClass("pure-button-active");
       this.buttonBinder(event, "Docks");
     } else {
-      $dockButton.val("Hide Docks");
+      $dockButton.addClass("pure-button-active");
       this.buttonBinder(event, "Docks");
     }
   }.bind(this));
@@ -100,8 +102,6 @@ Map.prototype.bindEvents = function() {
     this.route.routeStations = [];
 
     this.deleteWalkingLines(this.route.walkingLines);
-    // this.deleteMarkers(this.route.markers);
-    // this.route.legs = []; //reset legs
     request = $.ajax("/search", {"method": "get", "data": $(".search-form").serialize()});
     request.done(function(response){
       this.route = new Route(response.start_location.lat, response.start_location.lng);
@@ -250,10 +250,7 @@ Map.prototype.fetchBaseRoute = function(requests){
           this.route.bikingLegs.push(new Leg(response, {"markerTitle": "Drop-Off"}));
         }
         else if( index == 0 ){this.route.walkingLegs.unshift(new Leg(response, {"walking": true, "markerTitle": "Pickup"}))}
-        else if( index == 2 )
-          {
-            this.route.walkingLegs.push( new Leg(response, {"walking": true, "markerTitle": "End"}))
-          };
+        else if( index == 2 ){this.route.walkingLegs.push( new Leg(response, {"walking": true, "markerTitle": "End"}))};
 
         if(this.route.walkingLegs.length >= 2 && this.route.bikingLegs.length >=1){this.handleBikeRoute();}
       }
@@ -299,29 +296,10 @@ Map.prototype.renderSecondaryDirections = function(response){
 
 Map.prototype.initializeSecondary = function(){
     var checkInStation = this.route.checkInStations[this.route.checkInStations.length -1];
-    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "Check-In", Marker.createDivvyRoutingIcon("Check-In")));
+    this.route.markers.splice(-2,0, new Marker(checkInStation.latitude, checkInStation.longitude, "Check-In", Marker.createLocationIcon("Check-In")));
     this.route.directionsDisplays.splice(-1,0, new google.maps.DirectionsRenderer({preserveViewport: true, suppressMarkers: true, suppressBicyclingLayer: true}));
     this.route.directionsDisplays[this.route.directionsDisplays.length-2].setMap(this.map);
 };
-
-// Map.prototype.calcSecondaryRoute = function(){
-//   var request = {origin: this.route.markers[this.route.markers.length-2].marker.position,
-//                  destination: this.route.markers[this.route.markers.length-1].marker.position,
-//                  travelMode: google.maps.TravelMode["BICYCLING"]
-//                 }
-//   var displaySecondaryRouteHandler = function(response) {
-//     if (status == google.maps.DirectionsStatus.OK) {
-//       var length = this.route.directionsDisplays.length;
-//       this.handleRoute(response);
-//       this.route.directionsDisplays[length-2].setDirections(response);
-//       $('directions-panel-' + length-1).id = 'directions-panel-' + length;
-//       $('<div id="directions-panel-' + length + '"></div>');
-//       this.route.directionsDisplays[length-2].setPanel(document.getElementById('directions-panel-' + length-2));
-//       this.route.legs.push(response.routes[0].legs[0]);
-//     }
-//   }
-// };
-
 
 Map.prototype.handleBikeRoute = function(){
   var nextCheckinStation;
@@ -332,14 +310,10 @@ Map.prototype.handleBikeRoute = function(){
     nextCheckinStation = Station.find(nextCheckinStationId);
     this.route.nextCheckinStation = nextCheckinStation;
     this.route.routeStations.splice(this.route.routeStations.length-1,0, nextCheckinStation);
-    console.log("findNextCheckinStation found");
-    console.log(nextCheckinStation);
-    // makeTempMarker(nextCheckinStation.latitude, nextCheckinStation.longitude, nextCheckinStation.name)
-
     var requests = this.createSubsequentRequests();
     this.fetchSubsequentRoute(requests);
   }
-  else{ //routes done.. base case.. display everything RENDER DIRECTIONS
+  else {
     this.placeAllMarkers();
     this.fitBoundsOfMarkers();
     this.map.setZoom(this.map.getZoom());
@@ -360,7 +334,7 @@ Map.prototype.parseAndRenderDirections = function(){
   $div.attr("id",'directions-panel-' + i);
   directionContainer.append($div);
   this.route.walkingLegs[i].directionsDisplay.setPanel(document.getElementById('directions-panel-' + i));
-  var $startDiv = $('<div class="directions_station_summary"><b>Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span><b></div>')
+  var $startDiv = $('<div class="station_summary"><b>Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span><b></div>')
   $($div).append($startDiv)
   var $divStation;
   i++;
@@ -369,7 +343,7 @@ Map.prototype.parseAndRenderDirections = function(){
     $div.attr("id",'directions-panel-' + (i + j));
     directionContainer.append($div);
     this.route.bikingLegs[j].directionsDisplay.setPanel(document.getElementById('directions-panel-' + (j + i)));
-    $divStation = $('<div class="directions_station_summary"><b>Check-In: <span class="station_intersection">'+ this.route.routeStations[j+1].intersection +'</span><b></div>');
+    $divStation = $('<div class="station_summary"><b>Check-In: <span class="station_intersection">'+ this.route.routeStations[j+1].intersection +'</span><b></div>');
     $($div).append($divStation)
   }
   $div = $('<div class="directions-panel-leg-container"></div>');
@@ -377,17 +351,12 @@ Map.prototype.parseAndRenderDirections = function(){
   $div.attr("id",'directions-panel-' + (i + j));
   this.route.walkingLegs[i].directionsDisplay.setPanel(document.getElementById('directions-panel-' + (i + j)));
 
-  var $endDiv = $('<div class="directions_station_summary"><b>Drop-Off: <span class="station_intersection">'+ this.route.routeStations[this.route.routeStations.length -1].intersection +'</span><b></div>')
+  var $endDiv = $('<div class="station_summary"><b>Drop-Off: <span class="station_intersection">'+ this.route.routeStations[this.route.routeStations.length -1].intersection +'</span><b></div>')
   $($div).append($endDiv)
 }
 
 
 Map.prototype.setSummary = function(response) {
-  if ($(window).width() > 480) {
-    $('.summary').show();
-  } else {
-    $('.summary').hide();
-  }
   $('.summary').empty();
   var numStations = this.route.routeStations.length;
   var summaryContainer = $(".summary")
@@ -398,11 +367,12 @@ Map.prototype.setSummary = function(response) {
   var leg;
   for(var i = 0; i < this.route.bikingLegs.length; i++) {
     leg = this.route.bikingLegs[i].response.routes[0].legs[0];
-    bikingTime += (leg.duration.value / 60)
-    bikingDistance += (leg.distance.value / 1609.344)
+    bikingTime += (leg.duration.value / 60);
+    bikingDistance += (leg.distance.value / 1609.344);
+    tripTime += (this.route.bikingLegs[i].response.routes[0].legs[0].duration.value/60);
   }
   for(var i = 0; i < this.route.walkingLegs.length; i++) {
-    tripTime += (this.route.walkingLegs[i].response.routes[0].legs[0].duration.value/60)
+    tripTime += (this.route.walkingLegs[i].response.routes[0].legs[0].duration.value/60);
   }
 
   $tripTimeDiv = '<div class="trip_time"> Total Trip: <span id="trip_time">'+ parseInt(tripTime) +' </span> min</div>'
@@ -410,7 +380,7 @@ Map.prototype.setSummary = function(response) {
   summaryContainer.append($tripTimeDiv);
   summaryContainer.append($bikingDiv);
 
-  var $startDiv = $('<div class="station_summary">Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[0].available_docks +'</span> bikes</span></div>')
+  var $startDiv = $('<div class="station_summary">Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[0].available_bikes +'</span> bikes</span></div>')
   summaryContainer.append($startDiv);
   for(var i = 1; i < (numStations - 1); i++) {
     var $div = $('<div class="station_summary">Check-In: <span class="station_intersection">'+ this.route.routeStations[i].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[i].available_docks +'</span> docks</span></div>')
@@ -443,7 +413,3 @@ Map.prototype.showCurrentLocation = function(position) {
   });
   shellCircle.setRadius(20);
 }
-
-
-
-
