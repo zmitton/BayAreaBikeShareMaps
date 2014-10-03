@@ -310,13 +310,10 @@ Map.prototype.handleBikeRoute = function(){
     nextCheckinStation = Station.find(nextCheckinStationId);
     this.route.nextCheckinStation = nextCheckinStation;
     this.route.routeStations.splice(this.route.routeStations.length-1,0, nextCheckinStation);
-    console.log("findNextCheckinStation found");
-    console.log(nextCheckinStation);
-
     var requests = this.createSubsequentRequests();
     this.fetchSubsequentRoute(requests);
   }
-  else { 
+  else {
     this.placeAllMarkers();
     this.fitBoundsOfMarkers();
     this.map.setZoom(this.map.getZoom());
@@ -383,7 +380,7 @@ Map.prototype.setSummary = function(response) {
   summaryContainer.append($tripTimeDiv);
   summaryContainer.append($bikingDiv);
 
-  var $startDiv = $('<div class="station_summary">Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[0].available_docks +'</span> bikes</span></div>')
+  var $startDiv = $('<div class="station_summary">Pickup: <span class="station_intersection">'+ this.route.routeStations[0].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[0].available_bikes +'</span> bikes</span></div>')
   summaryContainer.append($startDiv);
   for(var i = 1; i < (numStations - 1); i++) {
     var $div = $('<div class="station_summary">Check-In: <span class="station_intersection">'+ this.route.routeStations[i].intersection +'</span> <span class="station_data"><span class="availables">'+ this.route.routeStations[i].available_docks +'</span> docks</span></div>')
@@ -416,7 +413,3 @@ Map.prototype.showCurrentLocation = function(position) {
   });
   shellCircle.setRadius(20);
 }
-
-
-
-

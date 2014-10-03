@@ -131,5 +131,3 @@ Leg.prototype.closestStationWithinIdealTime = function(leg_index){
   }
   return "Leg not found" // return the first one in inIdealRange() //else return "Leg not found"
 }
-
-

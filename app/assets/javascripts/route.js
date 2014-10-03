@@ -34,4 +34,3 @@ Route.prototype.setDashedLines = function(response) {
   };
 };
 
-
