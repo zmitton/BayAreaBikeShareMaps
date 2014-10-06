@@ -18,8 +18,8 @@ respond_to :json
     @end_location_coords = GoogleApi.get_coordinates_from_address(@end_location)
 
     # Finds three closest stations to start and end
-    three_closest_start = Station.find_three(@start_location_coords["lat"], @start_location_coords["lng"])
-    three_closest_end = Station.find_three(@end_location_coords["lat"], @end_location_coords["lng"])
+    three_closest_start = Station.find_three(@start_location_coords["lat"], @start_location_coords["lng"], @end_location_coords["lat"], @end_location_coords["lng"], "bikes")
+    three_closest_end = Station.find_three(@end_location_coords["lat"], @end_location_coords["lng"], @start_location_coords["lat"], @start_location_coords["lng"], "docks")
     # Uses Google Directions Matrix to find the total time from start to end points and returns an array of hashes sorted from shortest time to longest
     optimal_start_and_end = GoogleApi.get_optimal_route(three_closest_start, three_closest_end, @start_location_coords, @end_location_coords)
     # Finds the station object for the first start station returned by the above array, which has the shortest route time
