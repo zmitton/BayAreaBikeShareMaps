@@ -1,5 +1,5 @@
 class Station < ActiveRecord::Base
-  BIKE_WALK_SPEED_RATIO = 3
+  BIKE_WALK_SPEED_RATIO = 3.4
   def self.find_distances_from(lat1, lng1)
     station_distances = []
     self.all.each do |station|
@@ -47,11 +47,11 @@ class Station < ActiveRecord::Base
     sorted_stations = self.find_fastest_by_distance_and_direction(lat1, lng1, lat2, lng2 ) # 3 better stations
     stations = []
     i = 0
-    while i < 3 && i < sorted_stations.length
+    while stations.length < 3 && i < sorted_stations.length
       if self.find(sorted_stations[i][0]).item_available(need)
         stations << sorted_stations[i][0]
-        i+=1
       end
+      i+=1
     end
     return stations
   end
@@ -85,7 +85,8 @@ class Station < ActiveRecord::Base
     elsif need == "docks"
       return self.available_docks > 0
     end
-    return false #cause why would this line run
+    puts "error item_available called on station without proper argument: '#{need}'"
+    return false # line should never run
   end
 
 end
