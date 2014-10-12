@@ -1,5 +1,5 @@
 class Station < ActiveRecord::Base
-  BIKE_WALK_SPEED_RATIO = 3.4
+  BIKE_WALK_SPEED_RATIO = 3.3
   def self.find_distances_from(lat1, lng1)
     station_distances = []
     self.all.each do |station|
@@ -45,6 +45,11 @@ class Station < ActiveRecord::Base
 
   def self.find_three(lat1, lng1, lat2, lng2, need)
     sorted_stations = self.find_fastest_by_distance_and_direction(lat1, lng1, lat2, lng2 ) # 3 better stations
+    # puts "###########################################################################"
+    # puts "NEED:#{need}"
+    # sorted_stations.each do |station|
+    #   p Station.find(station[0]).name
+    # end
     stations = []
     i = 0
     while stations.length < 3 && i < sorted_stations.length
