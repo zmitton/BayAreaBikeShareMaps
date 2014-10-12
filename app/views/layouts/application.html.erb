@@ -17,9 +17,27 @@
   <link rel="apple-touch-icon" sizes="152x152" href="<%= image_path 'touch-icon-ipad-retina-precomposed.png' %>">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, user-scalable=0">
 </head>
-<body>
+<body> 
   <div id="main-container">
     <%= yield %>
   </div>
+  
+ <div id="CoverPop-cover" class="splash CoverPop-close">
+    <div id="CoverPop-content" class="splash-center">
+      <h2>Welcome to DivvyMaps.</h2>
+      <p>DivvyMaps finds the best Divvy route between two places.</p>
+
+      <a class="start-button" href="#">Get Started</a>
+
+      <p class="team-names">Created by 
+        <a href="https://twitter.com/peggythefox">Peggy</a>,
+        <a href="https://twitter.com/@kyleidaugherty">Kyle</a>,
+        <a href="https://twitter.com/voltzroad">Zac</a> and
+        <a href="https://twitter.com/@theoskolnik">Theo</a>.
+      </p>
+  
+    </div><!--end .splash-center -->
+  </div><!--end .splash -->
+
 </body>
 </html>
