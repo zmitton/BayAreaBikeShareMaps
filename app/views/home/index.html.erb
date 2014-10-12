@@ -27,12 +27,19 @@ window.bikeStations = <%= (Station.fetch_all).to_json.html_safe %>
 
 $(document).ready(function () {
   window.map =  new Map();
+
+  CoverPop.start({closeClassNoDefault: 'CoverPop-close'});
+
   startMinuteTimer();
   map.bindEvents();
   map.getLocation();
+
 });
 
 $(document).ready(function() {
+
+  $('')
+
   $('.directions-panel-container').hide();
   $('#directions').hide();
   $('.search-form').on('submit', function(event) {

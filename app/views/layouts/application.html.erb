@@ -17,9 +17,23 @@
   <link rel="apple-touch-icon" sizes="152x152" href="<%= image_path 'touch-icon-ipad-retina-precomposed.png' %>">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui, user-scalable=0">
 </head>
-<body>
+<body> 
   <div id="main-container">
     <%= yield %>
   </div>
+  
+ <div id="CoverPop-cover" class="splash CoverPop-close">
+    <div id="CoverPop-content" class="splash-center">
+      <h2 class="splash-title">Welcome to DivvyMaps</h2>
+
+      <!-- the popup content (form, welcome message, etc.) -->
+
+      <p class="close-splash"><a class="CoverPop-close" href="#">or skip signup</a></p>
+
+    </div><!--end .splash-center -->
+  </div><!--end .splash -->
+<script>
+    CoverPop.init();
+</script>
 </body>
 </html>
