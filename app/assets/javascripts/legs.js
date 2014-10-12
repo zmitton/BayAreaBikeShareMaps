@@ -7,7 +7,7 @@ function Leg(response, options){
   this.response = response;
   this.endStation;
   this.endMarker = new Marker(this.googleLegObject.end_location.k, this.googleLegObject.end_location.B, markertitle, Marker.createLocationIcon(markertitle));
-  this.stationType = response.mc.travelMode;
+  // this.stationType = response.mc.travelMode;
 
   this.tripTime = this.googleLegObject.duration.value;
   this.TARGET_TIME = 1500;
