@@ -1,13 +1,5 @@
 /* Styles for the CoverPop.js plugin */
 
-html,
-body {
-    /*overflow: auto;*/
-}
-
-body {
-    /*position: relative;*/
-}
 
 .CoverPop-open,
 .CoverPop-open body {
@@ -30,9 +22,9 @@ body {
     animation-name: fade-in .25s ease-in;
 }
 
-    .CoverPop-open #CoverPop-cover {
-        display: block;
-    }
+.CoverPop-open #CoverPop-cover {
+    display: block;
+}
 
 
 @-webkit-keyframes fade-in {
