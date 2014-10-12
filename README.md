@@ -3,7 +3,7 @@
 
 DivvyMaps is a web application that provides optimized directions to Divvy bike riders. The application uses Divvy, Google Distance Matrix and Google Directions APIs to determine optimal routes to and from a Divvy station, and biking directions between two stations. The app also accounts for rides longer than 30 minutes by directing users to multiple check-in stations along their route.
 
-## The site is currently, and will continue to be, Live at [www.DivvyMaps.com](www.DivvyMaps.com)
+## The site is currently, and will continue to be, Live at [www.DivvyMaps.com](http://www.DivvyMaps.com)
 (version 1.0)
 
 ## Divvy Maps was created at Dev Bootcamp in 8 days by: 
