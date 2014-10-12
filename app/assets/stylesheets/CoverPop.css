@@ -2,11 +2,11 @@
 
 html,
 body {
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
 body {
-    position: relative;
+    /*position: relative;*/
 }
 
 .CoverPop-open,

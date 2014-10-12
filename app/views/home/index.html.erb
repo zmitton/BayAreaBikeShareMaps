@@ -28,7 +28,11 @@ window.bikeStations = <%= (Station.fetch_all).to_json.html_safe %>
 $(document).ready(function () {
   window.map =  new Map();
 
-  CoverPop.start({closeClassNoDefault: 'CoverPop-close'});
+  CoverPop.start();
+  $('.CoverPop-close').on('click', function(event){
+    event.preventDefault();
+    CoverPop.close();
+  });
 
   startMinuteTimer();
   map.bindEvents();

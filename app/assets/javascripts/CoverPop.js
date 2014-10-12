@@ -57,7 +57,7 @@
         },
 
 
-        /**
+        /**set
          * Helper methods
          */
 
@@ -146,6 +146,7 @@
             if (settings.closeOnEscape) {
                 if (e.keyCode === 27) {
                     CoverPop.close();
+                    alert('close');
                 }
             }
         },
@@ -195,6 +196,7 @@
         util.addClass($el.html, 'CoverPop-open');
 
         // bind close events and prevent default event
+        //error with this event handler - to fix there's a custom event handler for close in index file
         if ($el.closeClassNoDefaultEls.length > 0) {
             for (i=0, len = $el.closeClassNoDefaultEls.length; i < len; i++) {
                 alert('yo');
@@ -210,8 +212,6 @@
         // bind close events and continue with default event
         if ($el.closeClassDefaultEls.length > 0) {
             for (i=0, len = $el.closeClassDefaultEls.length; i < len; i++) {
-                                alert('yo');
-
                 util.addListener($el.closeClassDefaultEls[i], 'click', function(e) {
                     if (e.target === this) {
                         CoverPop.close();
