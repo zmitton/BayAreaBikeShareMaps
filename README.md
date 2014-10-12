@@ -8,13 +8,13 @@ DivvyMaps is a web application that provides optimized directions to Divvy bike 
 
 ## Divvy Maps was created at Dev Bootcamp in 8 days by: 
 
-[Zac Mitton](www.linkedin.com/in/zacmitton)
+[Zac Mitton](http://www.linkedin.com/in/zacmitton)
 
-[Kyle Daugherty](www.linkedin.com/in/daughertykyle)
+[Kyle Daugherty](http://www.linkedin.com/in/daughertykyle)
 
-[Theo Skolnik](www.linkedin.com/in/theoskolnik)
+[Theo Skolnik](http://www.linkedin.com/in/theoskolnik)
 
-[Peggy Fox](www.linkedin.com/in/peggyfox1)
+[Peggy Fox](http://www.linkedin.com/in/peggyfox1)
 
 
 ### Please Feel free to comment or report any bugs by submitting an "issue" here on github. Thanks, and enjoy your ride!
