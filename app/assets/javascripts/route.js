@@ -9,28 +9,26 @@ function Route(startingLat, startingLng){
 }
 
 Route.prototype.setDashedLines = function(response) {
-  if (response.mc.travelMode == "WALKING") {
-    var lineSymbol = {
-      path: google.maps.SymbolPath.CIRCLE,
-      strokeOpacity: 1,
-      scale: 4,
-      strokeColor: '#73B9FF'
-    };
-    var steps = response.routes[0].legs[0].steps;
-    for(var i = 0; i < steps.length; i++) {
-      var lineCoordinates = [steps[i].start_location, steps[i].end_location];
-      var walkingLine = new google.maps.Polyline({
-        path: lineCoordinates,
-        strokeOpacity: 0,
-        icons: [{
-          icon: lineSymbol,
-          offset: '0',
-          repeat: '20px'
-        }],
-        map: map.map
-      });
-      this.walkingLines.push(walkingLine);
-    }
+  var lineSymbol = {
+    path: google.maps.SymbolPath.CIRCLE,
+    strokeOpacity: 1,
+    scale: 4,
+    strokeColor: '#73B9FF'
   };
+  var steps = response.routes[0].legs[0].steps;
+  for(var i = 0; i < steps.length; i++) {
+    var lineCoordinates = [steps[i].start_location, steps[i].end_location];
+    var walkingLine = new google.maps.Polyline({
+      path: lineCoordinates,
+      strokeOpacity: 0,
+      icons: [{
+        icon: lineSymbol,
+        offset: '0',
+        repeat: '20px'
+      }],
+      map: map.map
+    });
+    this.walkingLines.push(walkingLine);
+  }
 };
 
