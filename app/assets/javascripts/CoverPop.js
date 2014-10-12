@@ -225,8 +225,7 @@
         openCallback();
     };
 
-    CoverPop.close = function(e) {
-        alert('close');
+    CoverPop.close = function(e) {  
         util.removeClass($el.html, 'CoverPop-open');
         util.setCookie(settings.cookieName, settings.expires);
 
