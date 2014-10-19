@@ -9,6 +9,7 @@ respond_to :json
     puts distance_in_miles
     puts direction
 
-    respond_with closest_station
+    # respond_with closest_station
+    respond_with '{"station_id":' + closest_station.station_id.to_s + ',"name":"' + closest_station.name.to_s + '", "distance":"' + distance_in_miles.to_s + '", "direction":"' + direction.to_s + '"}'
   end
 end

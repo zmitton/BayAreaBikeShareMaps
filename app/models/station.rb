@@ -99,14 +99,14 @@ class Station < ActiveRecord::Base
     x_vector = self.longitude - lng1
     output = ""
     if y_vector > (x_vector/2.0).abs 
-      output += "north"
+      output += "North"
     elsif y_vector < -1.0 * (x_vector/2.0).abs
-      output += "south"
+      output += "South"
     end  
     if x_vector > (y_vector/2.0).abs 
-      output += "east"
+      output += "East"
     elsif x_vector < -1.0 * (y_vector/2.0).abs
-      output += "west"
+      output += "West"
     end
     output
   end
