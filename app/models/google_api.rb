@@ -31,9 +31,12 @@ class GoogleApi
     end_matrix = self.get_end_matrix(end_coords, closest_end_stations)
 
     stations_matrix.each do |station|
+      puts "before #{station[:time]}"
       time_from_start = start_matrix.select { |x| x[:station] == station[:start_station] }.map { |u| u[:time] }
       time_from_end = end_matrix.select { |x| x[:station] == station[:end_station] }.map { |u| u[:time] }
       station[:time] += time_from_start[0] + time_from_end[0]
+      puts "after  #{station[:time]}"
+      puts
     end
     stations_matrix.sort_by { |station| station[:time] }
   end

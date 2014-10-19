@@ -45,11 +45,11 @@ class Station < ActiveRecord::Base
 
   def self.find_three(lat1, lng1, lat2, lng2, need)
     sorted_stations = self.find_fastest_by_distance_and_direction(lat1, lng1, lat2, lng2 ) # 3 better stations
-    # puts "###########################################################################"
-    # puts "NEED:#{need}"
-    # sorted_stations.each do |station|
-    #   p Station.find(station[0]).name
-    # end
+    puts "###########################################################################"
+    puts "NEED:#{need}"
+    sorted_stations.each do |station|
+      p Station.find(station[0]).name
+    end
     stations = []
     i = 0
     while stations.length < 3 && i < sorted_stations.length
@@ -94,5 +94,29 @@ class Station < ActiveRecord::Base
     return false # line should never run
   end
 
+  def cardinal_direction(lat1, lng1)
+    y_vector = self.latitude - lat1
+    x_vector = self.longitude - lng1
+    output = ""
+    if y_vector > (x_vector/2.0).abs 
+      output += "North"
+    elsif y_vector < -1.0 * (x_vector/2.0).abs
+      output += "South"
+    end  
+    if x_vector > (y_vector/2.0).abs 
+      output += "East"
+    elsif x_vector < -1.0 * (y_vector/2.0).abs
+      output += "West"
+    end
+    output
+  end
+
+
+
 end
+
+
+
+
+
 
