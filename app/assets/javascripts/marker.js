@@ -37,3 +37,9 @@ function makeTempMarker(lat, lng, value){
   var marker = new Marker(lat, lng, "", icon);
   marker.marker.setMap(window.map.map);
 }
+
+function makeHolidivvyMarker(lat, lng, label){
+  var icon = 'https://chart.googleapis.com/chart?chst=d_map_spin&chld=0.8|0|FF0000|10|_|' + label;
+  return new Marker(lat, lng, "", icon);
+  marker.marker.setMap(window.holidivvymap.map);
+}
