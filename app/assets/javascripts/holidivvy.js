@@ -1,3 +1,5 @@
+//Holidivvy tracker 
+
 function HoliDivvyMap(lat,lng) {
   this.latitude = 41.8896848;
   this.longitude = -87.6377502;
