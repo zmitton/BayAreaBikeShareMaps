@@ -37,6 +37,7 @@ function handleInstagrams(instagrams, divvyMap) {
   }
 }
 
+
 function setMarkers(infowindow, instagram, dateString, map) {
   lat = instagram.location.latitude
   lng = instagram.location.longitude
@@ -62,5 +63,6 @@ function createContentString(instagram) {
   var contentString = '<div class="infowindow"><div class="infowindow-header"><div class="user">' + logoPhoto +'<div class="username">'+userName +'</div></div></div><div class="infowindow-body">' + image + '</div><div class="infowindow-caption"' +caption +'</div></div>';
   return contentString;
 }
+
 
 Divvy: { var access_token="249341315.560d622.84f82de11ff74b328845eac12e6a771c"; var search="834818114134263326_31615560"}
