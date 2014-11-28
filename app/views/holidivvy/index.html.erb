@@ -1,0 +1,13 @@
+<div class="navigation" id="homenav">
+  <%= link_to 'Return to Directions', '/'%>
+</div>
+
+<div id="map-canvas">
+</div>
+
+<script>
+  $(document).ready(function () {
+    window.holidivvymap =  new HoliDivvyMap();
+    getHolidivvyFromInstagram();
+  });
+</script>
