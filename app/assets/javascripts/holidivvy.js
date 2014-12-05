@@ -30,7 +30,7 @@ function handleInstagrams(instagrams, divvyMap) {
     if(unixDate > 1413738096) {
       if(instagrams[i].location) {
         dateObject = new Date(unixDate*1000)
-        dateString = (dateObject.getUTCMonth()+1) + "/" + dateObject.getDate();
+        dateString = (getMonth(dateObject) + "/" + dateObject.getDate());
         setMarkers(infowindow, instagrams[i], dateString, divvyMap);
       }
     };
@@ -56,12 +56,42 @@ function setMarkers(infowindow, instagram, dateString, map) {
 
 function createContentString(instagram) {
   var userName = instagram.user.username;
+  var date = getDate(instagram)
   var logo = '<img src="http://4.bp.blogspot.com/-BjUAshY1TTs/UYNzmJIEq8I/AAAAAAAAZco/oggG2vRTlUg/s1600/Instragram+logo+2013.png">';
   var logoPhoto = '<img src="https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xpa1/t39.2365-6/851582_417171855069447_55288290_n.png">';
   var image = '<img src="'+ instagram.images.thumbnail.url +'">';
   var caption = '<p>' + instagram.caption.text + '</p>';
-  var contentString = '<div class="infowindow"><div class="infowindow-header"><div class="user">' + logoPhoto +'<div class="username">'+userName +'</div></div></div><div class="infowindow-body">' + image + '</div><div class="infowindow-caption"' +caption +'</div></div>';
+  var contentString = '<div class="infowindow"><div class="infowindow-header"><div class="user">' + logoPhoto +'<div class="username">'+userName +'</div><div class="date">'+date +'</div></div></div><div class="infowindow-body">' + image + '</div><div class="infowindow-caption"' +caption +'</div></div>';
   return contentString;
+}
+
+function getDate(instagram) {
+  var unixDate = instagram.created_time;
+  var dateObject = new Date(unixDate*1000);
+  var dateString = dateObject.toString();
+  var date = dateString.substring(0,15) + " at " + formatTime(dateString.substring(16,21));
+  return date
+}
+
+function getMonth(dateObject) {
+  var monthString = dateObject.toString().substring(4,7),
+      monthValue;
+  if(monthString == "Dec") {
+    monthValue = 12
+  }
+  else {monthValue = 11}
+  return monthValue
+}
+
+function formatTime(time) {
+  var hours = time.substring(0,2)
+  var minutes = time.substring(3,5)
+  var amPm = "am";
+  if(hours > 12) {
+    hours -= 12
+    amPm = "pm"
+  }
+  return hours + ":" + minutes +" " + amPm
 }
 
 

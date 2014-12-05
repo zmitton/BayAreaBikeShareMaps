@@ -60,18 +60,23 @@
 
 .username {
   color: #406E94;
-  top: -13px;
+  top: -25px;
   position: relative;
   display: inline;
+  padding-left: 10px;
 }
 
 .logo img {
   width: 75px;
 }
 
-.username {
+.date {
   padding-left: 10px;
-  padding-bottom: 10px;
+  position: relative;
+  display: block;
+  margin-left: 40px;
+  top: -25px;
+  color: red;
 }
 
 .infowindow-caption {
