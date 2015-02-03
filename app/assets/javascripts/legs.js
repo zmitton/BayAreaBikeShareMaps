@@ -90,6 +90,7 @@ Leg.prototype.shortestDistanceFromStationToLeg = function(station){
       var step = this.steps[i];
     }
   }
+  // debugger;
   var stationToBeginningOfStepXSqrd = Math.pow((step.x1 - station.longitude), 2);
   var stationToBeginningOfStepYSqrd = Math.pow((step.y1 - station.latitude), 2);
   var stationToBeginningOfStep = Math.sqrt(stationToBeginningOfStepXSqrd + stationToBeginningOfStepYSqrd);

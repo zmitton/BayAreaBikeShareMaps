@@ -5,7 +5,6 @@ function Station() {
 Station.fetchAllLiveData = function(){
   request = $.ajax("http://www.divvybikes.com/stations/json", {"method": "get"});
     request.done(function(response) {
-      console.log(response);
     });
 };
 
