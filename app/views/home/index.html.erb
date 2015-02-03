@@ -1,6 +1,8 @@
-<div class="navigation" id="holinav">
-  <%= link_to 'Track the #holidivvy', '/holidivvy'%>
-</div>
+<% if holiday_season? %>
+  <div class="navigation" id="holinav">
+    <%= link_to 'Track the #holidivvy', '/holidivvy'%>
+  </div>
+<% end %>
 <div class="search-form-container">
   <%= render 'form' %>
   <div class="controls-container">

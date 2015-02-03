@@ -6,7 +6,7 @@ function Leg(response, options){
   this.directionsDisplay = new google.maps.DirectionsRenderer(options)
   this.response = response;
   this.endStation;
-  this.endMarker = new Marker(this.googleLegObject.end_location.k, this.googleLegObject.end_location.B, markertitle, Marker.createLocationIcon(markertitle));
+  this.endMarker = new Marker(this.googleLegObject.end_location.lat(), this.googleLegObject.end_location.lng(), markertitle, Marker.createLocationIcon(markertitle));
   // this.stationType = response.mc.travelMode;
 
   this.tripTime = this.googleLegObject.duration.value;

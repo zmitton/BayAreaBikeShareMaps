@@ -1,12 +1,13 @@
 function Step(googleStep){
   this.googleStep = googleStep;
-  this.x1 = googleStep.start_location.B;
-  this.y1 = googleStep.start_location.k;
-  this.x2 = googleStep.end_location.B;
-  this.y2 = googleStep.end_location.k;
+  this.x1 = googleStep.start_location.lng();
+  this.y1 = googleStep.start_location.lat();
+  this.x2 = googleStep.end_location.lng();
+  this.y2 = googleStep.end_location.lat();
   this.duration = googleStep.duration.value; //seconds
   this.startTime;
   this.endTime;
+  // debugger;
 
 }
 

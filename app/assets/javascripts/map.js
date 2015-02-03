@@ -19,6 +19,8 @@ Map.prototype.fitBoundsOfMarkers = function() {
     bounds.extend(this.route.walkingLegs[i].endMarker.marker.getPosition());
   }
   this.map.fitBounds(bounds);
+  console.log("createing base req")
+  
 };$("input[name='start_latitude']");
 
 
@@ -316,6 +318,7 @@ Map.prototype.handleBikeRoute = function(){
   else {
     this.placeAllMarkers();
     this.fitBoundsOfMarkers();
+    // console.log("drawing lines");
     this.map.setZoom(this.map.getZoom());
     this.placeAllDirections();
     for(var i = 0 ; i < this.route.walkingLegs.length ; i++){
