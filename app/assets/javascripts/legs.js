@@ -6,7 +6,7 @@ function Leg(response, options){
   this.directionsDisplay = new google.maps.DirectionsRenderer(options)
   this.response = response;
   this.endStation;
-  this.endMarker = new Marker(this.googleLegObject.end_location.k, this.googleLegObject.end_location.B, markertitle, Marker.createLocationIcon(markertitle));
+  this.endMarker = new Marker(this.googleLegObject.end_location.lat(), this.googleLegObject.end_location.lng(), markertitle, Marker.createLocationIcon(markertitle));
   // this.stationType = response.mc.travelMode;
 
   this.tripTime = this.googleLegObject.duration.value;
@@ -90,6 +90,7 @@ Leg.prototype.shortestDistanceFromStationToLeg = function(station){
       var step = this.steps[i];
     }
   }
+  // debugger;
   var stationToBeginningOfStepXSqrd = Math.pow((step.x1 - station.longitude), 2);
   var stationToBeginningOfStepYSqrd = Math.pow((step.y1 - station.latitude), 2);
   var stationToBeginningOfStep = Math.sqrt(stationToBeginningOfStepXSqrd + stationToBeginningOfStepYSqrd);

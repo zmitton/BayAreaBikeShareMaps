@@ -81,7 +81,7 @@ class Station < ActiveRecord::Base
   end
 
   def self.stale?
-    self.first.created_at < 1.minutes.ago || self.last.created_at < 1.minutes.ago
+    (self.count != 0 && self.first.created_at < 1.minutes.ago) || self.last.created_at < 1.minutes.ago
   end
 
   def item_available(need)
