@@ -67,7 +67,7 @@ class Station < ActiveRecord::Base
 
   def self.fetch_all
     if self.stale?
-      uri = URI("http://www.divvybikes.com/stations/json")
+      uri = URI("http://www.bayareabikeshare.com/stations/json")
 
       # string = Net::HTTP.get(uri)
       # json = JSON.parse(string)
