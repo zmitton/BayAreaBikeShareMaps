@@ -6,7 +6,7 @@ BayAreaBikeShareMaps is a web application that provides optimized directions to 
 ## The site is currently, and will continue to be, Live at [www.BikeShareMaps.herokuapp.com](http://www.BikeShareMaps.herokuapp.com])
 (version 1.0)
 
-## BayAreaBikeShare Maps was forked from [DivvyMaps](http://divvymaps.com) and ported to work in San Francisco (Divvy was the Chicago branding of a similar bikeshare program).
+#### BayAreaBikeShare Maps was forked from [DivvyMaps](http://divvymaps.com) and ported to work in San Francisco (Divvy was the Chicago branding of a similar bikeshare program).
 
 ### Please Feel free to comment or report any bugs by submitting an "issue" here on github. Thanks, and enjoy your ride!
 
